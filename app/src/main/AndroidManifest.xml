@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Kulakov_P4_Cryptocurrency_app">
-        <activity android:name=".MainActivity">
+        <activity android:name=".views.HomeActivity" android:exported="false"/>
+        <activity
+            android:name=".views.MainActivity"
+            android:theme="@style/Theme.SplashTheme"
+            android:noHistory="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
