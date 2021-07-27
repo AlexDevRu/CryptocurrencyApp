@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 apply plugin: 'kotlin-kapt'
@@ -17,6 +18,7 @@ android {
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -67,6 +69,9 @@ dependencies {
     def retrofit_version = "2.6.1"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
 
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

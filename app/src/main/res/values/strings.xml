@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Kulakov_P4_Cryptocurrency_app</string>
+    <string name="sign_in">Войти</string>
 </resources>
