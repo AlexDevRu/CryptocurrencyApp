@@ -69,10 +69,12 @@ class MainFragment: BaseFragment<FragmentMainBinding>
     }
 
     private fun getAllCurrencies() {
-        getAllCurrenciesJob?.cancel()
-        getAllCurrenciesJob = lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.getCurrencies().collectLatest {
-                adapter.submitData(it)
+        viewModel.setCurrencies.observe(viewLifecycleOwner) {
+            getAllCurrenciesJob?.cancel()
+            getAllCurrenciesJob = lifecycleScope.launch(Dispatchers.IO) {
+                viewModel.getCurrencies().collectLatest {
+                    adapter.submitData(it)
+                }
             }
         }
     }

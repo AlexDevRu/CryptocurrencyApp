@@ -12,14 +12,14 @@ import javax.inject.Inject
 class CoinMarketCapRepository @Inject constructor(
     private val service: CoinMarketCapService,
 ): ICoinMarketCapRespository {
-    override suspend fun getAllCurrencies(): CurrencyFlow {
+    override suspend fun getAllCurrencies(type: String): CurrencyFlow {
         return Pager(
             config = PagingConfig(
                 pageSize = ApiConstants.PER_PAGE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {
-                CurrencyPageSource(service)
+                CurrencyPageSource(service, type)
             }
         ).flow
     }

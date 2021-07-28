@@ -27,15 +27,15 @@ class MainVM @Inject constructor(
 
     val sortFilterVM = SortFilterVM()
 
-    val sort = MutableLiveData<(currency: Currency) -> Boolean>()
-
-    private val _setCurrencies = MutableLiveData<Boolean>()
+    private val _setCurrencies = MutableLiveData(true)
     val setCurrencies: LiveData<Boolean> = _setCurrencies
 
     init {
         sortFilterVM.type.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                 Log.w("asd", "type ${sortFilterVM.type.get()}")
+                currentResult = null
+                _setCurrencies.postValue(true)
             }
         })
     }
@@ -46,7 +46,7 @@ class MainVM @Inject constructor(
             return lastResult
         }
 
-        val newResult = repository.getAllCurrencies().cachedIn(viewModelScope)
+        val newResult = repository.getAllCurrencies(sortFilterVM.type.get().toString()).cachedIn(viewModelScope)
 
         currentResult = newResult
 

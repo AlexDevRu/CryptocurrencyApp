@@ -11,6 +11,7 @@ interface CoinMarketCapService {
     suspend fun getCurrencies(
         @Query("limit") limit: Int,
         @Query("start") start: Int,
+        @Query("cryptocurrency_type") type: String,
         @Query("convert") convert: String = "USD"
     ): ListingCurrencyResponse
 }

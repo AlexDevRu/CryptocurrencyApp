@@ -11,7 +11,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class CurrencyPageSource(private val service: CoinMarketCapService,
-                       //private val onResponse: suspend (response: SearchItem) -> Unit
+                         private val type: String
 ): PagingSource<Int, Currency>() {
 
     override fun getRefreshKey(state: PagingState<Int, Currency>): Int? {
@@ -25,7 +25,7 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val currencyResult = service.getCurrencies(ApiConstants.PER_PAGE, position).data
+            val currencyResult = service.getCurrencies(ApiConstants.PER_PAGE, position, type).data
 
             val currencyList = CurrencyResponseMapper.toModel(currencyResult)
 

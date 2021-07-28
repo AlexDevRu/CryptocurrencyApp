@@ -3,5 +3,5 @@ package com.example.domain.repositories.remote
 import com.example.domain.aliases.CurrencyFlow
 
 interface ICoinMarketCapRespository {
-    suspend fun getAllCurrencies(): CurrencyFlow
+    suspend fun getAllCurrencies(type: String): CurrencyFlow
 }
