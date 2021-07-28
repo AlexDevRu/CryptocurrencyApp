@@ -1,2 +1,4 @@
 rootProject.name = "Kulakov_P4_Cryptocurrency_app"
 include ':app'
+include ':domain'
+include ':data'

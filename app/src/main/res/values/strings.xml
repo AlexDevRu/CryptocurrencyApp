@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Kulakov_P4_Cryptocurrency_app</string>
     <string name="sign_in">Войти</string>
+
+    <string-array name="currency_types">
+        <item>Все</item>
+        <item>Валюты</item>
+        <item>Токены</item>
+    </string-array>
 </resources>

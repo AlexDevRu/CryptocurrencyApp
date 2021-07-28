@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_margin="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/currencyImageView"
+                tools:background="@color/black"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:srcUrl="@{`https://s2.coinmarketcap.com/static/img/coins/64x64/` + viewModel.currency.id + `.png`}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currencyTitle"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.currency.name + ` | ` + viewModel.currency.symbol}"
+                tools:text="Bitcoin | BTC"
+                app:layout_constraintStart_toEndOf="@id/currencyImageView"
+                app:layout_constraintTop_toTopOf="@id/currencyImageView"
+                android:layout_marginLeft="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{`$` + viewModel.price}"
+                tools:text="$3465"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginRight="8dp" />
+
+            <LinearLayout
+                android:id="@+id/percentChange1h"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/currencyTitle"
+                app:layout_constraintStart_toEndOf="@id/currencyImageView"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1h: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@{viewModel.quoteUSD.percent_change_1h &lt; 0 ? @color/red : @color/green}"
+                    android:text="@{viewModel.percent_change_1h + `%`}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/percentChange24h"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/currencyTitle"
+                app:layout_constraintStart_toEndOf="@id/percentChange1h"
+                app:layout_constraintEnd_toStartOf="@id/percentChange30d"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="24h: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@{viewModel.quoteUSD.percent_change_24h &lt; 0 ? @color/red : @color/green}"
+                    android:text="@{viewModel.percent_change_24h + `%`}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/percentChange30d"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/currencyTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30d: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@{viewModel.quoteUSD.percent_change_30d &lt; 0 ? @color/red : @color/green}"
+                    android:text="@{viewModel.percent_change_30d + `%`}" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
