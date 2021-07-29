@@ -31,14 +31,11 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
     @Inject
     lateinit var client: GoogleSignInClient
 
-    @Inject
-    lateinit var preferences: IPreferncesStorage
-
     private lateinit var signInResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(preferences.getSignInStatus())
+        if(viewModel.userIsSigned())
             Navigator.getInstance().signInFragmentNavigator.showMain()
 
         binding.viewModel = viewModel
@@ -60,7 +57,7 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-            preferences.saveSignInStatus(true)
+            viewModel.saveSignInStatus(true)
             Navigator.getInstance().signInFragmentNavigator.showMain()
         } catch (e: ApiException) {
             Log.w("asd", "signInResult:failed code=" + e.statusCode)

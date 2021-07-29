@@ -11,13 +11,11 @@ import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyAdapter
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyLoadStateAdapter
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentMainBinding
 import com.example.kulakov_p4_cryptocurrency_app.view_models.MainVM
-import com.google.android.material.slider.RangeSlider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 
 @AndroidEntryPoint
@@ -67,18 +65,6 @@ class MainFragment: BaseFragment<FragmentMainBinding>
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.typesAdapter = adapter
         }*/
-
-        binding.sortFilter.priceSlider.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener{
-            override fun onStartTrackingTouch(slider: RangeSlider) {
-            }
-
-            override fun onStopTrackingTouch(slider: RangeSlider) {
-                val values = binding.sortFilter.priceSlider.values
-                Log.d("asd", "stop slider touch")
-                Log.d("asd", values[0].toString())
-                Log.d("asd", values[1].toString())
-            }
-        })
     }
 
     private fun getAllCurrencies() {

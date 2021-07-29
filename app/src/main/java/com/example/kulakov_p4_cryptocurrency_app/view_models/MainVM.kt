@@ -8,13 +8,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.domain.aliases.CurrencyFlow
 import com.example.domain.repositories.remote.ICoinMarketCapRespository
+import com.example.domain.use_cases.GetCurrenciesUseCase
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MainVM @Inject constructor(
-    private val repository: ICoinMarketCapRespository
+    private val getCurrenciesUseCase: GetCurrenciesUseCase
 ): BaseVM() {
 
     val error = ObservableField<String>()
@@ -40,7 +41,7 @@ class MainVM @Inject constructor(
             return lastResult
         }
 
-        val newResult = repository.getAllCurrencies(sortFilterVM.parameters).cachedIn(viewModelScope)
+        val newResult = getCurrenciesUseCase.invoke(sortFilterVM.parameters).cachedIn(viewModelScope)
 
         currentResult = newResult
 
