@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.lifecycle.ViewModelProvider
+import com.example.domain.repositories.local.IPreferncesStorage
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentSignInBinding
 import com.example.kulakov_p4_cryptocurrency_app.navigator.Navigator
@@ -30,10 +31,16 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
     @Inject
     lateinit var client: GoogleSignInClient
 
+    @Inject
+    lateinit var preferences: IPreferncesStorage
+
     private lateinit var signInResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(preferences.getSignInStatus())
+            Navigator.getInstance().signInFragmentNavigator.showMain()
+
         binding.viewModel = viewModel
 
         binding.handler = object : Handler {
@@ -53,6 +60,7 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
+            preferences.saveSignInStatus(true)
             Navigator.getInstance().signInFragmentNavigator.showMain()
         } catch (e: ApiException) {
             Log.w("asd", "signInResult:failed code=" + e.statusCode)
