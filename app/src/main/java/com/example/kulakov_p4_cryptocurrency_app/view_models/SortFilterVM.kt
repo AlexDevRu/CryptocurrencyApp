@@ -1,20 +1,84 @@
 package com.example.kulakov_p4_cryptocurrency_app.view_models
 
-import androidx.databinding.BaseObservable
-import androidx.databinding.Observable
-import androidx.databinding.ObservableField
-import androidx.databinding.ObservableInt
+import androidx.databinding.*
+import com.example.domain.models.CurrencyParameters
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.BehaviorSubject
 
-class SortFilterVM: BaseObservable() {
+class SortFilterVM(onChange: () -> Unit): BaseObservable() {
     private val types = listOf("all", "coins", "tokens")
+    private val tags = listOf("all", "defi", "filesharing")
+    private val sortTypes = listOf("name", "symbol", "date_added", "market_cap", "price")
+    private val sortDirs = listOf("asc", "desc")
 
-    val selectedCurrencyPosition = ObservableInt(0)
-    var type = ObservableField(types[selectedCurrencyPosition.get()])
+    val selectedTypePosition = ObservableInt(0)
+    val selectedTagPosition = ObservableInt(0)
+
+    val selectedSortTypePosition = ObservableInt(3)
+    val selectedSortDirPosition = ObservableInt(1)
+
+    val priceMin = BehaviorSubject.create<Float>()
+    val priceMax = BehaviorSubject.create<Float>()
+
+    val marketCapMin = BehaviorSubject.create<Float>()
+    val marketCapMax = BehaviorSubject.create<Float>()
+
+
+    val parameters = CurrencyParameters(
+        types[selectedTypePosition.get()],
+        types[selectedTagPosition.get()],
+        sortType = sortTypes[selectedSortTypePosition.get()],
+        sortDir = sortDirs[selectedSortDirPosition.get()]
+    )
+
+    val compositeDisposable = CompositeDisposable()
 
     init {
-        selectedCurrencyPosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
+        selectedTypePosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                type.set(types[selectedCurrencyPosition.get()])
+                parameters.type = types[selectedTypePosition.get()]
+                onChange()
+            }
+        })
+
+        selectedTagPosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                parameters.tag = tags[selectedTagPosition.get()]
+                onChange()
+            }
+        })
+
+        compositeDisposable.add(priceMin.subscribe {
+            parameters.priceMin = it
+            onChange()
+        })
+
+        compositeDisposable.add(priceMax.subscribe {
+            parameters.priceMax = it
+            onChange()
+        })
+
+        compositeDisposable.add(marketCapMin.subscribe {
+            parameters.marketCapMin = it
+            onChange()
+        })
+
+        compositeDisposable.add(marketCapMax.subscribe {
+            parameters.marketCapMax = it
+            onChange()
+        })
+
+        selectedSortTypePosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                parameters.sortType = sortTypes[selectedSortTypePosition.get()]
+                onChange()
+            }
+        })
+
+        selectedSortDirPosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                parameters.sortDir = sortDirs[selectedSortDirPosition.get()]
+                onChange()
             }
         })
     }

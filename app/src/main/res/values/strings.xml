@@ -7,4 +7,23 @@
         <item>Валюты</item>
         <item>Токены</item>
     </string-array>
+
+    <string-array name="currency_tags">
+        <item>Все</item>
+        <item>DeFi</item>
+        <item>Filesharing</item>
+    </string-array>
+
+    <string-array name="sort_types">
+        <item>Название</item>
+        <item>Символ</item>
+        <item>Дата добавления</item>
+        <item>Рыночная капитализация</item>
+        <item>Цена</item>
+    </string-array>
+
+    <string-array name="sort_dirs">
+        <item>По возрастанию</item>
+        <item>По убыванию</item>
+    </string-array>
 </resources>

@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.domain.aliases.CurrencyFlow
+import com.example.domain.models.CurrencyParameters
 import com.example.domain.repositories.remote.ICoinMarketCapRespository
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,19 +25,26 @@ class MainVM @Inject constructor(
 
     private var currentResult: CurrencyFlow? = null
 
-    val sortFilterVM = SortFilterVM()
+    val sortFilterVM = SortFilterVM(::handler)
 
     private val _setCurrencies = MutableLiveData(true)
     val setCurrencies: LiveData<Boolean> = _setCurrencies
 
     init {
-        sortFilterVM.type.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                Log.w("asd", "type ${sortFilterVM.type.get()}")
-                currentResult = null
-                _setCurrencies.postValue(true)
-            }
-        })
+        //sortFilterVM.selectedTypePosition.addOnPropertyChangedCallback(SortFilterPropertyChangedCallback())
+        //sortFilterVM.selectedTagPosition.addOnPropertyChangedCallback(SortFilterPropertyChangedCallback())
+    }
+
+    inner class SortFilterPropertyChangedCallback: Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            currentResult = null
+            _setCurrencies.postValue(true)
+        }
+    }
+
+    private fun handler() {
+        currentResult = null
+        _setCurrencies.postValue(true)
     }
 
     suspend fun getCurrencies(): CurrencyFlow {
@@ -45,10 +53,15 @@ class MainVM @Inject constructor(
             return lastResult
         }
 
-        val newResult = repository.getAllCurrencies(sortFilterVM.type.get().toString()).cachedIn(viewModelScope)
+        val newResult = repository.getAllCurrencies(sortFilterVM.parameters).cachedIn(viewModelScope)
 
         currentResult = newResult
 
         return newResult
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        sortFilterVM.compositeDisposable.dispose()
     }
 }

@@ -11,6 +11,7 @@ import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyAdapter
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyLoadStateAdapter
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentMainBinding
 import com.example.kulakov_p4_cryptocurrency_app.view_models.MainVM
+import com.google.android.material.slider.RangeSlider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -34,11 +35,8 @@ class MainFragment: BaseFragment<FragmentMainBinding>
         binding.viewModel = viewModel
 
         adapter.addLoadStateListener { state ->
-            Log.e("asd", "loading ${state.refresh == LoadState.Loading}")
             viewModel.loading.set(state.refresh == LoadState.Loading)
-            Log.e("asd", "loading viewmodel ${viewModel.loading.get()}")
-            /*if(!viewModel.loading.get())
-                binding.loading.root.visibility = View.GONE*/
+            //Log.e("asd", "loading viewmodel ${viewModel.loading.get()}")
 
             if(state.refresh is LoadState.Error) {
                 Log.e("asd", "error ${(state.refresh as LoadState.Error).error.localizedMessage}")
@@ -68,10 +66,23 @@ class MainFragment: BaseFragment<FragmentMainBinding>
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.typesAdapter = adapter
         }*/
+
+        binding.sortFilter.priceSlider.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener{
+            override fun onStartTrackingTouch(slider: RangeSlider) {
+            }
+
+            override fun onStopTrackingTouch(slider: RangeSlider) {
+                val values = binding.sortFilter.priceSlider.values
+                Log.d("asd", "stop slider touch")
+                Log.d("asd", values[0].toString())
+                Log.d("asd", values[1].toString())
+            }
+        })
     }
 
     private fun getAllCurrencies() {
         viewModel.setCurrencies.observe(viewLifecycleOwner) {
+            binding.currencyList.scrollToPosition(0)
             getAllCurrenciesJob?.cancel()
             getAllCurrenciesJob = lifecycleScope.launch(Dispatchers.IO) {
                 viewModel.getCurrencies().collectLatest {

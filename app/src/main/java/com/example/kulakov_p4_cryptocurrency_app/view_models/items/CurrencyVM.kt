@@ -12,7 +12,7 @@ class CurrencyVM: BaseObservable() {
     var currency: Currency? = null
         set(value) {
             field = value
-            Log.w("asd", currency.toString())
+            //Log.w("asd", currency.toString())
             notifyChange()
         }
 

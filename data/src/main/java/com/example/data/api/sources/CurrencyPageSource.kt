@@ -7,11 +7,12 @@ import com.example.data.api.ApiConstants.STARTING_PAGE_INDEX
 import com.example.data.api.CoinMarketCapService
 import com.example.data.mappers.CurrencyResponseMapper
 import com.example.domain.models.Currency
+import com.example.domain.models.CurrencyParameters
 import retrofit2.HttpException
 import java.io.IOException
 
 class CurrencyPageSource(private val service: CoinMarketCapService,
-                         private val type: String
+                         private val parameters: CurrencyParameters
 ): PagingSource<Int, Currency>() {
 
     override fun getRefreshKey(state: PagingState<Int, Currency>): Int? {
@@ -25,7 +26,18 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val currencyResult = service.getCurrencies(ApiConstants.PER_PAGE, position, type).data
+            val currencyResult = service.getCurrencies(
+                ApiConstants.PER_PAGE,
+                position,
+                parameters.type,
+                parameters.tag,
+                parameters.priceMin,
+                parameters.priceMax,
+                parameters.marketCapMin,
+                parameters.marketCapMax,
+                parameters.sortType,
+                parameters.sortDir
+            ).data
 
             val currencyList = CurrencyResponseMapper.toModel(currencyResult)
 
