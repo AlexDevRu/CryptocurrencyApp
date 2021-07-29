@@ -53,6 +53,7 @@ dependencies {
 
     // Dagger Core
     implementation "com.google.dagger:dagger:2.37"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     kapt "com.google.dagger:dagger-compiler:2.37"
 
     // Dagger Android

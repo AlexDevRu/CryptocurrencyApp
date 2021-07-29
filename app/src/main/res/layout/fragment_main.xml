@@ -20,16 +20,27 @@
         app:layoutDescription="@xml/fragment_main_xml_constraintlayout_scene">
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/currencyList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/currencySwipeList"
+            app:onRefresh="@{() -> viewModel.retry()}"
+            app:isRefreshing="@{viewModel.isRefreshing}"
             android:visibility="@{!viewModel.loading}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/currencyList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
         <include
             android:id="@+id/loading"
@@ -37,10 +48,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:inProgress="@{viewModel.loading}"
-            app:layout_constraintBottom_toBottomOf="@id/currencyList"
-            app:layout_constraintEnd_toEndOf="@id/currencyList"
-            app:layout_constraintStart_toStartOf="@id/currencyList"
-            app:layout_constraintTop_toTopOf="@id/currencyList"
+            app:layout_constraintBottom_toBottomOf="@id/currencySwipeList"
+            app:layout_constraintEnd_toEndOf="@id/currencySwipeList"
+            app:layout_constraintStart_toStartOf="@id/currencySwipeList"
+            app:layout_constraintTop_toTopOf="@id/currencySwipeList"
             tools:visibility="gone" />
 
         <!--<FrameLayout

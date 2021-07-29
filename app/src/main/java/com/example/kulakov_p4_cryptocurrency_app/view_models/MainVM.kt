@@ -1,7 +1,5 @@
 package com.example.kulakov_p4_cryptocurrency_app.view_models
 
-import android.util.Log
-import androidx.databinding.Observable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
@@ -9,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.domain.aliases.CurrencyFlow
-import com.example.domain.models.CurrencyParameters
 import com.example.domain.repositories.remote.ICoinMarketCapRespository
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,26 +20,16 @@ class MainVM @Inject constructor(
     val error = ObservableField<String>()
     val loading = ObservableBoolean(false)
 
+    val isRefreshing = ObservableBoolean(false)
+
     private var currentResult: CurrencyFlow? = null
 
-    val sortFilterVM = SortFilterVM(::handler)
+    val sortFilterVM = SortFilterVM(::retry)
 
     private val _setCurrencies = MutableLiveData(true)
     val setCurrencies: LiveData<Boolean> = _setCurrencies
 
-    init {
-        //sortFilterVM.selectedTypePosition.addOnPropertyChangedCallback(SortFilterPropertyChangedCallback())
-        //sortFilterVM.selectedTagPosition.addOnPropertyChangedCallback(SortFilterPropertyChangedCallback())
-    }
-
-    inner class SortFilterPropertyChangedCallback: Observable.OnPropertyChangedCallback() {
-        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-            currentResult = null
-            _setCurrencies.postValue(true)
-        }
-    }
-
-    private fun handler() {
+    fun retry() {
         currentResult = null
         _setCurrencies.postValue(true)
     }
