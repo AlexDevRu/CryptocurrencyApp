@@ -2,10 +2,7 @@ package com.example.kulakov_p4_cryptocurrency_app.views.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -37,7 +34,12 @@ class MainFragment: BaseFragment<FragmentMainBinding>
         binding.viewModel = viewModel
 
         adapter.addLoadStateListener { state ->
+            Log.e("asd", "loading ${state.refresh == LoadState.Loading}")
             viewModel.loading.set(state.refresh == LoadState.Loading)
+            Log.e("asd", "loading viewmodel ${viewModel.loading.get()}")
+            /*if(!viewModel.loading.get())
+                binding.loading.root.visibility = View.GONE*/
+
             if(state.refresh is LoadState.Error) {
                 Log.e("asd", "error ${(state.refresh as LoadState.Error).error.localizedMessage}")
                 val exception = (state.refresh as LoadState.Error).error

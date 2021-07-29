@@ -10,7 +10,8 @@
        <KeyFrameSet>
        </KeyFrameSet>
         <OnClick motion:targetId="@+id/sortFilterButton" />
-        <OnSwipe motion:touchAnchorId="@+id/sort_filter" motion:dragDirection="dragUp" motion:touchAnchorSide="top" />
+        <OnSwipe motion:touchAnchorId="@+id/sort_filter" motion:touchRegionId="@+id/sort_filter"
+            motion:dragDirection="dragUp" motion:touchAnchorSide="top" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -21,6 +22,18 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="parent" />
+        <Constraint
+            android:id="@+id/sortFilterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleY="1"
+            android:scaleX="1"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"/>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -31,5 +44,17 @@
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent" />
+        <Constraint
+            android:id="@+id/sortFilterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleY="0"
+            android:scaleX="0"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"/>
     </ConstraintSet>
 </MotionScene>
