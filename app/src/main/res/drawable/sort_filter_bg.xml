@@ -1,7 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/white" />
-    <corners
-        android:topLeftRadius="30dp"
-        android:topRightRadius="30dp"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- solids that simulate shadow !-->
+    <item>
+        <shape>
+            <corners android:topLeftRadius="30dp" android:topRightRadius="30dp"/>
+            <solid android:color="#10CCCCCC" />
+            <padding android:top="4dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <corners android:topLeftRadius="30dp" android:topRightRadius="30dp"/>
+            <solid android:color="#20CCCCCC" />
+            <padding android:top="4dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <corners android:topLeftRadius="30dp" android:topRightRadius="30dp"/>
+            <solid android:color="#40CCCCCC" />
+            <padding android:top="4dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <corners android:topLeftRadius="30dp" android:topRightRadius="30dp"/>
+            <solid android:color="#50CCCCCC" />
+            <padding android:top="4dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <corners android:topLeftRadius="30dp" android:topRightRadius="30dp"/>
+            <solid android:color="#60CCCCCC" />
+            <padding android:top="4dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+        </shape>
+    </item>
+
+    <!-- main background !-->
+    <item>
+        <shape>
+            <padding android:top="10dp" android:bottom="10dp" android:left="10dp" android:right="10dp" />
+            <corners android:topLeftRadius="30dp" android:topRightRadius="30dp"/>
+            <solid android:color="#ffffff" />
+        </shape>
+    </item>
+
+
+</layer-list>

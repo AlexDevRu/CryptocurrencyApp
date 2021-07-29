@@ -17,6 +17,10 @@ class CurrencyVM: BaseObservable() {
         }
 
     @get:Bindable
+    val thumbUrl: String
+        get() = "https://s2.coinmarketcap.com/static/img/coins/64x64/${currency?.id}.png"
+
+    @get:Bindable
     val quoteUSD: QuoteItem?
         get() = currency?.quote?.get("USD")
 

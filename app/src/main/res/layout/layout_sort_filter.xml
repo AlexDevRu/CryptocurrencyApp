@@ -10,7 +10,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="8dp"
         android:background="@drawable/sort_filter_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
