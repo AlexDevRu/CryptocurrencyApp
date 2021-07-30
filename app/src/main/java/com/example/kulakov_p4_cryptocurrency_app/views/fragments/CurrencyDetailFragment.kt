@@ -1,7 +1,11 @@
 package com.example.kulakov_p4_cryptocurrency_app.views.fragments
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
@@ -10,6 +14,7 @@ import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentCurrencyDet
 import com.example.kulakov_p4_cryptocurrency_app.parcelable.mappers.CurrencyArgMapper
 import com.example.kulakov_p4_cryptocurrency_app.view_models.CurrencyDetailVM
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class CurrencyDetailFragment: BaseFragment<FragmentCurrencyDetailBinding>
@@ -38,5 +43,40 @@ class CurrencyDetailFragment: BaseFragment<FragmentCurrencyDetailBinding>
         if(savedInstanceState == null) {
             viewModel.init(CurrencyArgMapper.toModel(args.currencyArg))
         }
+
+        binding.handler = object : Handler {
+            override fun onBuyCryptoCurrency() {
+                val appPackage = "co.mona.android"
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackage")))
+                } catch (e: ActivityNotFoundException) {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackage")))
+                }
+            }
+
+            override fun onLinkClick(links: List<String>) {
+                if(links.size == 1) {
+                    openLink(links[0])
+                    return
+                }
+
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setItems(links.toTypedArray()) { _, which ->
+                    openLink(links[which])
+                }
+                val dialog = builder.create()
+                dialog.show()
+            }
+        }
+    }
+
+    private fun openLink(link: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        startActivity(intent)
+    }
+
+    interface Handler {
+        fun onBuyCryptoCurrency()
+        fun onLinkClick(links: List<String>)
     }
 }

@@ -10,4 +10,11 @@
     <style name="loadPhotoErrorButtonStyle">
         <item name="android:backgroundTint">@color/red</item>
     </style>
+
+    <style name="currencyDetailLinkStyle" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="cornerRadius">8dp</item>
+        <item name="rippleColor">#33AAAAAA</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="iconTint">@null</item>
+    </style>
 </resources>

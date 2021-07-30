@@ -7,94 +7,264 @@
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.CurrencyDetailVM" />
+
+        <variable
+            name="handler"
+            type="com.example.kulakov_p4_cryptocurrency_app.views.fragments.CurrencyDetailFragment.Handler" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:padding="16dp"
         android:layout_height="match_parent">
 
-
-        <ImageView
-            android:id="@+id/currencyImageView"
-            android:transitionName="currencyImageView"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            tools:background="@color/black"
-            app:srcUrl="@{viewModel.currencyVM.thumbUrl}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/currencyTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="@{viewModel.currencyVM.currency.name + ` | ` + viewModel.currencyVM.currency.symbol}"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:transitionName="currencyTitle"
-            app:layout_constraintEnd_toStartOf="@+id/currencyPrice"
-            app:layout_constraintStart_toEndOf="@id/currencyImageView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="sldkfjklsfj" />
-
-        <TextView
-            android:id="@+id/currencyPrice"
-            android:transitionName="currencyPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@{viewModel.currencyVM.price}"
-            tools:text="$3454" />
-
-        <Button
-            android:id="@+id/buyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/currencyImageView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:backgroundTint="@color/black"
-            android:text="Купить криптовалюту" />
-
-        <TextView
-            android:id="@+id/descriptionHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Описание"
-            app:layout_constraintTop_toBottomOf="@id/buyButton"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/descriptionBody"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionHeader"
-            android:text="sdlfjdfjlj" />
+            android:padding="16dp"
+            android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/websiteButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-            android:textColor="@color/green"
-            android:textSize="14sp"
-            app:cornerRadius="8dp"
-            app:rippleColor="#33AAAAAA"
-            app:strokeColor="@color/green"
-            app:strokeWidth="2dp"
-            app:iconSize="20dp"
-            app:icon="@mipmap/ic_launcher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/descriptionBody"
-            android:text="веб-сайт" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/currencyImageView"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                tools:background="@color/black"
+                app:srcUrl="@{viewModel.currencyVM.thumbUrl}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currencyTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="@{viewModel.currencyVM.currency.name + ` | ` + viewModel.currencyVM.currency.symbol}"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:transitionName="currencyTitle"
+                app:layout_constraintEnd_toStartOf="@+id/currencyPrice"
+                app:layout_constraintStart_toEndOf="@id/currencyImageView"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="sldkfjklsfj" />
+
+            <TextView
+                android:id="@+id/currencyPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="16sp"
+                android:text="@{`$` + viewModel.currencyVM.price}"
+                tools:text="$3454" />
+
+            <TextView
+                android:id="@+id/currencyPercentChange1h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@{viewModel.currencyVM.quoteUSD.percent_change_1h &lt; 0 ? @color/red : @color/green}"
+                android:textColor="@color/white"
+                android:padding="4dp"
+                app:layout_constraintEnd_toEndOf="@id/currencyPrice"
+                app:layout_constraintTop_toBottomOf="@id/currencyPrice"
+                android:textSize="16sp"
+
+                android:text="@{viewModel.currencyVM.percent_change_1h}"
+                tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
+                tools:background="@color/green"
+                tools:text="0.12" />
+
+            <!-- app:drawableEnd="@{viewModel.currencyVM.quoteUSD.percent_change_1h &lt; 0 ? @drawable/ic_baseline_arrow_drop_down_24 : @drawable/ic_baseline_arrow_drop_up_24}" -->
+
+            <Button
+                android:id="@+id/buyButton"
+                android:onClick="@{() -> handler.onBuyCryptoCurrency()}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/currencyImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:backgroundTint="@color/black"
+                android:text="Купить криптовалюту" />
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.metadataLoading}"
+                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buyButton" />
+
+            <TextView
+                android:id="@+id/descriptionHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:visibility="@{viewModel.metadataGetSuccessfull}"
+                android:text="Описание"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/buyButton"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/descriptionBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:visibility="@{viewModel.metadataGetSuccessfull}"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="1.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descriptionHeader"
+                android:text="@{viewModel.currencyMetadataVM.description}"
+                tools:text="sdlfjdfjldfgdfgdfgdfgdfgdfgdfgdfgdgfdfgdfgdfgdfgsdfdsfsfsdfdfsdfj" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="8dp"
+                app:flexWrap="wrap"
+                android:visibility="@{viewModel.metadataGetSuccessfull}"
+                app:layout_constraintTop_toBottomOf="@id/descriptionBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/websiteButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/purple_700"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/purple_700"
+                    app:icon="@drawable/ic_web"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.websiteUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.websiteUrls != null &amp;&amp; !viewModel.currencyMetadataVM.websiteUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="веб-сайт" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/techDocButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/green"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/green"
+                    app:icon="@drawable/ic_tech_doc"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.technicalDocUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.technicalDocUrls != null &amp;&amp; !viewModel.currencyMetadataVM.technicalDocUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="тех. документация" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/twitterButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/blue"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/blue"
+                    app:icon="@drawable/ic_twitter"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.twitterUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.twitterUrls != null &amp;&amp; !viewModel.currencyMetadataVM.twitterUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="твиттер" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/redditButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/red"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/red"
+                    app:icon="@drawable/ic_reddit"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.redditUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.redditUrls != null &amp;&amp; !viewModel.currencyMetadataVM.redditUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="реддит" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/messageBoardButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/light_green"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/light_green"
+                    app:icon="@drawable/ic_message_board"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.messageBoardUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.messageBoardUrls != null &amp;&amp; !viewModel.currencyMetadataVM.messageBoardUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="доска сообщений" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/announcementButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/orange"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/orange"
+                    app:icon="@drawable/ic_announcement"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.announcementUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.announcementUrls != null &amp;&amp; !viewModel.currencyMetadataVM.announcementUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="аннонсмент" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/chatButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/teal_700"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/teal_700"
+                    app:icon="@drawable/ic_chat"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.chatUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.chatUrls != null &amp;&amp; !viewModel.currencyMetadataVM.chatUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="чат" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/explorerButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/pink"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/pink"
+                    app:icon="@drawable/ic_explorer"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.explorerUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.explorerUrls != null &amp;&amp; !viewModel.currencyMetadataVM.explorerUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="проводник" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sourceCodeButton"
+                    style="@style/currencyDetailLinkStyle"
+                    android:textColor="@color/black"
+                    android:layout_margin="4dp"
+                    app:strokeColor="@color/black"
+                    app:icon="@drawable/ic_code"
+                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.sourceCodeUrls)}"
+                    android:visibility="@{viewModel.currencyMetadataVM.sourceCodeUrls != null &amp;&amp; !viewModel.currencyMetadataVM.sourceCodeUrls.empty}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="исходный код" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <include
+                layout="@layout/item_error"
+                app:message="@{viewModel.metadataError}"
+                app:onRetryClick="@{() -> viewModel.getMetadata()}"
+                android:visibility="@{viewModel.metadataError != null}"
+                tools:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buyButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 </layout>

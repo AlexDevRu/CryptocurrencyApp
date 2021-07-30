@@ -5,9 +5,14 @@ import androidx.paging.PagingConfig
 import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
 import com.example.data.api.sources.CurrencyPageSource
+import com.example.data.mappers.CurrencyMetadataMapper
 import com.example.domain.aliases.CurrencyFlow
+import com.example.domain.common.Result
+import com.example.domain.models.CurrencyMetadata
 import com.example.domain.models.CurrencyParameters
 import com.example.domain.repositories.remote.ICoinMarketCapRespository
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 class CoinMarketCapRepository @Inject constructor(
@@ -23,5 +28,19 @@ class CoinMarketCapRepository @Inject constructor(
                 CurrencyPageSource(service, parameters)
             }
         ).flow
+    }
+
+    override suspend fun getCurrencyInfo(id: Int): Result<CurrencyMetadata> {
+        return try {
+            val response = service.getCurrencyInfo(id.toString())
+            val result = CurrencyMetadataMapper.toModel(response.data[id.toString()]!!)
+            Result.Success(result)
+        } catch (exception: IOException) {
+            Result.Failure(exception)
+        } catch (exception: HttpException) {
+            Result.Failure(exception)
+        } catch (exception: Exception) {
+            Result.Failure(exception)
+        }
     }
 }

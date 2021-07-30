@@ -1,6 +1,5 @@
 package com.example.kulakov_p4_cryptocurrency_app.view_models.items
 
-import android.util.Log
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.example.domain.models.Currency
@@ -12,7 +11,6 @@ class CurrencyVM: BaseObservable() {
     var currency: Currency? = null
         set(value) {
             field = value
-            //Log.w("asd", currency.toString())
             notifyChange()
         }
 

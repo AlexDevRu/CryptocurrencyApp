@@ -5,12 +5,10 @@ data class ListingCurrencyResponse(
     val status: Status
 ) {
     data class Status(
-        val credit_count: Int,
-        val elapsed: Int,
+        val elapsed: Int? = null,
         val error_code: Int,
-        val error_message: Any,
-        val notice: Any,
+        val error_message: String? = null,
         val timestamp: String,
-        val total_count: Int
+        val total_count: Int? = null
     )
 }
