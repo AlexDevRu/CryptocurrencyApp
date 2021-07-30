@@ -7,9 +7,15 @@
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM" />
+
+        <variable
+            name="handler"
+            type="com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyAdapter.Handler" />
     </data>
 
     <androidx.cardview.widget.CardView
+        android:onClick="@{() -> handler.onItemClick()}"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_margin="6dp"
         app:cardElevation="4dp"
         android:layout_width="match_parent"
@@ -38,13 +44,13 @@
                 android:text="@{viewModel.currency.name + ` | ` + viewModel.currency.symbol}"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintEnd_toStartOf="@id/currencyPrice"
                 app:layout_constraintStart_toEndOf="@id/currencyImageView"
                 app:layout_constraintTop_toTopOf="@id/currencyImageView"
                 tools:text="Bitcoin | BTC fghgfh gfh gf h fgh fgh fg" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/currencyPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"

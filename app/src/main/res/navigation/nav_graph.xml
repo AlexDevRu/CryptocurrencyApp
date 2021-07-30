@@ -18,6 +18,23 @@
         android:id="@+id/mainFragment"
         android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.MainFragment"
         android:label="MainFragment"
-        tools:layout="@layout/fragment_main"/>
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_currencyDetailFragment"
+            app:destination="@id/currencyDetailFragment">
+            <argument
+                android:name="currencyArg"
+                app:argType="com.example.kulakov_p4_cryptocurrency_app.parcelable.CurrencyArg" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/currencyDetailFragment"
+        android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.CurrencyDetailFragment"
+        android:label="CurrencyDetailFragment"
+        tools:layout="@layout/fragment_currency_detail">
+        <argument
+            android:name="currencyArg"
+            app:argType="com.example.kulakov_p4_cryptocurrency_app.parcelable.CurrencyArg" />
+    </fragment>
 
 </navigation>

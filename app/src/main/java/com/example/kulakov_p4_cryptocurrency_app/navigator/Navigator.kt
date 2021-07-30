@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 class Navigator private constructor(private val navController: NavController) {
 
     val signInFragmentNavigator = SignInFragmentNavigator(navController)
+    val mainFragmentNavigator = MainFragmentNavigator(navController)
 
     fun navigateBack() {
         navController.navigateUp()

@@ -35,7 +35,6 @@ class MainFragment: BaseFragment<FragmentMainBinding>
 
         adapter.addLoadStateListener { state ->
             viewModel.loading.set(state.refresh == LoadState.Loading)
-            //Log.e("asd", "loading viewmodel ${viewModel.loading.get()}")
 
             if(state.refresh is LoadState.Error) {
                 Log.e("asd", "error ${(state.refresh as LoadState.Error).error.localizedMessage}")
@@ -54,6 +53,15 @@ class MainFragment: BaseFragment<FragmentMainBinding>
             CurrencyLoadStateAdapter { adapter.retry() },
             CurrencyLoadStateAdapter { adapter.retry() }
         )
+
+        binding.currencyList.apply {
+            postponeEnterTransition()
+            viewTreeObserver
+                .addOnPreDrawListener {
+                    startPostponedEnterTransition()
+                    true
+                }
+        }
 
         getAllCurrencies()
 

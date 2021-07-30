@@ -8,7 +8,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.lifecycle.ViewModelProvider
-import com.example.domain.repositories.local.IPreferncesStorage
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentSignInBinding
 import com.example.kulakov_p4_cryptocurrency_app.navigator.Navigator

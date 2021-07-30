@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kulakov_p4_cryptocurrency_app.view_models.CurrencyDetailVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="16dp"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/currencyImageView"
+            android:transitionName="currencyImageView"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            tools:background="@color/black"
+            app:srcUrl="@{viewModel.currencyVM.thumbUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/currencyTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@{viewModel.currencyVM.currency.name + ` | ` + viewModel.currencyVM.currency.symbol}"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:transitionName="currencyTitle"
+            app:layout_constraintEnd_toStartOf="@+id/currencyPrice"
+            app:layout_constraintStart_toEndOf="@id/currencyImageView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="sldkfjklsfj" />
+
+        <TextView
+            android:id="@+id/currencyPrice"
+            android:transitionName="currencyPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{viewModel.currencyVM.price}"
+            tools:text="$3454" />
+
+        <Button
+            android:id="@+id/buyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/currencyImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="@color/black"
+            android:text="Купить криптовалюту" />
+
+        <TextView
+            android:id="@+id/descriptionHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Описание"
+            app:layout_constraintTop_toBottomOf="@id/buyButton"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/descriptionBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionHeader"
+            android:text="sdlfjdfjlj" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/websiteButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:textColor="@color/green"
+            android:textSize="14sp"
+            app:cornerRadius="8dp"
+            app:rippleColor="#33AAAAAA"
+            app:strokeColor="@color/green"
+            app:strokeWidth="2dp"
+            app:iconSize="20dp"
+            app:icon="@mipmap/ic_launcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/descriptionBody"
+            android:text="веб-сайт" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

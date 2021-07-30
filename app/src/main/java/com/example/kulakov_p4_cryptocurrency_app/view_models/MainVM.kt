@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.domain.aliases.CurrencyFlow
-import com.example.domain.repositories.remote.ICoinMarketCapRespository
 import com.example.domain.use_cases.GetCurrenciesUseCase
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
