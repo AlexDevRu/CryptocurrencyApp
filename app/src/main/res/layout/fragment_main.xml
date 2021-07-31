@@ -21,7 +21,6 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/currencySwipeList"
             app:onRefresh="@{() -> viewModel.retry()}"
-            app:isRefreshing="@{viewModel.isRefreshing}"
             android:visibility="@{!viewModel.loading}"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

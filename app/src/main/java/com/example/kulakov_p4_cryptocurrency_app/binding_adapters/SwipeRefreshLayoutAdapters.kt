@@ -10,8 +10,3 @@ fun bindOnSwipeToRefresh(swipeLayout: SwipeRefreshLayout, refreshHandler: () -> 
         swipeLayout.isRefreshing = false
     }
 }
-
-@BindingAdapter("isRefreshing")
-fun bindSwipeToRefresh(swipeLayout: SwipeRefreshLayout, isRefreshing: Boolean) {
-
-}
