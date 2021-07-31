@@ -36,6 +36,8 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
     init {
         selectedTypePosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(parameters.type == types[selectedTypePosition.get()])
+                    return
                 parameters.type = types[selectedTypePosition.get()]
                 onChange()
             }
@@ -43,33 +45,37 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
 
         selectedTagPosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(parameters.tag == tags[selectedTagPosition.get()])
+                    return
                 parameters.tag = tags[selectedTagPosition.get()]
                 onChange()
             }
         })
 
-        compositeDisposable.add(priceMin.subscribe {
+        compositeDisposable.add(priceMin.filter { parameters.priceMin != it }.subscribe {
             parameters.priceMin = it
             onChange()
         })
 
-        compositeDisposable.add(priceMax.subscribe {
+        compositeDisposable.add(priceMax.filter { parameters.priceMax != it }.subscribe {
             parameters.priceMax = it
             onChange()
         })
 
-        compositeDisposable.add(marketCapMin.subscribe {
+        compositeDisposable.add(marketCapMin.filter { parameters.marketCapMin != it }.subscribe {
             parameters.marketCapMin = it
             onChange()
         })
 
-        compositeDisposable.add(marketCapMax.subscribe {
+        compositeDisposable.add(marketCapMax.filter { parameters.marketCapMax != it }.subscribe {
             parameters.marketCapMax = it
             onChange()
         })
 
         selectedSortTypePosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(parameters.sortType == sortTypes[selectedSortTypePosition.get()])
+                    return
                 parameters.sortType = sortTypes[selectedSortTypePosition.get()]
                 onChange()
             }
@@ -77,6 +83,8 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
 
         selectedSortDirPosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if(parameters.sortDir == sortDirs[selectedSortDirPosition.get()])
+                    return
                 parameters.sortDir = sortDirs[selectedSortDirPosition.get()]
                 onChange()
             }
