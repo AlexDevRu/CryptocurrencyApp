@@ -44,7 +44,7 @@
                 android:text="@{viewModel.currency.name + ` | ` + viewModel.currency.symbol}"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/currencyPrice"
+                app:layout_constraintEnd_toStartOf="@id/currencyPercentChange1h"
                 app:layout_constraintStart_toEndOf="@id/currencyImageView"
                 app:layout_constraintTop_toTopOf="@id/currencyImageView"
                 tools:text="Bitcoin | BTC fghgfh gfh gf h fgh fgh fg" />
@@ -59,72 +59,21 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="$3465" />
 
-            <LinearLayout
-                android:id="@+id/percentChange1h"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/currencyTitle"
-                app:layout_constraintStart_toEndOf="@id/currencyImageView"
-                android:layout_margin="8dp"
+            <TextView
+                android:id="@+id/currencyPercentChange1h"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1ч: " />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@{viewModel.quoteUSD.percent_change_1h &lt; 0 ? @color/red : @color/green}"
-                    android:text="@{viewModel.percent_change_1h + `%`}" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/percentChange24h"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/currencyTitle"
-                app:layout_constraintStart_toEndOf="@id/percentChange1h"
-                app:layout_constraintEnd_toStartOf="@id/percentChange30d"
-                android:layout_margin="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="24ч: " />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@{viewModel.quoteUSD.percent_change_24h &lt; 0 ? @color/red : @color/green}"
-                    android:text="@{viewModel.percent_change_24h + `%`}" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/percentChange30d"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/currencyTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="30дн: " />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@{viewModel.quoteUSD.percent_change_30d &lt; 0 ? @color/red : @color/green}"
-                    android:text="@{viewModel.percent_change_30d + `%`}" />
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@{viewModel.quoteUSD.percent_change_1h &lt; 0 ? @color/red : @color/green}"
+                android:textColor="@color/white"
+                android:padding="4dp"
+                app:layout_constraintEnd_toEndOf="@id/currencyPrice"
+                app:layout_constraintTop_toBottomOf="@id/currencyPrice"
+                android:text="@{viewModel.percent_change_1h}"
+                tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
+                tools:background="@color/green"
+                tools:text="11.1234"
+                android:drawableEnd="@{viewModel.quoteUSD.percent_change_1h &lt; 0 ? @drawable/ic_baseline_arrow_drop_down_24 : @drawable/ic_baseline_arrow_drop_up_24}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
