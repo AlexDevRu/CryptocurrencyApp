@@ -63,7 +63,7 @@ class MainFragment: BaseFragment<FragmentMainBinding>
                 }
         }
 
-        getAllCurrencies()
+        observe()
 
         /*ArrayAdapter.createFromResource(
             requireContext(),
@@ -75,9 +75,8 @@ class MainFragment: BaseFragment<FragmentMainBinding>
         }*/
     }
 
-    private fun getAllCurrencies() {
+    private fun observe() {
         viewModel.setCurrencies.observe(viewLifecycleOwner) {
-            binding.currencyList.scrollToPosition(0)
             getAllCurrenciesJob?.cancel()
             getAllCurrenciesJob = lifecycleScope.launch(Dispatchers.IO) {
                 viewModel.getCurrencies().collectLatest {
@@ -85,5 +84,10 @@ class MainFragment: BaseFragment<FragmentMainBinding>
                 }
             }
         }
+
+        viewModel.scrollListToPosition.observe(viewLifecycleOwner, {
+            if(it != null)
+                binding.currencyList.scrollToPosition(it)
+        })
     }
 }
