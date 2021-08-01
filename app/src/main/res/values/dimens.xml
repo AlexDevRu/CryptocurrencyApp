@@ -4,4 +4,5 @@
     <dimen name="error_sign_in_textsize">20sp</dimen>
     <dimen name="base_indent">10dp</dimen>
     <dimen name="error_message_text_photo_item_size">14sp</dimen>
+    <dimen name="webview_progressbar_height">4dp</dimen>
 </resources>

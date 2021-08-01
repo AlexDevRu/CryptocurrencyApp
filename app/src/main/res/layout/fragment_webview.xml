@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="url"
+            type="String" />
+
+        <variable
+            name="loadProgress"
+            type="int" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:url="@{url}" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/progressBarStyle"
+            android:progress="@{loadProgress}"
+            tools:progress="50"
+            android:visibility="@{loadProgress &lt; 100}"
+            android:layout_gravity="top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/webview_progressbar_height" />
+
+    </FrameLayout>
+
+</layout>

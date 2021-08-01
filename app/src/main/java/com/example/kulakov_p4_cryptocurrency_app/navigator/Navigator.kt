@@ -6,6 +6,7 @@ class Navigator private constructor(private val navController: NavController) {
 
     val signInFragmentNavigator = SignInFragmentNavigator(navController)
     val mainFragmentNavigator = MainFragmentNavigator(navController)
+    val currencyDetailFragmentNavigator = CurrencyDetailFragmentNavigator(navController)
 
     fun navigateBack() {
         navController.navigateUp()

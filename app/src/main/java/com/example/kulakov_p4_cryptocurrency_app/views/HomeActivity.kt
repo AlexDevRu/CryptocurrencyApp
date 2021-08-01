@@ -29,7 +29,9 @@ class HomeActivity: AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             binding.bottomNavigationView.visibility = when(destination.id) {
-                R.id.signInFragment, R.id.currencyDetailFragment -> View.GONE
+                R.id.signInFragment,
+                R.id.currencyDetailFragment,
+                R.id.webViewFragment -> View.GONE
                 else -> View.VISIBLE
             }
         }
