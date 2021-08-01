@@ -38,6 +38,7 @@ class CurrencyDetailFragment: BaseFragment<FragmentCurrencyDetailBinding>
             currencyImageView.transitionName = "currencyImageView${args.currencyArg.id}"
             currencyTitle.transitionName = "currencyTitle${args.currencyArg.id}"
             currencyPrice.transitionName = "currencyPrice${args.currencyArg.id}"
+            currencyPercentChange1h.transitionName = "percentChange1h${args.currencyArg.id}"
         }
 
         if(savedInstanceState == null) {

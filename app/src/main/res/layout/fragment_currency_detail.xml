@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="@{viewModel.currencyVM.currency.name + ` | ` + viewModel.currencyVM.currency.symbol}"
+                android:text="@{viewModel.currencyVM.titleWithSymbol}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:transitionName="currencyTitle"
@@ -54,7 +54,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="16sp"
-                android:text="@{`$` + viewModel.currencyVM.price}"
+                app:usd="@{viewModel.currencyVM.quoteUSD.price}"
                 tools:text="$3454" />
 
             <androidx.constraintlayout.widget.Barrier
@@ -69,16 +69,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:background="@{viewModel.currencyVM.quoteUSD.percent_change_1h &lt; 0 ? @color/red : @color/green}"
                 android:textColor="@color/white"
                 android:padding="4dp"
                 app:layout_constraintEnd_toEndOf="@id/currencyPrice"
                 app:layout_constraintTop_toBottomOf="@id/currencyPrice"
                 android:textSize="16sp"
-                android:text="@{viewModel.currencyVM.percent_change_1h + `%`}"
-                android:drawableEnd="@{viewModel.currencyVM.quoteUSD.percent_change_1h &lt; 0 ? @drawable/ic_baseline_arrow_drop_down_24 : @drawable/ic_baseline_arrow_drop_up_24}"
+                app:percents="@{viewModel.currencyVM.quoteUSD.percent_change_1h}"
                 tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
-                tools:background="@color/green"
+                tools:background="@drawable/positive_percent_bg"
                 tools:text="0.12%" />
 
             <Button

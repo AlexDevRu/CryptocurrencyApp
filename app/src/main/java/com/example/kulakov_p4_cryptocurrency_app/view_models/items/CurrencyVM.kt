@@ -23,21 +23,8 @@ class CurrencyVM: BaseObservable() {
         get() = currency?.quote?.get("USD")
 
     @get:Bindable
-    val price: String
-        get() = "%.4f".format(quoteUSD!!.price)
-    
-    @get:Bindable
-    val percent_change_1h: String
-        get() = "%.4f".format(quoteUSD!!.percent_change_1h)
-
-    @get:Bindable
-    val percent_change_24h: String
-        get() = "%.4f".format(quoteUSD!!.percent_change_24h)
-
-    @get:Bindable
-    val percent_change_30d: String
-        get() = "%.4f".format(quoteUSD!!.percent_change_30d)
-
+    val titleWithSymbol: String
+        get() = "${currency?.name} | ${currency?.symbol}"
 
     @get:Bindable
     val priceDataList: List<Double>

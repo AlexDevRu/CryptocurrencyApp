@@ -47,12 +47,14 @@ class CurrencyAdapter: PagingDataAdapter<Currency, CurrencyAdapter.CurrencyHolde
                 currencyImageView.transitionName = "currencyImageView${currency.id}"
                 currencyTitle.transitionName = "currencyTitle${currency.id}"
                 currencyPrice.transitionName = "currencyPrice${currency.id}"
+                currencyPercentChange1h.transitionName = "percentChange1h${currency.id}"
                 handler = object: Handler {
                     override fun onItemClick() {
                         val extras = FragmentNavigatorExtras(
                             binding.currencyImageView to currencyImageView.transitionName,
                             binding.currencyTitle to currencyTitle.transitionName,
-                            binding.currencyPrice to currencyPrice.transitionName
+                            binding.currencyPrice to currencyPrice.transitionName,
+                            binding.currencyPercentChange1h to currencyPercentChange1h.transitionName
                         )
                         Navigator.getInstance().mainFragmentNavigator.showCurrencyDetail(viewModel?.currency!!, extras)
                     }
