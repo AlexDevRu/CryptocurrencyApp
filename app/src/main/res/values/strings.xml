@@ -26,4 +26,16 @@
         <item>По возрастанию</item>
         <item>По убыванию</item>
     </string-array>
+
+    <string-array name="graph_labels">
+        <item>90дн</item>
+        <item>60дн</item>
+        <item>30дн</item>
+        <item>7дн</item>
+        <item>24ч</item>
+        <item>1ч</item>
+        <item>сейчас</item>
+    </string-array>
+
+    <string name="no_data">Нет данных</string>
 </resources>

@@ -42,10 +42,10 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:transitionName="currencyTitle"
-                app:layout_constraintEnd_toStartOf="@+id/currencyPrice"
+                app:layout_constraintEnd_toStartOf="@id/barrier"
                 app:layout_constraintStart_toEndOf="@id/currencyImageView"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="sldkfjklsfj" />
+                tools:text="sldkfjklnmnmvbnsfj" />
 
             <TextView
                 android:id="@+id/currencyPrice"
@@ -56,6 +56,13 @@
                 android:textSize="16sp"
                 android:text="@{`$` + viewModel.currencyVM.price}"
                 tools:text="$3454" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="start"
+                app:constraint_referenced_ids="currencyPrice,currencyPercentChange1h" />
 
             <TextView
                 android:id="@+id/currencyPercentChange1h"
@@ -68,13 +75,11 @@
                 app:layout_constraintEnd_toEndOf="@id/currencyPrice"
                 app:layout_constraintTop_toBottomOf="@id/currencyPrice"
                 android:textSize="16sp"
-
-                android:text="@{viewModel.currencyVM.percent_change_1h}"
+                android:text="@{viewModel.currencyVM.percent_change_1h + `%`}"
+                android:drawableEnd="@{viewModel.currencyVM.quoteUSD.percent_change_1h &lt; 0 ? @drawable/ic_baseline_arrow_drop_down_24 : @drawable/ic_baseline_arrow_drop_up_24}"
                 tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
                 tools:background="@color/green"
-                tools:text="0.12" />
-
-            <!-- app:drawableEnd="@{viewModel.currencyVM.quoteUSD.percent_change_1h &lt; 0 ? @drawable/ic_baseline_arrow_drop_down_24 : @drawable/ic_baseline_arrow_drop_up_24}" -->
+                tools:text="0.12%" />
 
             <Button
                 android:id="@+id/buyButton"
@@ -92,10 +97,28 @@
                 android:layout_height="wrap_content"
                 android:visibility="@{viewModel.metadataLoading}"
                 tools:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buyButton" />
+                app:layout_constraintTop_toBottomOf="@+id/marketCapTextView" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:data="@{viewModel.currencyVM.priceDataList}"
+                app:labels="@{@stringArray/graph_labels}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buyButton" />
+
+            <TextView
+                android:id="@+id/marketCapTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@{`Рыночная капитализация: $` + viewModel.currencyVM.quoteUSD.market_cap}"
+                tools:text="Рыночная капитализация: $46567"
+                app:layout_constraintTop_toBottomOf="@id/graph"/>
 
             <TextView
                 android:id="@+id/descriptionHeader"
@@ -106,7 +129,7 @@
                 android:text="Описание"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/buyButton"
+                app:layout_constraintTop_toBottomOf="@id/marketCapTextView"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
@@ -122,10 +145,10 @@
                 android:text="@{viewModel.currencyMetadataVM.description}"
                 tools:text="sdlfjdfjldfgdfgdfgdfgdfgdfgdfgdfgdgfdfgdfgdfgdfgsdfdsfsfsdfdfsdfj" />
 
-            <com.google.android.flexbox.FlexboxLayout
+            <LinearLayout
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="8dp"
-                app:flexWrap="wrap"
+                android:orientation="vertical"
                 android:visibility="@{viewModel.metadataGetSuccessfull}"
                 app:layout_constraintTop_toBottomOf="@id/descriptionBody"
                 android:layout_width="match_parent"
@@ -140,7 +163,7 @@
                     app:icon="@drawable/ic_web"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.websiteUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.websiteUrls != null &amp;&amp; !viewModel.currencyMetadataVM.websiteUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="веб-сайт" />
 
@@ -153,7 +176,7 @@
                     app:icon="@drawable/ic_tech_doc"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.technicalDocUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.technicalDocUrls != null &amp;&amp; !viewModel.currencyMetadataVM.technicalDocUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="тех. документация" />
 
@@ -166,7 +189,7 @@
                     app:icon="@drawable/ic_twitter"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.twitterUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.twitterUrls != null &amp;&amp; !viewModel.currencyMetadataVM.twitterUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="твиттер" />
 
@@ -179,7 +202,7 @@
                     app:icon="@drawable/ic_reddit"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.redditUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.redditUrls != null &amp;&amp; !viewModel.currencyMetadataVM.redditUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="реддит" />
 
@@ -192,7 +215,7 @@
                     app:icon="@drawable/ic_message_board"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.messageBoardUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.messageBoardUrls != null &amp;&amp; !viewModel.currencyMetadataVM.messageBoardUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="доска сообщений" />
 
@@ -205,7 +228,7 @@
                     app:icon="@drawable/ic_announcement"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.announcementUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.announcementUrls != null &amp;&amp; !viewModel.currencyMetadataVM.announcementUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="аннонсмент" />
 
@@ -218,7 +241,7 @@
                     app:icon="@drawable/ic_chat"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.chatUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.chatUrls != null &amp;&amp; !viewModel.currencyMetadataVM.chatUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="чат" />
 
@@ -231,7 +254,7 @@
                     app:icon="@drawable/ic_explorer"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.explorerUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.explorerUrls != null &amp;&amp; !viewModel.currencyMetadataVM.explorerUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="проводник" />
 
@@ -244,11 +267,11 @@
                     app:icon="@drawable/ic_code"
                     android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.sourceCodeUrls)}"
                     android:visibility="@{viewModel.currencyMetadataVM.sourceCodeUrls != null &amp;&amp; !viewModel.currencyMetadataVM.sourceCodeUrls.empty}"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="исходный код" />
 
-            </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
 
             <include
                 layout="@layout/item_error"

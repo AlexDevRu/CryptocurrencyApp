@@ -37,4 +37,22 @@ class CurrencyVM: BaseObservable() {
     @get:Bindable
     val percent_change_30d: String
         get() = "%.4f".format(quoteUSD!!.percent_change_30d)
+
+
+    @get:Bindable
+    val priceDataList: List<Double>
+        get() {
+            if(quoteUSD == null) return emptyList()
+            return listOf(
+                calculatePrice(quoteUSD!!.percent_change_90d),
+                calculatePrice(quoteUSD!!.percent_change_60d),
+                calculatePrice(quoteUSD!!.percent_change_30d),
+                calculatePrice(quoteUSD!!.percent_change_7d),
+                calculatePrice(quoteUSD!!.percent_change_24h),
+                calculatePrice(quoteUSD!!.percent_change_1h),
+                quoteUSD!!.price
+            )
+        }
+
+    private fun calculatePrice(percent: Double) = quoteUSD!!.price * (1 + percent / 100)
 }
