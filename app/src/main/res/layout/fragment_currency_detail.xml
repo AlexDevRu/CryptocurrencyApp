@@ -118,156 +118,234 @@
                 tools:text="Рыночная капитализация: $46567"
                 app:layout_constraintTop_toBottomOf="@id/graph"/>
 
-            <TextView
-                android:id="@+id/descriptionHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+            <LinearLayout
+                android:id="@+id/description"
+                app:layout_constraintTop_toBottomOf="@id/marketCapTextView"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="20dp"
                 android:visibility="@{viewModel.metadataGetSuccessfull}"
-                android:text="Описание"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/marketCapTextView"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/descriptionBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:visibility="@{viewModel.metadataGetSuccessfull}"
-                android:textSize="16sp"
-                android:lineSpacingMultiplier="1.3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/descriptionHeader"
-                android:text="@{viewModel.currencyMetadataVM.description}"
-                tools:text="sdlfjdfjldfgdfgdfgdfgdfgdfgdfgdfgdgfdfgdfgdfgdfgsdfdsfsfsdfdfsdfj" />
+                android:orientation="vertical">
+
+                <com.github.florent37.expansionpanel.ExpansionHeader
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    app:expansion_headerIndicator="@id/descriptionHeaderIndicator"
+                    app:expansion_layout="@id/descriptionLayout"
+                    app:expansion_toggleOnClick="true">
+
+                    <TextView
+                        android:id="@+id/descriptionHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Описание"
+                        android:autoLink="all"
+                        android:linksClickable="true"
+                        android:textColorLink="@color/blue"
+                        android:textStyle="bold"
+                        android:textSize="20sp" />
+
+                    <!-- HEADER INDICATOR -->
+                    <ImageView
+                        android:adjustViewBounds="true"
+                        android:id="@+id/descriptionHeaderIndicator"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_width="wrap_content"
+                        app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+                </com.github.florent37.expansionpanel.ExpansionHeader>
+
+                <com.github.florent37.expansionpanel.ExpansionLayout
+                    android:id="@+id/descriptionLayout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent">
+
+                    <TextView
+                        android:id="@+id/descriptionBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:visibility="@{viewModel.metadataGetSuccessfull}"
+                        android:textSize="16sp"
+                        android:lineSpacingMultiplier="1.3"
+                        android:text="@{viewModel.currencyMetadataVM.description}"
+                        tools:text="sdlfjdfjldfgdfgdfgdfgdfgdfgdfgdfgdgfdfgdfgdfgdfgsdfdsfsfsdfdfsdfj" />
+
+                </com.github.florent37.expansionpanel.ExpansionLayout>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 android:visibility="@{viewModel.metadataGetSuccessfull}"
-                app:layout_constraintTop_toBottomOf="@id/descriptionBody"
+                app:layout_constraintTop_toBottomOf="@id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/websiteButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/purple_700"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/purple_700"
-                    app:icon="@drawable/ic_web"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.websiteUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.websiteUrls != null &amp;&amp; !viewModel.currencyMetadataVM.websiteUrls.empty}"
-                    android:layout_width="match_parent"
+                <com.github.florent37.expansionpanel.ExpansionHeader
                     android:layout_height="wrap_content"
-                    android:text="веб-сайт" />
+                    android:layout_width="match_parent"
+                    app:expansion_headerIndicator="@id/linksHeaderIndicator"
+                    app:expansion_layout="@id/linksLayout"
+                    app:expansion_toggleOnClick="true">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/techDocButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/green"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/green"
-                    app:icon="@drawable/ic_tech_doc"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.technicalDocUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.technicalDocUrls != null &amp;&amp; !viewModel.currencyMetadataVM.technicalDocUrls.empty}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="тех. документация" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:text="Ссылки"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/twitterButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/blue"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/blue"
-                    app:icon="@drawable/ic_twitter"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.twitterUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.twitterUrls != null &amp;&amp; !viewModel.currencyMetadataVM.twitterUrls.empty}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="твиттер" />
+                    <!-- HEADER INDICATOR -->
+                    <ImageView
+                        android:adjustViewBounds="true"
+                        android:id="@+id/linksHeaderIndicator"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_width="wrap_content"
+                        app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/redditButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/red"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/red"
-                    app:icon="@drawable/ic_reddit"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.redditUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.redditUrls != null &amp;&amp; !viewModel.currencyMetadataVM.redditUrls.empty}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="реддит" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/messageBoardButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/light_green"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/light_green"
-                    app:icon="@drawable/ic_message_board"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.messageBoardUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.messageBoardUrls != null &amp;&amp; !viewModel.currencyMetadataVM.messageBoardUrls.empty}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="доска сообщений" />
+                </com.github.florent37.expansionpanel.ExpansionHeader>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/announcementButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/orange"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/orange"
-                    app:icon="@drawable/ic_announcement"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.announcementUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.announcementUrls != null &amp;&amp; !viewModel.currencyMetadataVM.announcementUrls.empty}"
-                    android:layout_width="match_parent"
+                <com.github.florent37.expansionpanel.ExpansionLayout
+                    android:id="@+id/linksLayout"
                     android:layout_height="wrap_content"
-                    android:text="аннонсмент" />
+                    android:layout_width="match_parent">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/chatButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/teal_700"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/teal_700"
-                    app:icon="@drawable/ic_chat"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.chatUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.chatUrls != null &amp;&amp; !viewModel.currencyMetadataVM.chatUrls.empty}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="чат" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/explorerButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/pink"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/pink"
-                    app:icon="@drawable/ic_explorer"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.explorerUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.explorerUrls != null &amp;&amp; !viewModel.currencyMetadataVM.explorerUrls.empty}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="проводник" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/websiteButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/purple_700"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/purple_700"
+                            app:icon="@drawable/ic_web"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.websiteUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.websiteUrls != null &amp;&amp; !viewModel.currencyMetadataVM.websiteUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="веб-сайт" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/sourceCodeButton"
-                    style="@style/currencyDetailLinkStyle"
-                    android:textColor="@color/black"
-                    android:layout_margin="4dp"
-                    app:strokeColor="@color/black"
-                    app:icon="@drawable/ic_code"
-                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.sourceCodeUrls)}"
-                    android:visibility="@{viewModel.currencyMetadataVM.sourceCodeUrls != null &amp;&amp; !viewModel.currencyMetadataVM.sourceCodeUrls.empty}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="исходный код" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/techDocButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/green"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/green"
+                            app:icon="@drawable/ic_tech_doc"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.technicalDocUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.technicalDocUrls != null &amp;&amp; !viewModel.currencyMetadataVM.technicalDocUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="тех. документация" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/twitterButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/blue"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/blue"
+                            app:icon="@drawable/ic_twitter"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.twitterUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.twitterUrls != null &amp;&amp; !viewModel.currencyMetadataVM.twitterUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="твиттер" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/redditButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/red"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/red"
+                            app:icon="@drawable/ic_reddit"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.redditUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.redditUrls != null &amp;&amp; !viewModel.currencyMetadataVM.redditUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="реддит" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/messageBoardButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/light_green"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/light_green"
+                            app:icon="@drawable/ic_message_board"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.messageBoardUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.messageBoardUrls != null &amp;&amp; !viewModel.currencyMetadataVM.messageBoardUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="доска сообщений" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/announcementButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/orange"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/orange"
+                            app:icon="@drawable/ic_announcement"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.announcementUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.announcementUrls != null &amp;&amp; !viewModel.currencyMetadataVM.announcementUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="аннонсмент" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chatButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/teal_700"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/teal_700"
+                            app:icon="@drawable/ic_chat"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.chatUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.chatUrls != null &amp;&amp; !viewModel.currencyMetadataVM.chatUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="чат" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/explorerButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/pink"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/pink"
+                            app:icon="@drawable/ic_explorer"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.explorerUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.explorerUrls != null &amp;&amp; !viewModel.currencyMetadataVM.explorerUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="проводник" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/sourceCodeButton"
+                            style="@style/currencyDetailLinkStyle"
+                            android:textColor="@color/black"
+                            android:layout_margin="4dp"
+                            app:strokeColor="@color/black"
+                            app:icon="@drawable/ic_code"
+                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.sourceCodeUrls)}"
+                            android:visibility="@{viewModel.currencyMetadataVM.sourceCodeUrls != null &amp;&amp; !viewModel.currencyMetadataVM.sourceCodeUrls.empty}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="исходный код" />
+
+                    </LinearLayout>
+
+                </com.github.florent37.expansionpanel.ExpansionLayout>
 
             </LinearLayout>
 
