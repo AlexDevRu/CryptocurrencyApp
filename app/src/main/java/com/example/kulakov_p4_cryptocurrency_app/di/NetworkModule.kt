@@ -1,7 +1,8 @@
 package com.example.kulakov_p4_cryptocurrency_app.di
 
-import com.example.data.api.ApiConstants.BASE_URL
+import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
+import com.example.data.api.NewsApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,11 +14,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Provides
-    fun providesRetrofit() = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    fun providesCoinMarketCapService() =
+        Retrofit.Builder()
+            .baseUrl(ApiConstants.COIN_MARKET_CAP_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(CoinMarketCapService::class.java)
 
     @Provides
-    fun providesService(retrofit: Retrofit) = retrofit.create(CoinMarketCapService::class.java)
+    fun providesNewsService() =
+        Retrofit.Builder()
+            .baseUrl(ApiConstants.NEWS_API_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(NewsApiService::class.java)
 }

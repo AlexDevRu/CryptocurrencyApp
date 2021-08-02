@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kulakov_p4_cryptocurrency_app.view_models.NewsVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/search_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:query="@{viewModel.searchQuery}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/newsSwipeList"
+            app:onRefresh="@{() -> viewModel.retry()}"
+            android:visibility="@{!viewModel.loading}"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/newsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/loading"
+            layout="@layout/item_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:inProgress="@{viewModel.loading}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            tools:visibility="visible" />
+
+        <!--<include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/item_error"
+            app:layout_constraintBottom_toBottomOf="@id/newsSwipeList"
+            app:layout_constraintEnd_toEndOf="@id/newsSwipeList"
+            app:layout_constraintStart_toStartOf="@id/newsSwipeList"
+            app:layout_constraintTop_toTopOf="@id/newsSwipeList"
+            tools:visibility="gone"
+            app:message="@{viewModel.error}"
+            app:onRetryClick="@{() -> viewModel.retry()}"/>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+</layout>

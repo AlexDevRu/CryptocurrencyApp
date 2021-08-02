@@ -17,8 +17,8 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
 
     override fun getRefreshKey(state: PagingState<Int, Currency>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(ApiConstants.PER_PAGE)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(ApiConstants.PER_PAGE)
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(ApiConstants.CURRENCY_PER_PAGE)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(ApiConstants.CURRENCY_PER_PAGE)
         }
     }
 
@@ -27,7 +27,7 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
 
         return try {
             val currencyResult = service.getCurrencies(
-                ApiConstants.PER_PAGE,
+                ApiConstants.CURRENCY_PER_PAGE,
                 position,
                 parameters.type,
                 parameters.tag,

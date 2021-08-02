@@ -4,4 +4,8 @@
         android:id="@+id/mainFragment"
         android:title="Главная"
         android:icon="@drawable/ic_baseline_attach_money_24"/>
+    <item
+        android:id="@+id/newsFragment"
+        android:title="Новости"
+        android:icon="@drawable/ic_news"/>
 </menu>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/newsFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -56,5 +56,17 @@
             android:name="url"
             app:argType="string" />
     </fragment>
-
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.NewsFragment"
+        android:label="NewsFragment"
+        tools:layout="@layout/fragment_news">
+        <action
+            android:id="@+id/action_newsFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment">
+            <argument
+                android:name="url"
+                app:argType="string" />
+        </action>
+    </fragment>
 </navigation>

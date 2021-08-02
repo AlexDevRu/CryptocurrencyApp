@@ -2,8 +2,10 @@ package com.example.kulakov_p4_cryptocurrency_app.di
 
 import com.example.domain.repositories.local.IPreferncesStorage
 import com.example.domain.repositories.remote.ICoinMarketCapRespository
+import com.example.domain.repositories.remote.INewsApiRepository
 import com.example.domain.use_cases.GetCurrenciesUseCase
 import com.example.domain.use_cases.GetCurrencyInfoUseCase
+import com.example.domain.use_cases.GetNewsUseCase
 import com.example.domain.use_cases.preferences.GetSignInStatusUseCase
 import com.example.domain.use_cases.preferences.SaveSignInStatusUseCase
 import dagger.Module
@@ -29,4 +31,8 @@ object UseCaseModule {
     @Provides
     fun providesGetCurrencyInfoUseCase(repository: ICoinMarketCapRespository)
             = GetCurrencyInfoUseCase(repository)
+
+    @Provides
+    fun providesGetNewsUseCase(repository: INewsApiRepository)
+            = GetNewsUseCase(repository)
 }

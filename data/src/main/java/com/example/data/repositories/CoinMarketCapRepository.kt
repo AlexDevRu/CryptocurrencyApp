@@ -21,7 +21,7 @@ class CoinMarketCapRepository @Inject constructor(
     override suspend fun getAllCurrencies(parameters: CurrencyParameters): CurrencyFlow {
         return Pager(
             config = PagingConfig(
-                pageSize = ApiConstants.PER_PAGE,
+                pageSize = ApiConstants.CURRENCY_PER_PAGE,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = {

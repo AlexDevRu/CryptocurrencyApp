@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="kotlin.jvm.functions.Function0" />
+
+        <variable
+            name="article"
+            type="com.example.domain.models.news.Article" />
+
+        <variable
+            name="onClick"
+            type="Function0&lt;kotlin.Unit>" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:onClick="@{() -> onClick.invoke()}"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_margin="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/articleImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:srcUrl="@{article.urlToImage}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/articleTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@{article.title}"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/articleImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Ariana Grande is headlining Fortnite’s next concert series" />
+
+            <TextView
+                android:id="@+id/published"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="12sp"
+                android:textColor="@color/gray"
+                app:date="@{article.published}"
+                tools:text="27 февраля 2021"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier" />
+
+            <TextView
+                android:id="@+id/source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@{article.sourceName}"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier"
+                tools:text="The Verge" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@{article.description}"
+                app:layout_constraintEnd_toEndOf="@id/articleTitle"
+                app:layout_constraintStart_toStartOf="@id/articleTitle"
+                app:layout_constraintTop_toBottomOf="@id/articleTitle"
+                tools:text="Pop superstar Ariana Grande will be headlining Fortnite’s in-game Rift Tour concert series, Epic Games announced Monday. Fortnite’s previous concerts with Marshmello and Travis Scott were smash hits." />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="articleImage,articleTitle,description" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
+
