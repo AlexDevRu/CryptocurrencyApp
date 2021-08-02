@@ -39,7 +39,10 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
                 parameters.sortDir
             ).data
 
-            val currencyList = CurrencyResponseMapper.toModel(currencyResult)
+            val query = parameters.searchQuery.lowercase()
+            val currencyList = CurrencyResponseMapper.toModel(currencyResult).filter {
+                it.name!!.lowercase().contains(query)
+            }
 
             val nextKey = if (currencyList.isNullOrEmpty()) {
                 null

@@ -8,5 +8,6 @@ data class CurrencyParameters(
     var marketCapMin: Float = 0f,
     var marketCapMax: Float = 0f,
     var sortType: String = "",
-    var sortDir: String = ""
+    var sortDir: String = "",
+    var searchQuery: String = ""
 )

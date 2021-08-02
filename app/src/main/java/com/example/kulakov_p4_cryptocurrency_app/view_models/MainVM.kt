@@ -11,12 +11,19 @@ import com.example.domain.use_cases.GetCurrenciesUseCase
 import com.example.kulakov_p4_cryptocurrency_app.events.SingleLiveEvent
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.subjects.BehaviorSubject
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class MainVM @Inject constructor(
     private val getCurrenciesUseCase: GetCurrenciesUseCase
 ): BaseVM() {
+
+    val compositeDisposable = CompositeDisposable()
+
+    val searchQuery = BehaviorSubject.createDefault("")
 
     val error = ObservableField<String>()
     val loading = ObservableBoolean(false)
@@ -29,6 +36,17 @@ class MainVM @Inject constructor(
 
     private val _setCurrencies = MutableLiveData(true)
     val setCurrencies: LiveData<Boolean> = _setCurrencies
+
+    init {
+        compositeDisposable.add(searchQuery
+            .filter { it != sortFilterVM.parameters.searchQuery }
+            .debounce(1500, TimeUnit.MILLISECONDS)
+            .subscribe {
+                sortFilterVM.parameters.searchQuery = it
+                retry()
+            }
+        )
+    }
 
     fun retry() {
         currentResult = null
@@ -52,5 +70,6 @@ class MainVM @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         sortFilterVM.compositeDisposable.dispose()
+        compositeDisposable.dispose()
     }
 }

@@ -17,27 +17,31 @@
         android:layout_height="match_parent"
         app:layoutDescription="@xml/fragment_main_xml_constraintlayout_scene">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/search_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:query="@{viewModel.searchQuery}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/currencySwipeList"
             app:onRefresh="@{() -> viewModel.retry()}"
             android:visibility="@{!viewModel.loading}"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/currencyList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
 
         <include
             android:id="@+id/loading"
@@ -71,7 +75,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent"
             app:viewModel="@{viewModel.sortFilterVM}" />
-
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
