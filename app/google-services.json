@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "805737435131",
+    "project_id": "cryptocurrencyap-1627384150494",
+    "storage_bucket": "cryptocurrencyap-1627384150494.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805737435131:android:dc2b15cd6bbfbac4fe455e",
+        "android_client_info": {
+          "package_name": "com.example.kulakov_p4_cryptocurrency_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805737435131-mhcmgqd7k7aellofd28rdcnn4t018prj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kulakov_p4_cryptocurrency_app",
+            "certificate_hash": "4d7dc42524a169d1be3f35f04b4e3a9f1f3e6e61"
+          }
+        },
+        {
+          "client_id": "805737435131-3vnodsh7fkeeduum2oon49s8b8pk2b0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqa58uiI3GL9MawION4OJzzLb7SlBO7ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805737435131-3vnodsh7fkeeduum2oon49s8b8pk2b0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

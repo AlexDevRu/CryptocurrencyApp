@@ -17,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.lang.RuntimeException
 
 @AndroidEntryPoint
 class MainFragment: BaseFragment<FragmentMainBinding>

@@ -9,6 +9,9 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'dagger.hilt.android.plugin'
 
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
@@ -79,6 +82,11 @@ dependencies {
 
 
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
+
+    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
