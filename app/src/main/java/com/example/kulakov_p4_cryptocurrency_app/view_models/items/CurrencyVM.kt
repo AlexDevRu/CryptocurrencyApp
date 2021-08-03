@@ -41,5 +41,5 @@ class CurrencyVM: BaseObservable() {
             )
         }
 
-    private fun calculatePrice(percent: Double) = quoteUSD!!.price * (1 + percent / 100)
+    private fun calculatePrice(percent: Double) = quoteUSD!!.price * (1 - percent / 100)
 }
