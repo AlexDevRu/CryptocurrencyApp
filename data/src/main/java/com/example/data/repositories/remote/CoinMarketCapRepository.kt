@@ -1,10 +1,13 @@
-package com.example.data.repositories
+package com.example.data.repositories.remote
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
+import com.example.data.api.remote_mediators.CoinMarketCapRemoteMediator
 import com.example.data.api.sources.CurrencyPageSource
+import com.example.data.database.CurrencyDatabase
 import com.example.data.mappers.CurrencyMetadataMapper
 import com.example.domain.aliases.CurrencyFlow
 import com.example.domain.common.Result
@@ -17,12 +20,20 @@ import javax.inject.Inject
 
 class CoinMarketCapRepository @Inject constructor(
     private val service: CoinMarketCapService,
+    private val currencyDatabase: CurrencyDatabase
 ): ICoinMarketCapRespository {
+
+    @ExperimentalPagingApi
     override suspend fun getAllCurrencies(parameters: CurrencyParameters): CurrencyFlow {
         return Pager(
             config = PagingConfig(
                 pageSize = ApiConstants.CURRENCY_PER_PAGE,
                 enablePlaceholders = false
+            ),
+            remoteMediator = CoinMarketCapRemoteMediator(
+                parameters,
+                service,
+                currencyDatabase
             ),
             pagingSourceFactory = {
                 CurrencyPageSource(service, parameters)

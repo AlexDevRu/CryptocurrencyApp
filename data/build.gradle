@@ -38,9 +38,9 @@ dependencies {
     implementation project(path: ':domain')
 
     def paging_version = "3.0.1"
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
     // alternatively - without Android dependencies for tests
-    testImplementation "androidx.paging:paging-common:$paging_version"
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
 
     def retrofit_version = "2.6.1"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -65,7 +65,7 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
 
 
-    def room_version = "2.3.0"
+    def room_version = "2.4.0-alpha04"
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"

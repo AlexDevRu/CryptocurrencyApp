@@ -17,7 +17,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.lang.RuntimeException
 
 @AndroidEntryPoint
 class MainFragment: BaseFragment<FragmentMainBinding>
@@ -34,26 +33,35 @@ class MainFragment: BaseFragment<FragmentMainBinding>
 
         binding.viewModel = viewModel
 
-        adapter.addLoadStateListener { state ->
-            viewModel.loading.set(state.refresh == LoadState.Loading)
+        val header = CurrencyLoadStateAdapter { adapter.retry() }
+        val footer = CurrencyLoadStateAdapter { adapter.retry() }
 
-            if(state.refresh is LoadState.Error) {
-                Log.e("asd", "error ${(state.refresh as LoadState.Error).error.localizedMessage}")
-                val exception = (state.refresh as LoadState.Error).error
-                val error = when(exception) {
-                    is HttpException -> exception.message()
-                    else -> exception.localizedMessage.orEmpty()
+        adapter.addLoadStateListener { state ->
+            viewModel.loading.set(state.mediator?.refresh is LoadState.Loading)
+            val isListEmpty = state.refresh is LoadState.NotLoading && adapter.itemCount == 0
+            viewModel.isResultEmpty.set(isListEmpty)
+
+            header.loadState = state.mediator
+                ?.refresh
+                ?.takeIf { it is LoadState.Error && adapter.itemCount > 0 }
+                ?: state.prepend
+
+
+            val errorState = state.source.append as? LoadState.Error
+                ?: state.source.prepend as? LoadState.Error
+                ?: state.append as? LoadState.Error
+                ?: state.prepend as? LoadState.Error
+            errorState?.let {
+                Log.e("asd", "error ${it.error.localizedMessage}")
+                val error = when(it.error) {
+                    is HttpException -> (it.error as HttpException).message()
+                    else -> it.error.localizedMessage.orEmpty()
                 }
                 viewModel.error.set(error)
-            } else {
-                viewModel.error.set(null)
             }
         }
 
-        binding.currencyList.adapter = adapter.withLoadStateHeaderAndFooter(
-            CurrencyLoadStateAdapter { adapter.retry() },
-            CurrencyLoadStateAdapter { adapter.retry() }
-        )
+        binding.currencyList.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
 
         binding.currencyList.apply {
             postponeEnterTransition()
@@ -65,15 +73,6 @@ class MainFragment: BaseFragment<FragmentMainBinding>
         }
 
         observe()
-
-        /*ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.currency_types,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.typesAdapter = adapter
-        }*/
     }
 
     private fun observe() {

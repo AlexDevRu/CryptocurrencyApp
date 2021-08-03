@@ -31,6 +31,7 @@ class NewsVM @Inject constructor(
 
     val error = ObservableField<String>()
     val loading = ObservableBoolean(false)
+    val isResultEmpty = ObservableBoolean(false)
 
     val scrollListToPosition = SingleLiveEvent<Int>()
 
