@@ -3,6 +3,7 @@ package com.example.data.database.entities
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "quotes", foreignKeys = [ForeignKey(
     entity = CurrencyEntity::class,
@@ -11,7 +12,8 @@ import androidx.room.PrimaryKey
     onDelete = ForeignKey.CASCADE
 )])
 data class QuoteItemEntity(
-    @PrimaryKey var id: String,
+    @PrimaryKey var id: UUID = UUID.randomUUID(),
+    var key: String,
     var last_updated: String,
     var market_cap: Double,
     var percent_change_1h: Double,

@@ -27,7 +27,7 @@ object QuoteItemMapper: IMapper<List<QuoteItemEntity>, Map<String, QuoteItem>> {
 
         for(quote in model.entries) {
             val entity = QuoteItemEntity(
-                id = quote.key,
+                key = quote.key,
                 last_updated = quote.value.last_updated,
                 market_cap = quote.value.market_cap,
                 percent_change_1h = quote.value.percent_change_1h,

@@ -1,5 +1,6 @@
 package com.example.data.api.remote_mediators
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -8,9 +9,9 @@ import androidx.room.withTransaction
 import com.example.data.api.ApiConstants
 import com.example.data.api.NewsApiService
 import com.example.data.database.CurrencyDatabase
+import com.example.data.database.entities.ArticleEntity
 import com.example.data.database.entities.ArticleRemoteKeys
 import com.example.data.mappers.ArticleResponseMapper
-import com.example.domain.models.news.Article
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.*
@@ -20,9 +21,9 @@ class NewsApiRemoteMediator(
     private val query: String,
     private val service: NewsApiService,
     private val currencyDatabase: CurrencyDatabase
-) : RemoteMediator<Int, Article>() {
+) : RemoteMediator<Int, ArticleEntity>() {
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Article>): ArticleRemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, ArticleEntity>): ArticleRemoteKeys? {
         // Get the last page that was retrieved, that contained items.
         // From that last page, get the last item
         return state.pages.lastOrNull() { it.data.isNotEmpty() }?.data?.lastOrNull()
@@ -32,7 +33,7 @@ class NewsApiRemoteMediator(
             }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Article>): ArticleRemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, ArticleEntity>): ArticleRemoteKeys? {
         // Get the first page that was retrieved, that contained items.
         // From that first page, get the first item
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
@@ -43,7 +44,7 @@ class NewsApiRemoteMediator(
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, Article>
+        state: PagingState<Int, ArticleEntity>
     ): ArticleRemoteKeys? {
         // The paging library is trying to load data after the anchor position
         // Get the item closest to the anchor position
@@ -56,7 +57,7 @@ class NewsApiRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Article>
+        state: PagingState<Int, ArticleEntity>
     ): MediatorResult {
         val page = when (loadType) {
             LoadType.REFRESH -> {
@@ -88,6 +89,8 @@ class NewsApiRemoteMediator(
                 ApiConstants.NEWS_PER_PAGE
             ).articles
 
+            Log.d("asd", "news api ${page}")
+
             val endOfPaginationReached = articles.isEmpty()
 
             currencyDatabase.withTransaction {
@@ -98,11 +101,18 @@ class NewsApiRemoteMediator(
                 }
                 val prevKey = if (page == ApiConstants.STARTING_PAGE_INDEX) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = articles.map {
-                    ArticleRemoteKeys(articleId = UUID.randomUUID(), prevKey = prevKey, nextKey = nextKey)
+                Log.d("asd", "nextKey $nextKey, prevKey $prevKey")
+
+                val dbEntities = ArticleResponseMapper.toEntity(articles)
+                for(a in dbEntities)
+                    a.id = UUID.randomUUID()
+
+                val keys = dbEntities.map {
+                    ArticleRemoteKeys(articleId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
+
                 currencyDatabase.articleRemoteKeysDao().insertAll(keys)
-                currencyDatabase.articleDao().insertAll(ArticleResponseMapper.toEntity(articles))
+                currencyDatabase.articleDao().insertAll(dbEntities)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: IOException) {

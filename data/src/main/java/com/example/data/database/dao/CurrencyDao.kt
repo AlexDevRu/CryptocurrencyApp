@@ -14,15 +14,30 @@ interface CurrencyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun _insertQuotes(quotes: List<QuoteItemEntity>)
 
-    @Query("SELECT * from currencies")
-    fun getCurrencies(): PagingSource<Int, CurrencyWithQuotes>
+    @Query("""
+        SELECT * from currencies, quotes where 
+        name like :query and 
+        currencyId=currencies.id and 
+        (price between :priceMin and :priceMax) and
+        (market_cap between :marketCapMin and :marketCapMax)""")
+    fun getCurrencies(
+        query: String,
+        priceMin: Float, priceMax: Float,
+        marketCapMin: Float, marketCapMax: Float
+    ): PagingSource<Int, CurrencyWithQuotes>
 
-    @Transaction
-    suspend fun insertAll(currency: CurrencyEntity, quotes: List<QuoteItemEntity>) {
-        _insertCurrency(currency)
-        for(quote in quotes)
-            quote.currencyId = currency.id
-        _insertQuotes(quotes)
+
+    @Query("SELECT * from currencies where id=:id")
+    suspend fun getCurrencyById(id: Int): CurrencyWithQuotes?
+
+
+    suspend fun insertAll(currencies: List<CurrencyWithQuotes>) {
+        for(curr in currencies) {
+            _insertCurrency(curr.currency)
+            for(quote in curr.quotes)
+                quote.currencyId = curr.currency.id
+            _insertQuotes(curr.quotes)
+        }
     }
 
     @Query("DELETE FROM currencies")

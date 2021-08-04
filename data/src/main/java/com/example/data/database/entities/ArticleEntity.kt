@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity(tableName = "articles")
 data class ArticleEntity(
-    @PrimaryKey val id: UUID = UUID.randomUUID(),
+    @PrimaryKey var id: UUID = UUID.randomUUID(),
     val sourceName: String,
     val title: String,
     val description: String,

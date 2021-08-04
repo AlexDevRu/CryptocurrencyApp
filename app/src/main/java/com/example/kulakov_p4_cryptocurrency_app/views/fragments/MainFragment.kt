@@ -37,7 +37,6 @@ class MainFragment: BaseFragment<FragmentMainBinding>
         val footer = CurrencyLoadStateAdapter { adapter.retry() }
 
         adapter.addLoadStateListener { state ->
-            viewModel.loading.set(state.mediator?.refresh is LoadState.Loading)
             val isListEmpty = state.refresh is LoadState.NotLoading && adapter.itemCount == 0
             viewModel.isResultEmpty.set(isListEmpty)
 
@@ -46,6 +45,8 @@ class MainFragment: BaseFragment<FragmentMainBinding>
                 ?.takeIf { it is LoadState.Error && adapter.itemCount > 0 }
                 ?: state.prepend
 
+            viewModel.listIsShown.set(state.source.refresh is LoadState.NotLoading || state.mediator?.refresh is LoadState.NotLoading)
+            viewModel.loading.set(state.source.refresh is LoadState.Loading && !viewModel.listIsShown.get())
 
             val errorState = state.source.append as? LoadState.Error
                 ?: state.source.prepend as? LoadState.Error

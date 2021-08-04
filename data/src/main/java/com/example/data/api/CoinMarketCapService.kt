@@ -12,15 +12,14 @@ interface CoinMarketCapService {
     suspend fun getCurrencies(
         @Query("limit") limit: Int,
         @Query("start") start: Int,
-        @Query("cryptocurrency_type") type: String,
-        @Query("tag") tag: String,
-        @Query("price_min") priceMin: Float,
+        @Query("cryptocurrency_type") type: String = "all",
+        @Query("tag") tag: String = "all",
+        /*@Query("price_min") priceMin: Float,
         @Query("price_max") priceMax: Float,
         @Query("market_cap_min") marketCapMin: Float,
         @Query("market_cap_max") marketCapMax: Float,
         @Query("sort") sort: String,
-        @Query("sort_dir") sortDir: String,
-        @Query("convert") convert: String = "USD"
+        @Query("sort_dir") sortDir: String*/
     ): ListingCurrencyResponse
 
 

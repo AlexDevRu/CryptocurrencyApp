@@ -5,13 +5,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import com.example.data.api.ApiConstants
 import com.example.data.api.NewsApiService
-import com.example.data.api.remote_mediators.CoinMarketCapRemoteMediator
 import com.example.data.api.remote_mediators.NewsApiRemoteMediator
-import com.example.data.api.sources.NewsPageSource
 import com.example.data.database.CurrencyDatabase
 import com.example.domain.aliases.ArticleFlow
 import com.example.domain.repositories.remote.INewsApiRepository
 import javax.inject.Inject
+import androidx.paging.map
+import com.example.data.mappers.ArticleMapper
+import kotlinx.coroutines.flow.map
 
 class NewsApiRepository @Inject constructor(
     private val service: NewsApiService,
@@ -20,10 +21,12 @@ class NewsApiRepository @Inject constructor(
 
     @ExperimentalPagingApi
     override suspend fun getNews(query: String): ArticleFlow {
+        val dbQuery = "%${query.replace(' ', '%')}%"
         return Pager(
             config = PagingConfig(
                 pageSize = ApiConstants.NEWS_PER_PAGE,
-                enablePlaceholders = false
+                enablePlaceholders = false,
+                prefetchDistance = 8
             ),
             remoteMediator = NewsApiRemoteMediator(
                 query,
@@ -31,8 +34,12 @@ class NewsApiRepository @Inject constructor(
                 currencyDatabase
             ),
             pagingSourceFactory = {
-                NewsPageSource(service, query)
+                currencyDatabase.articleDao().getArticlesByQuery(dbQuery)
             }
-        ).flow
+        ).flow.map { pagingData ->
+            pagingData.map {
+                ArticleMapper.toModel(it)
+            }
+        }
     }
 }
