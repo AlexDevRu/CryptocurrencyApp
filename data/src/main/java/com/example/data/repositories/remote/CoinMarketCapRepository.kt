@@ -8,6 +8,7 @@ import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
 import com.example.data.api.remote_mediators.CoinMarketCapRemoteMediator
 import com.example.data.database.CurrencyDatabase
+import com.example.data.mappers.CurrencyEntityMapper
 import com.example.data.mappers.CurrencyMetadataMapper
 import com.example.data.mappers.CurrencyResponseMapper
 import com.example.data.mappers.CurrencyWithQuotesMapper
@@ -69,15 +70,19 @@ class CoinMarketCapRepository @Inject constructor(
     }
 
     override suspend fun getLatestCurrencyUseCase(): Result<Currency> {
-        return try {
+        try {
+            val currencyInDb = currencyDatabase.currencyDao().getLatestCurrency()
+            if(currencyInDb != null)
+                return Result.Success(CurrencyWithQuotesMapper.toModel(currencyInDb))
+
             val response = service.getCurrencies(1, 1)
-            Result.Success(CurrencyResponseMapper.toModel(response.data.first()))
+            return Result.Success(CurrencyResponseMapper.toModel(response.data.first()))
         } catch (exception: IOException) {
-            Result.Failure(exception)
+            return Result.Failure(exception)
         } catch (exception: HttpException) {
-            Result.Failure(exception)
+            return Result.Failure(exception)
         } catch (exception: Exception) {
-            Result.Failure(exception)
+            return Result.Failure(exception)
         }
     }
 }

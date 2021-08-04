@@ -27,8 +27,8 @@ interface CurrencyDao {
     ): PagingSource<Int, CurrencyWithQuotes>
 
 
-    @Query("SELECT * from currencies where id=:id")
-    suspend fun getCurrencyById(id: Int): CurrencyWithQuotes?
+    @Query("SELECT * from currencies order by last_updated desc limit 1")
+    suspend fun getLatestCurrency(): CurrencyWithQuotes?
 
 
     suspend fun insertAll(currencies: List<CurrencyWithQuotes>) {

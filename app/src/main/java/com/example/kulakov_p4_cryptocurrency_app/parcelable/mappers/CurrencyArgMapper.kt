@@ -10,6 +10,7 @@ object CurrencyArgMapper: IMapper<CurrencyArg, Currency> {
             entity.id,
             entity.name,
             entity.symbol,
+            entity.last_updated,
             entity.quote.mapValues { entry -> QuoteItemMapper.toModel(entry.value) }
         )
     }
@@ -19,6 +20,7 @@ object CurrencyArgMapper: IMapper<CurrencyArg, Currency> {
             model.id,
             model.name,
             model.symbol,
+            model.last_updated,
             model.quote.mapValues { entry -> QuoteItemMapper.fromModel(entry.value) }
         )
     }

@@ -8,4 +8,8 @@
         android:id="@+id/newsFragment"
         android:title="Новости"
         android:icon="@drawable/ic_news"/>
+    <item
+        android:id="@+id/converterFragment"
+        android:title="Конвертер"
+        android:icon="@drawable/ic_baseline_calculate_24"/>
 </menu>

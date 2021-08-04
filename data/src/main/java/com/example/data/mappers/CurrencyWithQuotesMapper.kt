@@ -26,6 +26,7 @@ object CurrencyWithQuotesMapper: IMapper<CurrencyWithQuotes, Currency> {
             entity.currency.id,
             entity.currency.name,
             entity.currency.symbol,
+            entity.currency.last_updated,
             quotes
         )
     }

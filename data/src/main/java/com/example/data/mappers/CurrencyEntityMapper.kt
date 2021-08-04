@@ -10,6 +10,7 @@ object CurrencyEntityMapper: IMapper<CurrencyEntity, Currency> {
             entity.id,
             entity.name,
             entity.symbol,
+            entity.last_updated,
             quote = mapOf()
         )
     }
@@ -18,7 +19,8 @@ object CurrencyEntityMapper: IMapper<CurrencyEntity, Currency> {
         return CurrencyEntity(
             model.id,
             model.name,
-            model.symbol
+            model.symbol,
+            model.last_updated
         )
     }
 }

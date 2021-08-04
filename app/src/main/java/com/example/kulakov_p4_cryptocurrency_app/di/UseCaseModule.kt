@@ -5,6 +5,7 @@ import com.example.domain.repositories.remote.ICoinMarketCapRespository
 import com.example.domain.repositories.remote.INewsApiRepository
 import com.example.domain.use_cases.GetCurrenciesUseCase
 import com.example.domain.use_cases.GetCurrencyInfoUseCase
+import com.example.domain.use_cases.GetLatestCurrencyUseCase
 import com.example.domain.use_cases.GetNewsUseCase
 import com.example.domain.use_cases.preferences.GetSignInStatusUseCase
 import com.example.domain.use_cases.preferences.SaveSignInStatusUseCase
@@ -35,4 +36,8 @@ object UseCaseModule {
     @Provides
     fun providesGetNewsUseCase(repository: INewsApiRepository)
             = GetNewsUseCase(repository)
+
+    @Provides
+    fun providesGetLatestCurrencyUseCase(repository: ICoinMarketCapRespository)
+            = GetLatestCurrencyUseCase(repository)
 }

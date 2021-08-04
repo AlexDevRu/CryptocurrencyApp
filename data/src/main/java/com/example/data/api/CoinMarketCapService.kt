@@ -7,7 +7,9 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface CoinMarketCapService {
-    @Headers("X-CMC_PRO_API_KEY: c3be326d-6592-4151-abad-7db160e6cfb8")
+    //c3be326d-6592-4151-abad-7db160e6cfb8
+    //2a2112c8-7c8c-4405-bd25-8362e7ab14bc
+    @Headers("X-CMC_PRO_API_KEY: 2a2112c8-7c8c-4405-bd25-8362e7ab14bc")
     @GET("cryptocurrency/listings/latest")
     suspend fun getCurrencies(
         @Query("limit") limit: Int,

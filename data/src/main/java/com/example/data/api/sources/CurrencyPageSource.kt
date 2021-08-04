@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
+import com.example.data.api.responses.CurrencyResponse
 import com.example.data.mappers.CurrencyResponseMapper
 import com.example.domain.models.Currency
 import com.example.domain.models.CurrencyParameters
@@ -25,7 +26,7 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
         val position = params.key ?: ApiConstants.STARTING_PAGE_INDEX
 
         return try {
-            val currencyResult = service.getCurrencies(
+            val currencyResult = /*service.getCurrencies(
                 ApiConstants.CURRENCY_PER_PAGE,
                 position,
                 parameters.type,
@@ -36,7 +37,7 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
                 parameters.marketCapMax,
                 parameters.sortType,
                 parameters.sortDir
-            ).data
+            ).data*/ emptyList<CurrencyResponse>()
 
             val query = parameters.searchQuery.lowercase()
             val currencyList = CurrencyResponseMapper.toModel(currencyResult).filter {

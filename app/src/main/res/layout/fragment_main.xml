@@ -30,13 +30,14 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/currencySwipeList"
             app:onRefresh="@{() -> viewModel.retry()}"
-            android:visibility="@{!viewModel.loading}"
+
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/currencyList"
+                android:visibility="@{viewModel.listIsShown}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
