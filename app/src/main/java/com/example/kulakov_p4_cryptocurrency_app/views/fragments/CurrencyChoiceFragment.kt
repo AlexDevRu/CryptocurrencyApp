@@ -3,14 +3,18 @@ package com.example.kulakov_p4_cryptocurrency_app.views.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.example.domain.models.Currency
 import com.example.kulakov_p4_cryptocurrency_app.R
-import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyAdapter
+import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyChoiceAdapter
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyLoadStateAdapter
-import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentMainBinding
-import com.example.kulakov_p4_cryptocurrency_app.view_models.MainVM
+import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentCurrencyChoiceBinding
+import com.example.kulakov_p4_cryptocurrency_app.view_models.ConverterVM
+import com.example.kulakov_p4_cryptocurrency_app.view_models.CurrencyChoiceVM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,18 +23,18 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
 @AndroidEntryPoint
-class MainFragment: BaseFragment<FragmentMainBinding>
-    (R.layout.fragment_main) {
+class CurrencyChoiceFragment: BaseFragment<FragmentCurrencyChoiceBinding>
+    (R.layout.fragment_currency_choice) {
 
-    private val viewModel: MainVM by viewModels()
+    private val viewModel: CurrencyChoiceVM by viewModels()
+    private val sharedViewModel: ConverterVM by activityViewModels()
 
-    private val adapter = CurrencyAdapter()
+    private val adapter = CurrencyChoiceAdapter(::clickCurrencyHandler)
 
     private var getAllCurrenciesJob: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.viewModel = viewModel
 
         val header = CurrencyLoadStateAdapter { adapter.retry() }
@@ -59,16 +63,17 @@ class MainFragment: BaseFragment<FragmentMainBinding>
 
         binding.currencyList.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
 
-        binding.currencyList.apply {
-            postponeEnterTransition()
-            viewTreeObserver
-                .addOnPreDrawListener {
-                    startPostponedEnterTransition()
-                    true
-                }
-        }
-
         observe()
+    }
+
+    private fun clickCurrencyHandler(currency: Currency?) {
+        if(sharedViewModel.setFromCurrency)
+            sharedViewModel.fromCurrency.get()?.currency = currency
+        else
+            sharedViewModel.toCurrency.get()?.currency = currency
+
+        val action = CurrencyChoiceFragmentDirections.actionCurrencyChoiceFragmentToConverterFragment()
+        findNavController().navigate(action)
     }
 
     private fun observe() {

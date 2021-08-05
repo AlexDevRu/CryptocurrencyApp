@@ -1,13 +1,13 @@
 package com.example.domain.models
 
 data class CurrencyParameters(
-    var type: String = "",
-    var tag: String = "",
+    var type: String = "all",
+    var tag: String = "all",
     var priceMin: Double = 0.0,
-    var priceMax: Double = 0.0,
+    var priceMax: Double = 100000.0,
     var marketCapMin: Double = 0.0,
-    var marketCapMax: Double = 0.0,
-    var sortType: String = "",
-    var sortDir: String = "",
+    var marketCapMax: Double = 1000000000.0,
+    var sortType: String = "market_cap",
+    var sortDir: String = "desc",
     var searchQuery: String = ""
 )

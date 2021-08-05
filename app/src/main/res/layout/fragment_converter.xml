@@ -7,6 +7,10 @@
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.ConverterVM" />
+
+        <variable
+            name="handler"
+            type="com.example.kulakov_p4_cryptocurrency_app.views.fragments.ConverterFragment.Handler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,6 +21,7 @@
         <ImageView
             android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/fromCurrencyImageView"
+            android:onClick="@{() -> handler.onFirstItemClick()}"
             app:srcUrl="@{viewModel.fromCurrency.thumbUrl}"
             android:layout_width="64dp"
             android:layout_height="64dp"
@@ -27,6 +32,7 @@
         <ImageView
             android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/toCurrencyImageView"
+            android:onClick="@{() -> handler.onSecondItemClick()}"
             app:srcUrl="@{viewModel.toCurrency.thumbUrl}"
             android:layout_width="64dp"
             android:layout_height="64dp"
@@ -35,37 +41,62 @@
             app:layout_constraintTop_toBottomOf="@id/fromCurrencyImageView"
             tools:srcCompat="@tools:sample/avatars" />
 
+        <TextView
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
+            android:id="@+id/fromCurrencyTitle"
+            android:layout_width="0dp"
+            android:text="@{viewModel.fromCurrency.titleWithSymbol}"
+            tools:text="sdhfdkjhf"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fromCurrencyImageView"
+            app:layout_constraintTop_toTopOf="@+id/fromCurrencyImageView"/>
+
         <EditText
             android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/fromNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:ems="10"
             android:inputType="numberDecimal"
             app:doubleNumber="@={viewModel.fromValue}"
             android:textColor="@color/black"
             tools:text="677"
-            app:layout_constraintBottom_toBottomOf="@+id/fromCurrencyImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fromCurrencyImageView"
-            app:layout_constraintTop_toTopOf="@+id/fromCurrencyImageView" />
+            app:layout_constraintStart_toStartOf="@id/fromCurrencyTitle"
+            app:layout_constraintTop_toBottomOf="@id/fromCurrencyTitle" />
+
+
+        <TextView
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
+            android:id="@+id/toCurrencyTitle"
+            android:layout_width="0dp"
+            tools:text="sdhfdkjhf"
+            android:text="@{viewModel.toCurrency.titleWithSymbol}"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fromCurrencyImageView"
+            app:layout_constraintTop_toTopOf="@id/toCurrencyImageView"/>
 
         <EditText
             android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/toNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:ems="10"
             android:inputType="numberDecimal"
             app:doubleNumber="@={viewModel.toValue}"
             android:textColor="@color/black"
             tools:text="677"
-            app:layout_constraintBottom_toBottomOf="@+id/toCurrencyImageView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/toCurrencyImageView"
-            app:layout_constraintTop_toTopOf="@+id/toCurrencyImageView" />
+            app:layout_constraintStart_toStartOf="@id/toCurrencyTitle"
+            app:layout_constraintTop_toBottomOf="@id/toCurrencyTitle" />
 
         <include
             layout="@layout/item_loading"
@@ -78,7 +109,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/graph"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            app:dataList="@{viewModel.graphDataList}"
+            app:labels="@{@stringArray/graph_labels}"
+            app:legendLabels="@{viewModel.legendLabels}"
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
+            app:noDataMessage="@{@string/no_data}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toNumber" />
+
+        <!--<Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -196,7 +241,7 @@
             app:layout_constraintStart_toEndOf="@id/button0"
             app:layout_constraintBottom_toBottomOf="@+id/button0"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/button0" />
+            app:layout_constraintTop_toTopOf="@+id/button0" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

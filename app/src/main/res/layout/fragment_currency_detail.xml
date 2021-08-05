@@ -104,6 +104,7 @@
                 android:id="@+id/graph"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
+                app:noDataMessage="@{@string/no_data}"
                 app:data="@{viewModel.currencyVM.priceDataList}"
                 app:labels="@{@stringArray/graph_labels}"
                 app:layout_constraintStart_toStartOf="parent"

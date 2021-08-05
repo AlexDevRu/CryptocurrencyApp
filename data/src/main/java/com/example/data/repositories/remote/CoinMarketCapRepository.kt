@@ -75,7 +75,7 @@ class CoinMarketCapRepository @Inject constructor(
             if(currencyInDb != null)
                 return Result.Success(CurrencyWithQuotesMapper.toModel(currencyInDb))
 
-            val response = service.getCurrencies(1, 1)
+            val response = service.getLatestCurrency()
             return Result.Success(CurrencyResponseMapper.toModel(response.data.first()))
         } catch (exception: IOException) {
             return Result.Failure(exception)

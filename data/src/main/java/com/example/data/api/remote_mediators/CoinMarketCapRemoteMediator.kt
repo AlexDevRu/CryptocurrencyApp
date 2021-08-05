@@ -94,12 +94,12 @@ class CoinMarketCapRemoteMediator(
                 ((page - 1) * state.config.pageSize) + 1,
                 parameters.type,
                 parameters.tag,
-                /*parameters.priceMin,
+                parameters.priceMin,
                 parameters.priceMax,
                 parameters.marketCapMin,
                 parameters.marketCapMax,
                 parameters.sortType,
-                parameters.sortDir*/
+                parameters.sortDir
             ).data
 
             /*var currencies = mutableListOf<CurrencyResponse>()

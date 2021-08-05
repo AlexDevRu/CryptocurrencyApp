@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.kulakov_p4_cryptocurrency_app.view_models.CurrencyChoiceVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/search_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:query="@{viewModel.searchQuery}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/currencySwipeList"
+            app:onRefresh="@{() -> viewModel.retry()}"
+
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/currencyList"
+                android:visibility="@{viewModel.listIsShown}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/loading"
+            layout="@layout/item_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:inProgress="@{viewModel.loading}"
+            app:layout_constraintBottom_toBottomOf="@id/currencySwipeList"
+            app:layout_constraintEnd_toEndOf="@id/currencySwipeList"
+            app:layout_constraintStart_toStartOf="@id/currencySwipeList"
+            app:layout_constraintTop_toTopOf="@id/currencySwipeList"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
