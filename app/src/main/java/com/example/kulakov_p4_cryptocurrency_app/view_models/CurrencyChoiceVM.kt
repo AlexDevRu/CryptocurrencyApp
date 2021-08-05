@@ -1,5 +1,6 @@
 package com.example.kulakov_p4_cryptocurrency_app.view_models
 
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
@@ -10,20 +11,21 @@ import com.example.domain.aliases.CurrencyFlow
 import com.example.domain.models.CurrencyParameters
 import com.example.domain.use_cases.GetCurrenciesUseCase
 import com.example.kulakov_p4_cryptocurrency_app.events.SingleLiveEvent
+import com.example.kulakov_p4_cryptocurrency_app.utils.PropertyChangedCallback
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.BehaviorSubject
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyChoiceVM @Inject constructor(
     private val getCurrenciesUseCase: GetCurrenciesUseCase
 ): BaseVM() {
-    private val compositeDisposable = CompositeDisposable()
 
-    val searchQuery = BehaviorSubject.createDefault("")
+    val searchQuery = ObservableField<String>()
 
     val error = ObservableField<String>()
     val loading = ObservableBoolean(false)
@@ -39,14 +41,18 @@ class CurrencyChoiceVM @Inject constructor(
 
     val parameters = CurrencyParameters()
 
+    private var searchJob: Job? = null
+
     init {
-        compositeDisposable.add(searchQuery
-            .debounce(1500, TimeUnit.MILLISECONDS)
-            .subscribe {
-                parameters.searchQuery = it
+        searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback { _, _ ->
+            Log.w("asd", "searchQuery ${searchQuery.get()}")
+            parameters.searchQuery = searchQuery.get().orEmpty()
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch(Dispatchers.IO) {
+                delay(1500)
                 retry()
             }
-        )
+        })
     }
 
     fun retry() {
@@ -66,10 +72,5 @@ class CurrencyChoiceVM @Inject constructor(
         currentResult = newResult
 
         return newResult
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
     }
 }

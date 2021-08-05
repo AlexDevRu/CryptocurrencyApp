@@ -5,7 +5,7 @@
     <data>
         <variable
             name="query"
-            type="io.reactivex.subjects.BehaviorSubject&lt;String>" />
+            type="androidx.databinding.ObservableField&lt;String>" />
     </data>
 
     <androidx.appcompat.widget.Toolbar
@@ -24,7 +24,7 @@
                 android:id="@+id/searchView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:query="@{query}"
+                app:query="@={query}"
                 app:queryHint="Поиск..."
                 android:maxWidth="3000dp"
                 app:searchIcon="@drawable/ic_baseline_search_24"
