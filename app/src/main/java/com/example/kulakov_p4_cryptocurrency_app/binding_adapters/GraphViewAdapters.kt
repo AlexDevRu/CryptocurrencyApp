@@ -39,6 +39,7 @@ fun bindGraphViewData(lineChart: LineChart, data: List<Double>, labels: Array<St
     lineChart.xAxis.setDrawGridLines(false)
     lineChart.xAxis.textSize = 14f
     lineChart.extraBottomOffset = 4f
+    lineChart.extraLeftOffset = 3f
     lineChart.axisLeft.setDrawGridLines(false)
     lineChart.axisRight.setDrawGridLines(false)
     lineChart.description.isEnabled = false
@@ -99,6 +100,7 @@ fun bindGraphViewDataList(lineChart: LineChart, dataList: List<List<Double>?>, l
     lineChart.xAxis.setDrawGridLines(false)
     lineChart.xAxis.textSize = 14f
     lineChart.extraBottomOffset = 4f
+    lineChart.extraLeftOffset = 5f
     lineChart.axisLeft.setDrawGridLines(false)
     lineChart.axisRight.setDrawGridLines(false)
     lineChart.description.isEnabled = false
@@ -112,7 +114,7 @@ fun bindGraphViewDataList(lineChart: LineChart, dataList: List<List<Double>?>, l
             legendEntry.label = legendLabels[i]
             legendEntry.form = Legend.LegendForm.SQUARE
             legendEntry.formSize = 16f
-            legendEntry.formColor = colors[i]
+            legendEntry.formColor = lineChart.context.resources.getColor(colors[i])
             legendEntries.add(legendEntry)
         }
 
