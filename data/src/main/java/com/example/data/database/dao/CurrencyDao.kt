@@ -16,14 +16,14 @@ interface CurrencyDao {
 
     @Query("""
         SELECT * from currencies, quotes where 
-        name like :query and 
-        currencyId=currencies.id and 
+        currencyId=currencies.id and
+        name like :query and
         (price between :priceMin and :priceMax) and
         (market_cap between :marketCapMin and :marketCapMax)""")
     fun getCurrencies(
         query: String,
-        priceMin: Float, priceMax: Float,
-        marketCapMin: Float, marketCapMax: Float
+        priceMin: Double, priceMax: Double,
+        marketCapMin: Double, marketCapMax: Double
     ): PagingSource<Int, CurrencyWithQuotes>
 
 

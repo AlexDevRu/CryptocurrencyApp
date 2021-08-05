@@ -40,10 +40,10 @@ class MainFragment: BaseFragment<FragmentMainBinding>
             val isListEmpty = state.refresh is LoadState.NotLoading && adapter.itemCount == 0
             viewModel.isResultEmpty.set(isListEmpty)
 
-            header.loadState = state.mediator
+            /*header.loadState = state.mediator
                 ?.refresh
                 ?.takeIf { it is LoadState.Error && adapter.itemCount > 0 }
-                ?: state.prepend
+                ?: state.prepend*/
 
             viewModel.listIsShown.set(state.source.refresh is LoadState.NotLoading || state.mediator?.refresh is LoadState.NotLoading)
             viewModel.loading.set(state.source.refresh is LoadState.Loading && !viewModel.listIsShown.get())

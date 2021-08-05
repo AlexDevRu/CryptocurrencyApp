@@ -90,7 +90,7 @@
             app:values="@array/initial_price_slider_values"
             app:startValue="@{viewModel.priceMin}"
             app:endValue="@{viewModel.priceMax}"
-            android:valueFrom="0"
+            android:valueFrom="@integer/value_min"
             android:valueTo="@integer/price_max" />
 
         <TextView
@@ -108,11 +108,11 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/marketCapTextView"
-            app:values="@array/initial_price_slider_values"
+            app:values="@array/initial_market_cap_slider_values"
             app:startValue="@{viewModel.marketCapMin}"
             app:endValue="@{viewModel.marketCapMax}"
-            android:valueFrom="0"
-            android:valueTo="@integer/price_max" />
+            android:valueFrom="@integer/value_min"
+            android:valueTo="@integer/market_cap_max" />
 
         <TextView
             android:id="@+id/sortTextView"

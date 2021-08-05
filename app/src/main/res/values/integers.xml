@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <integer name="value_min">0</integer>
     <integer name="price_max">100000</integer>
+    <integer name="market_cap_max">1000000000</integer>
 </resources>

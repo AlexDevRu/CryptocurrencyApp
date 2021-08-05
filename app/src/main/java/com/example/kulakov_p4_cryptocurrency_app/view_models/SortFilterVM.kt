@@ -52,23 +52,23 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
             }
         })
 
-        compositeDisposable.add(priceMin.filter { parameters.priceMin != it }.subscribe {
-            parameters.priceMin = it
+        compositeDisposable.add(priceMin.filter { parameters.priceMin != it.toDouble() }.subscribe {
+            parameters.priceMin = it.toDouble()
             onChange()
         })
 
-        compositeDisposable.add(priceMax.filter { parameters.priceMax != it }.subscribe {
-            parameters.priceMax = it
+        compositeDisposable.add(priceMax.filter { parameters.priceMax != it.toDouble() }.subscribe {
+            parameters.priceMax = it.toDouble()
             onChange()
         })
 
-        compositeDisposable.add(marketCapMin.filter { parameters.marketCapMin != it }.subscribe {
-            parameters.marketCapMin = it
+        compositeDisposable.add(marketCapMin.filter { parameters.marketCapMin != it.toDouble() }.subscribe {
+            parameters.marketCapMin = it.toDouble()
             onChange()
         })
 
-        compositeDisposable.add(marketCapMax.filter { parameters.marketCapMax != it }.subscribe {
-            parameters.marketCapMax = it
+        compositeDisposable.add(marketCapMax.filter { parameters.marketCapMax != it.toDouble() }.subscribe {
+            parameters.marketCapMax = it.toDouble()
             onChange()
         })
 

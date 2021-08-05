@@ -1,5 +1,6 @@
 package com.example.kulakov_p4_cryptocurrency_app.view_models
 
+import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
@@ -61,6 +62,8 @@ class MainVM @Inject constructor(
         if (lastResult != null) {
             return lastResult
         }
+
+        Log.e("asd", "sortFilterVM.parameters ${sortFilterVM.parameters}")
 
         val newResult = getCurrenciesUseCase.invoke(sortFilterVM.parameters).cachedIn(viewModelScope)
 

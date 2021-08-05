@@ -18,6 +18,7 @@ import com.example.data.mappers.QuoteItemMapper
 import com.example.domain.models.Currency
 import com.example.domain.models.CurrencyParameters
 import com.example.domain.models.QuoteItem
+import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -138,7 +139,9 @@ class CoinMarketCapRemoteMediator(
             else if(end < currencies.size)
                 currencies = currencies.subList(start, end)
             else
-                currencies = currencies.subList(start, currencies.size)*/
+                currencies = currencies.subList(start, currencies.size)
+
+            delay(4000)*/
 
             Log.w("asd", "currencies ${currencies.map { it.id }}")
 

@@ -30,7 +30,7 @@ class CoinMarketCapRepository @Inject constructor(
 
     @ExperimentalPagingApi
     override suspend fun getAllCurrencies(parameters: CurrencyParameters): CurrencyFlow {
-        val dbQuery = "%${parameters.searchQuery.replace(' ', '%')}%"
+        val dbQuery = "%${parameters.searchQuery.lowercase().replace(' ', '%')}%"
         return Pager(
             config = PagingConfig(
                 pageSize = ApiConstants.CURRENCY_PER_PAGE,

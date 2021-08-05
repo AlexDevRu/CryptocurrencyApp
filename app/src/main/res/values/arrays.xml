@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="initial_price_slider_values">
-        <item>0</item>
+        <item>@integer/value_min</item>
         <item>@integer/price_max</item>
+    </array>
+
+    <array name="initial_market_cap_slider_values">
+        <item>@integer/value_min</item>
+        <item>@integer/market_cap_max</item>
     </array>
 </resources>
