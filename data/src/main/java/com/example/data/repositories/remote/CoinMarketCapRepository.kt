@@ -34,7 +34,8 @@ class CoinMarketCapRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = ApiConstants.CURRENCY_PER_PAGE,
-                enablePlaceholders = false
+                enablePlaceholders = false,
+                prefetchDistance = 5
             ),
             remoteMediator = CoinMarketCapRemoteMediator(
                 parameters,
