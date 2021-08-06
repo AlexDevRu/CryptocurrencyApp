@@ -44,7 +44,7 @@ class CurrencyChoiceVM @Inject constructor(
     private var searchJob: Job? = null
 
     init {
-        searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback { _, _ ->
+        searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.w("asd", "searchQuery ${searchQuery.get()}")
             parameters.searchQuery = searchQuery.get().orEmpty()
             searchJob?.cancel()

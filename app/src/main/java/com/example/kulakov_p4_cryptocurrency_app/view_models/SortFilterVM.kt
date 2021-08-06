@@ -1,9 +1,9 @@
 package com.example.kulakov_p4_cryptocurrency_app.view_models
 
+import android.util.Log
 import androidx.databinding.*
 import com.example.domain.models.CurrencyParameters
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.BehaviorSubject
+import com.example.kulakov_p4_cryptocurrency_app.utils.PropertyChangedCallback
 
 class SortFilterVM(onChange: () -> Unit): BaseObservable() {
     private val types = listOf("all", "coins", "tokens")
@@ -17,11 +17,11 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
     val selectedSortTypePosition = ObservableInt(3)
     val selectedSortDirPosition = ObservableInt(1)
 
-    val priceMin = BehaviorSubject.create<Float>()
-    val priceMax = BehaviorSubject.create<Float>()
+    val priceMin = ObservableFloat()
+    val priceMax = ObservableFloat()
 
-    val marketCapMin = BehaviorSubject.create<Float>()
-    val marketCapMax = BehaviorSubject.create<Float>()
+    val marketCapMin = ObservableFloat()
+    val marketCapMax = ObservableFloat()
 
 
     val parameters = CurrencyParameters(
@@ -30,8 +30,6 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
         sortType = sortTypes[selectedSortTypePosition.get()],
         sortDir = sortDirs[selectedSortDirPosition.get()]
     )
-
-    val compositeDisposable = CompositeDisposable()
 
     init {
         selectedTypePosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
@@ -43,51 +41,49 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
             }
         })
 
-        selectedTagPosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(parameters.tag == tags[selectedTagPosition.get()])
-                    return
-                parameters.tag = tags[selectedTagPosition.get()]
-                onChange()
-            }
-        })
-
-        compositeDisposable.add(priceMin.filter { parameters.priceMin != it.toDouble() }.subscribe {
-            parameters.priceMin = it.toDouble()
+        selectedTagPosition.addOnPropertyChangedCallback(PropertyChangedCallback {
+            if(parameters.tag == tags[selectedTagPosition.get()])
+                return@PropertyChangedCallback
+            parameters.tag = tags[selectedTagPosition.get()]
             onChange()
         })
 
-        compositeDisposable.add(priceMax.filter { parameters.priceMax != it.toDouble() }.subscribe {
-            parameters.priceMax = it.toDouble()
+        priceMin.addOnPropertyChangedCallback(PropertyChangedCallback {
+            Log.d("asd", "price min ${priceMin.get()}")
+            parameters.priceMin = priceMin.get().toDouble()
             onChange()
         })
 
-        compositeDisposable.add(marketCapMin.filter { parameters.marketCapMin != it.toDouble() }.subscribe {
-            parameters.marketCapMin = it.toDouble()
+        priceMax.addOnPropertyChangedCallback(PropertyChangedCallback {
+            Log.d("asd", "price max ${priceMax.get()}")
+            parameters.priceMax = priceMax.get().toDouble()
             onChange()
         })
 
-        compositeDisposable.add(marketCapMax.filter { parameters.marketCapMax != it.toDouble() }.subscribe {
-            parameters.marketCapMax = it.toDouble()
+        marketCapMin.addOnPropertyChangedCallback(PropertyChangedCallback {
+            Log.d("asd", "market min ${marketCapMin.get()}")
+            parameters.marketCapMin = marketCapMin.get().toDouble()
             onChange()
         })
 
-        selectedSortTypePosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(parameters.sortType == sortTypes[selectedSortTypePosition.get()])
-                    return
-                parameters.sortType = sortTypes[selectedSortTypePosition.get()]
-                onChange()
-            }
+        marketCapMax.addOnPropertyChangedCallback(PropertyChangedCallback {
+            Log.d("asd", "market max ${marketCapMax.get()}")
+            parameters.marketCapMax = marketCapMax.get().toDouble()
+            onChange()
         })
 
-        selectedSortDirPosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(parameters.sortDir == sortDirs[selectedSortDirPosition.get()])
-                    return
-                parameters.sortDir = sortDirs[selectedSortDirPosition.get()]
-                onChange()
-            }
+        selectedSortTypePosition.addOnPropertyChangedCallback(PropertyChangedCallback {
+            if(parameters.sortType == sortTypes[selectedSortTypePosition.get()])
+                return@PropertyChangedCallback
+            parameters.sortType = sortTypes[selectedSortTypePosition.get()]
+            onChange()
+        })
+
+        selectedSortDirPosition.addOnPropertyChangedCallback(PropertyChangedCallback {
+            if(parameters.sortDir == sortDirs[selectedSortDirPosition.get()])
+                return@PropertyChangedCallback
+            parameters.sortDir = sortDirs[selectedSortDirPosition.get()]
+            onChange()
         })
     }
 }

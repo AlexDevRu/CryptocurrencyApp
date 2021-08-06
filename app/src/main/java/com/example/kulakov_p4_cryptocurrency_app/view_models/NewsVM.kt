@@ -45,7 +45,7 @@ class NewsVM @Inject constructor(
     private var searchJob: Job? = null
 
     init {
-        searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback { _, _ ->
+        searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.w("asd", "searchQuery ${searchQuery.get()}")
             searchJob?.cancel()
             searchJob = viewModelScope.launch(Dispatchers.IO) {

@@ -47,12 +47,12 @@ class ConverterVM @Inject constructor(
 
         init()
 
-        fromValue.addOnPropertyChangedCallback(PropertyChangedCallback { _, _ ->
+        fromValue.addOnPropertyChangedCallback(PropertyChangedCallback {
             if(firstSelected && fromCurrency.get() != null && toCurrency.get() != null)
                 toValue.set(fromCurrency.get()!!.quoteUSD!!.price * fromValue.get() / toCurrency.get()!!.quoteUSD!!.price)
         })
 
-        toValue.addOnPropertyChangedCallback(PropertyChangedCallback { _, _ ->
+        toValue.addOnPropertyChangedCallback(PropertyChangedCallback {
             if(secondSelected && fromCurrency.get() != null && toCurrency.get() != null)
                 fromValue.set(toCurrency.get()!!.quoteUSD!!.price * toValue.get() / fromCurrency.get()!!.quoteUSD!!.price)
         })

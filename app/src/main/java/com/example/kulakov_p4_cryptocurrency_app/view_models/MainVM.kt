@@ -43,7 +43,7 @@ class MainVM @Inject constructor(
     private var searchJob: Job? = null
 
     init {
-        searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback { _, _ ->
+        searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.w("asd", "searchQuery ${searchQuery.get()}")
             sortFilterVM.parameters.searchQuery = searchQuery.get().orEmpty()
             searchJob?.cancel()
@@ -73,10 +73,5 @@ class MainVM @Inject constructor(
         currentResult = newResult
 
         return newResult
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        sortFilterVM.compositeDisposable.dispose()
     }
 }
