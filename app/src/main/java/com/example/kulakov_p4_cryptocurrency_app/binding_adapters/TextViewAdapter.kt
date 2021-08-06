@@ -6,10 +6,11 @@ import com.example.kulakov_p4_cryptocurrency_app.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-@BindingAdapter("usd")
-fun customizeMoney(textView: TextView, money: Double) {
-    val formatted = "$${"%.4f".format(money)}"
-    textView.text = formatted
+@BindingAdapter(value = ["usd", "prefix"], requireAll = false)
+fun customizeMoney(textView: TextView, money: Double, prefix: String? = null) {
+    val formattedUsd = "%.4f".format(money)
+    val formattedText = if(prefix != null) prefix + formattedUsd else formattedUsd
+    textView.text = formattedText
 }
 
 @BindingAdapter("percents")
