@@ -3,6 +3,7 @@ package com.example.kulakov_p4_cryptocurrency_app.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -10,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Currency
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.databinding.ItemCurrencyBinding
-import com.example.kulakov_p4_cryptocurrency_app.navigator.Navigator
+import com.example.kulakov_p4_cryptocurrency_app.parcelable.mappers.CurrencyArgMapper
 import com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM
+import com.example.kulakov_p4_cryptocurrency_app.views.fragments.MainFragmentDirections
 
 class CurrencyAdapter: PagingDataAdapter<Currency, CurrencyAdapter.CurrencyHolder>(CurrencyDiff()) {
 
@@ -56,7 +58,9 @@ class CurrencyAdapter: PagingDataAdapter<Currency, CurrencyAdapter.CurrencyHolde
                             binding.currencyPrice to currencyPrice.transitionName,
                             binding.currencyPercentChange1h to currencyPercentChange1h.transitionName
                         )
-                        Navigator.getInstance().mainFragmentNavigator.showCurrencyDetail(viewModel?.currency!!, extras)
+                        val arg = CurrencyArgMapper.fromModel(viewModel?.currency!!)
+                        val action = MainFragmentDirections.actionMainFragmentToCurrencyDetailFragment(arg)
+                        itemView.findNavController().navigate(action, extras)
                     }
                 }
                 executePendingBindings()

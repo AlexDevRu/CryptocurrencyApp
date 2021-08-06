@@ -8,9 +8,9 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentSignInBinding
-import com.example.kulakov_p4_cryptocurrency_app.navigator.Navigator
 import com.example.kulakov_p4_cryptocurrency_app.view_models.SignInVM
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -34,8 +34,9 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         if(viewModel.userIsSigned())
-            Navigator.getInstance().signInFragmentNavigator.showMain()
+            showMain()
 
         binding.viewModel = viewModel
 
@@ -57,11 +58,17 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
         try {
             val account = task.getResult(ApiException::class.java)
             viewModel.saveSignInStatus(true)
-            Navigator.getInstance().signInFragmentNavigator.showMain()
+
+            showMain()
         } catch (e: ApiException) {
             Log.w("asd", "signInResult:failed code=" + e.statusCode)
             viewModel.error.set(e.localizedMessage)
         }
+    }
+
+    private fun showMain() {
+        val action = SignInFragmentDirections.actionSignInFragmentToMainFragment()
+        findNavController().navigate(action)
     }
 
     interface Handler {

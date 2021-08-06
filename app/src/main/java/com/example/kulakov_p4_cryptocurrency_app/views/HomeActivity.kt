@@ -8,7 +8,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.databinding.ActivityMainBinding
-import com.example.kulakov_p4_cryptocurrency_app.navigator.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,7 +34,5 @@ class HomeActivity: AppCompatActivity() {
                 else -> View.VISIBLE
             }
         }
-
-        Navigator.init(navController)
     }
 }

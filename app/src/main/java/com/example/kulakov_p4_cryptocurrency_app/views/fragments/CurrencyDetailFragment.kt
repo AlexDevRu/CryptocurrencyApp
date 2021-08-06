@@ -7,11 +7,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentCurrencyDetailBinding
-import com.example.kulakov_p4_cryptocurrency_app.navigator.Navigator
 import com.example.kulakov_p4_cryptocurrency_app.parcelable.mappers.CurrencyArgMapper
 import com.example.kulakov_p4_cryptocurrency_app.view_models.CurrencyDetailVM
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,7 +73,8 @@ class CurrencyDetailFragment: BaseFragment<FragmentCurrencyDetailBinding>
     }
 
     private fun openLink(link: String) {
-        Navigator.getInstance().currencyDetailFragmentNavigator.openLink(link)
+        val action = CurrencyDetailFragmentDirections.actionCurrencyDetailFragmentToWebViewFragment(link)
+        findNavController().navigate(action)
     }
 
     interface Handler {
