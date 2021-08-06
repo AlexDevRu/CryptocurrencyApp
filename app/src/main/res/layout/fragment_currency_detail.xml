@@ -100,14 +100,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/marketCapTextView" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/graph"
+            <com.example.kulakov_p4_cryptocurrency_app.views.custom.CustomLineChart
+                android:id="@+id/priceGraph"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                app:noDataMessage="@{@string/no_data}"
+                android:layout_height="wrap_content"
                 app:data="@{viewModel.currencyVM.priceDataList}"
                 app:labels="@{@stringArray/graph_labels}"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/buyButton" />
 
             <TextView
@@ -116,9 +116,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@{`Рыночная капитализация: $` + viewModel.currencyVM.quoteUSD.market_cap}"
-                tools:text="Рыночная капитализация: $46567"
-                app:layout_constraintTop_toBottomOf="@id/graph"/>
-
+                app:layout_constraintTop_toBottomOf="@id/priceGraph"
+                tools:text="Рыночная капитализация: $46567" />
 
             <LinearLayout
                 android:id="@+id/description"
