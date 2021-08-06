@@ -2,14 +2,17 @@
     <string name="app_name">Kulakov_P4_Cryptocurrency_app</string>
     <string name="sign_in">Войти</string>
 
+    <string name="all">Все</string>
+    <string name="market_cap">Рыночная капитализация</string>
+
     <string-array name="currency_types">
-        <item>Все</item>
+        <item>@string/all</item>
         <item>Валюты</item>
         <item>Токены</item>
     </string-array>
 
     <string-array name="currency_tags">
-        <item>Все</item>
+        <item>@string/all</item>
         <item>DeFi</item>
         <item>Filesharing</item>
     </string-array>
@@ -18,7 +21,7 @@
         <item>Название</item>
         <item>Символ</item>
         <item>Дата добавления</item>
-        <item>Рыночная капитализация</item>
+        <item>@string/market_cap</item>
         <item>Цена</item>
     </string-array>
 
