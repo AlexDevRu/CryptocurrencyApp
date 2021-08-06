@@ -13,10 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.domain.common.Result
+import com.example.domain.use_cases.UpdateCurrencyByIdUseCase
 
 @HiltViewModel
 class CurrencyDetailVM @Inject constructor(
-    private val getCurrencyInfoUseCase: GetCurrencyInfoUseCase
+    private val getCurrencyInfoUseCase: GetCurrencyInfoUseCase,
+    private val updateCurrencyByIdUseCase: UpdateCurrencyByIdUseCase
 ): BaseVM() {
 
     val currencyVM = ObservableField<CurrencyVM>()
@@ -24,7 +26,15 @@ class CurrencyDetailVM @Inject constructor(
 
     val metadataLoading = ObservableBoolean(false)
     val metadataGetSuccessfull = ObservableBoolean(false)
+    val currencyUpdated = ObservableBoolean(false)
     val metadataError = ObservableField<String>()
+    val currencyError = ObservableField<String>()
+
+    init {
+        currencyMetadataVM.set(CurrencyMetadataVM())
+        currencyVM.set(CurrencyVM())
+        currencyUpdated.set(false)
+    }
 
     fun init(item: Currency) {
         val observable = CurrencyVM()
@@ -40,15 +50,30 @@ class CurrencyDetailVM @Inject constructor(
             val metadataResult = getCurrencyInfoUseCase.invoke(currencyVM.get()!!.currency!!.id)
             when(metadataResult) {
                 is Result.Success -> {
-                    val observable = CurrencyMetadataVM()
-                    observable.currencyMetadata = metadataResult.value
-                    currencyMetadataVM.set(observable)
+                    currencyMetadataVM.get()?.currencyMetadata = metadataResult.value
                     metadataError.set(null)
                 }
                 is Result.Failure -> metadataError.set(metadataResult.throwable.localizedMessage)
             }
             metadataLoading.set(false)
             metadataGetSuccessfull.set(metadataResult is Result.Success)
+        }
+    }
+
+    fun updateCurrency() {
+        val id = currencyVM.get()?.currency?.id ?: return
+
+        currencyUpdated.set(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            val updatedCurrencyResult = updateCurrencyByIdUseCase.invoke(id)
+            when(updatedCurrencyResult) {
+                is Result.Success -> {
+                    currencyVM.get()?.currency = updatedCurrencyResult.value
+                    currencyError.set(null)
+                }
+                is Result.Failure -> currencyError.set(updatedCurrencyResult.throwable.localizedMessage)
+            }
+            currencyUpdated.set(false)
         }
     }
 }

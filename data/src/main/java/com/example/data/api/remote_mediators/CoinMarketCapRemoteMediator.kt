@@ -164,9 +164,10 @@ class CoinMarketCapRemoteMediator(
                 val currList = mutableListOf<CurrencyWithQuotes>()
                 for(currency in currencies) {
                     val quotes = QuoteItemMapper.fromModel(currency.quote)
-                    val cwithQuotes = CurrencyWithQuotes()
-                    cwithQuotes.currency = CurrencyResponseMapper.toDbEntity(currency)
-                    cwithQuotes.quotes = quotes
+                    val cwithQuotes = CurrencyWithQuotes(
+                        CurrencyResponseMapper.toDbEntity(currency),
+                        quotes
+                    )
                     currList.add(cwithQuotes)
                 }
                 currencyDatabase.currencyDao().insertAll(currList)

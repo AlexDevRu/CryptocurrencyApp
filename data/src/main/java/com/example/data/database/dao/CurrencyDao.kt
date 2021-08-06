@@ -15,7 +15,7 @@ interface CurrencyDao {
     suspend fun _insertQuotes(quotes: List<QuoteItemEntity>)
 
     @Query("""
-        SELECT * from currencies, quotes where 
+        select * from currencies, quotes where 
         currencyId=currencies.id and
         name like :query and
         (price between :priceMin and :priceMax) and
@@ -27,19 +27,36 @@ interface CurrencyDao {
     ): PagingSource<Int, CurrencyWithQuotes>
 
 
-    @Query("SELECT * from currencies order by last_updated desc limit 1")
+    @Query("select * from currencies where id=:id")
+    suspend fun getCurrencyById(id: Int): CurrencyWithQuotes?
+
+
+    @Query("select * from currencies order by last_updated desc limit 1")
     suspend fun getLatestCurrency(): CurrencyWithQuotes?
 
 
     suspend fun insertAll(currencies: List<CurrencyWithQuotes>) {
-        for(curr in currencies) {
-            _insertCurrency(curr.currency)
-            for(quote in curr.quotes)
-                quote.currencyId = curr.currency.id
-            _insertQuotes(curr.quotes)
+        for(currencyWithQuotes in currencies) {
+            insert(currencyWithQuotes)
         }
     }
 
-    @Query("DELETE FROM currencies")
+    suspend fun insert(currencyWithQuotes: CurrencyWithQuotes) {
+        _insertCurrency(currencyWithQuotes.currency)
+        for(quote in currencyWithQuotes.quotes)
+            quote.currencyId = currencyWithQuotes.currency.id
+        _insertQuotes(currencyWithQuotes.quotes)
+    }
+
+    @Query("delete from currencies")
     suspend fun clearAll()
+
+    @Query("delete from currencies where id=:id")
+    suspend fun deleteCurrencyById(id: Int)
+
+    @Transaction
+    suspend fun updateCurrency(currencyWithQuotes: CurrencyWithQuotes) {
+        deleteCurrencyById(currencyWithQuotes.currency.id)
+        insert(currencyWithQuotes)
+    }
 }

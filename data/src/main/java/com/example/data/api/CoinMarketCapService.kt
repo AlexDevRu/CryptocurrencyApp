@@ -1,5 +1,6 @@
 package com.example.data.api
 
+import com.example.data.api.responses.CurrencyByIdResponse
 import com.example.data.api.responses.CurrencyInfoResponse
 import com.example.data.api.responses.ListingCurrencyResponse
 import retrofit2.http.GET
@@ -37,4 +38,10 @@ interface CoinMarketCapService {
         @Query("limit") limit: Int = 1,
         @Query("start") start: Int = 1
     ): ListingCurrencyResponse
+
+    @Headers("X-CMC_PRO_API_KEY: c3be326d-6592-4151-abad-7db160e6cfb8")
+    @GET("cryptocurrency/quotes/latest")
+    suspend fun getCurrencyById(
+        @Query("id") id: String
+    ): CurrencyByIdResponse
 }

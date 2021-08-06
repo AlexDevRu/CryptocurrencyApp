@@ -8,10 +8,8 @@ import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
 import com.example.data.api.remote_mediators.CoinMarketCapRemoteMediator
 import com.example.data.database.CurrencyDatabase
-import com.example.data.mappers.CurrencyEntityMapper
-import com.example.data.mappers.CurrencyMetadataMapper
-import com.example.data.mappers.CurrencyResponseMapper
-import com.example.data.mappers.CurrencyWithQuotesMapper
+import com.example.data.database.entities.CurrencyWithQuotes
+import com.example.data.mappers.*
 import com.example.domain.aliases.CurrencyFlow
 import com.example.domain.common.Result
 import com.example.domain.models.Currency
@@ -84,6 +82,33 @@ class CoinMarketCapRepository @Inject constructor(
             return Result.Failure(exception)
         } catch (exception: Exception) {
             return Result.Failure(exception)
+        }
+    }
+
+    override suspend fun updateCurrencyById(id: Int): Result<Currency> {
+        return try {
+            val response = service.getCurrencyById(id.toString()).data[id.toString()]!!
+            val currencyWithQuotes = CurrencyWithQuotes(
+                CurrencyResponseMapper.toDbEntity(response),
+                QuoteItemMapper.fromModel(response.quote)
+            )
+            currencyDatabase.currencyDao().updateCurrency(currencyWithQuotes)
+            Result.Success(CurrencyWithQuotesMapper.toModel(currencyWithQuotes))
+        } catch (exception: IOException) {
+            return getCurrencyFromDb(id)
+        } catch (exception: HttpException) {
+            return getCurrencyFromDb(id)
+        } catch (exception: Exception) {
+            Result.Failure(exception)
+        }
+    }
+
+    private suspend fun getCurrencyFromDb(id: Int): Result<Currency> {
+        return try {
+            val currencyWithQuotes = currencyDatabase.currencyDao().getCurrencyById(id)!!
+            Result.Success(CurrencyWithQuotesMapper.toModel(currencyWithQuotes))
+        } catch (e: IOException) {
+            Result.Failure(e)
         }
     }
 }
