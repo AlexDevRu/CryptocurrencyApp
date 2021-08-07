@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -18,8 +17,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.github.mikephil.charting.utils.EntryXComparator
-import java.util.*
 
 
 class CustomLineChart @JvmOverloads constructor(
@@ -43,6 +40,7 @@ class CustomLineChart @JvmOverloads constructor(
             xAxis.textSize = 14f
             extraBottomOffset = 4f
             extraLeftOffset = 5f
+            extraRightOffset = 5f
             axisLeft.setDrawGridLines(false)
             axisRight.setDrawGridLines(false)
             description.isEnabled = false
@@ -135,11 +133,8 @@ class CustomLineChart @JvmOverloads constructor(
     fun clearAndSetSingleDataSet(values: List<Double>?) {
         legendContainer.removeAllViews()
         val dataSet = setDataSet(values)
-        lineChart.lineData.apply {
-            clearValues()
-            addDataSet(dataSet)
-            setDrawValues(false)
-        }
+        lineChart.data = LineData(dataSet)
+        lineChart.lineData.setDrawValues(false)
         checkBoxMap.clear()
         legendContainer.removeAllViews()
         lineChart.invalidate()
@@ -155,7 +150,6 @@ class CustomLineChart @JvmOverloads constructor(
             val entry = Entry(i.toFloat(), value.toFloat())
             entries.add(entry)
         }
-        Log.e("asd", "entries ${entries}")
         val dataSet = LineDataSet(entries, null)
         dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
         dataSet.color = context.resources.getColor(color)
