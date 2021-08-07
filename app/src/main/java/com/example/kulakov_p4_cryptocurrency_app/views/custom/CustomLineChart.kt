@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -16,6 +17,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.EntryXComparator
+import java.util.*
 
 
 class CustomLineChart @JvmOverloads constructor(
@@ -47,7 +51,6 @@ class CustomLineChart @JvmOverloads constructor(
             axisLeft.isEnabled = false
             marker = CustomMarkerView(context, R.layout.layout_tooltip)
             setNoDataText(context.getString(R.string.no_data))
-            data = LineData()
         }
     }
 
@@ -72,21 +75,25 @@ class CustomLineChart @JvmOverloads constructor(
         if(valuesList.isNullOrEmpty())
             return
 
-        lineChart.lineData.clearValues()
         legendContainer.removeAllViews()
         checkBoxMap.clear()
+
+        val lineDataSets = mutableListOf<ILineDataSet>()
 
         for((i, values) in valuesList.withIndex()) {
             val color = DEFAULT_COLORS[i % DEFAULT_COLORS.size]
             val dataSet = setDataSet(values, color)
             if(dataSet != null) {
-                lineChart.lineData.addDataSet(dataSet)
+                lineDataSets.add(dataSet)
                 val checkBox = addCheckBox(color)
                 checkBoxMap.put(checkBox, dataSet)
             }
         }
 
-        lineChart.lineData.setDrawValues(false)
+        val lineData = LineData(lineDataSets)
+        lineData.setDrawValues(false)
+
+        lineChart.data = lineData
 
         lineChart.invalidate()
     }
@@ -143,14 +150,15 @@ class CustomLineChart @JvmOverloads constructor(
         if(values.isNullOrEmpty())
             return null
 
-        val entries = ArrayList<Entry>()
-        for (i in values.indices) {
-            entries.add(Entry(i.toFloat(), values[i].toFloat()))
+        val entries = mutableListOf<Entry>()
+        for ((i, value) in values.withIndex()) {
+            val entry = Entry(i.toFloat(), value.toFloat())
+            entries.add(entry)
         }
+        Log.e("asd", "entries ${entries}")
         val dataSet = LineDataSet(entries, null)
         dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        val colorValue = context.resources.getColor(color)
-        dataSet.color = colorValue
+        dataSet.color = context.resources.getColor(color)
         dataSet.lineWidth = 3f
         dataSet.circleRadius = 4f
         dataSet.setCircleColor(Color.BLUE)
