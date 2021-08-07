@@ -32,13 +32,11 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
     )
 
     init {
-        selectedTypePosition.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if(parameters.type == types[selectedTypePosition.get()])
-                    return
-                parameters.type = types[selectedTypePosition.get()]
-                onChange()
-            }
+        selectedTypePosition.addOnPropertyChangedCallback(PropertyChangedCallback {
+            if(parameters.type == types[selectedTypePosition.get()])
+                return@PropertyChangedCallback
+            parameters.type = types[selectedTypePosition.get()]
+            onChange()
         })
 
         selectedTagPosition.addOnPropertyChangedCallback(PropertyChangedCallback {
