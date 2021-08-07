@@ -31,12 +31,12 @@ class CurrencyVM: BaseObservable() {
         get() {
             if(quoteUSD == null) return emptyList()
             return listOf(
-                calculatePrice(quoteUSD!!.percent_change_90d),
-                calculatePrice(quoteUSD!!.percent_change_60d),
-                calculatePrice(quoteUSD!!.percent_change_30d),
-                calculatePrice(quoteUSD!!.percent_change_7d),
-                calculatePrice(quoteUSD!!.percent_change_24h),
-                calculatePrice(quoteUSD!!.percent_change_1h),
+                calculatePrice(quoteUSD!!.percentChange90d),
+                calculatePrice(quoteUSD!!.percentChange60d),
+                calculatePrice(quoteUSD!!.percentChange30d),
+                calculatePrice(quoteUSD!!.percentChange7d),
+                calculatePrice(quoteUSD!!.percentChange24h),
+                calculatePrice(quoteUSD!!.percentChange1h),
                 quoteUSD!!.price
             )
         }
