@@ -7,10 +7,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @BindingAdapter(value = ["usd", "prefix"], requireAll = false)
-fun customizeMoney(textView: TextView, money: Double, prefix: String? = null) {
-    val formattedUsd = "%.4f".format(money)
+fun TextView.usd(money: Double, prefix: String? = null) {
+    val formattedUsd = "$${"%.4f".format(money)}"
     val formattedText = if(prefix != null) prefix + formattedUsd else formattedUsd
-    textView.text = formattedText
+    text = formattedText
 }
 
 @BindingAdapter("percents")
