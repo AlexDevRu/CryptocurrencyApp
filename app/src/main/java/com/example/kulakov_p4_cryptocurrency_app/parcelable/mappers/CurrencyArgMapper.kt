@@ -10,7 +10,14 @@ object CurrencyArgMapper: IMapper<CurrencyArg, Currency> {
             entity.id,
             entity.name,
             entity.symbol,
-            entity.last_updated,
+            entity.lastUpdated,
+            entity.cmcRank,
+            entity.circulatingSupply,
+            entity.dateAdded,
+            entity.maxSupply,
+            entity.marketPairs,
+            entity.tags,
+            entity.totalSupply,
             entity.quote.mapValues { entry -> QuoteItemMapper.toModel(entry.value) }
         )
     }
@@ -20,7 +27,14 @@ object CurrencyArgMapper: IMapper<CurrencyArg, Currency> {
             model.id,
             model.name,
             model.symbol,
-            model.last_updated,
+            model.lastUpdated,
+            model.cmcRank,
+            model.circulatingSupply,
+            model.dateAdded,
+            model.maxSupply,
+            model.marketPairs,
+            model.tags,
+            model.totalSupply,
             model.quote.mapValues { entry -> QuoteItemMapper.fromModel(entry.value) }
         )
     }

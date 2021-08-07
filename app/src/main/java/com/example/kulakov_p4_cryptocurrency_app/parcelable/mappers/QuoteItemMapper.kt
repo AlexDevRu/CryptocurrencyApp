@@ -7,31 +7,31 @@ import com.example.kulakov_p4_cryptocurrency_app.parcelable.QuoteItemArg
 object QuoteItemMapper: IMapper<QuoteItemArg, QuoteItem> {
     override fun toModel(entity: QuoteItemArg): QuoteItem {
         return QuoteItem(
-            entity.last_updated,
-            entity.market_cap,
-            entity.percent_change_1h,
-            entity.percent_change_24h,
-            entity.percent_change_30d,
-            entity.percent_change_60d,
-            entity.percent_change_7d,
-            entity.percent_change_90d,
+            entity.lastUpdated,
+            entity.marketCap,
+            entity.percentChange1h,
+            entity.percentChange24h,
+            entity.percentChange7d,
+            entity.percentChange30d,
+            entity.percentChange60d,
+            entity.percentChange90d,
             entity.price,
-            entity.volume_24h
+            entity.volume24h
         )
     }
 
     override fun fromModel(model: QuoteItem): QuoteItemArg {
         return QuoteItemArg(
-            model.last_updated,
-            model.market_cap,
-            model.percent_change_1h,
-            model.percent_change_24h,
-            model.percent_change_30d,
-            model.percent_change_60d,
-            model.percent_change_7d,
-            model.percent_change_90d,
+            model.lastUpdated,
+            model.marketCap,
+            model.percentChange1h,
+            model.percentChange24h,
+            model.percentChange7d,
+            model.percentChange30d,
+            model.percentChange60d,
+            model.percentChange90d,
             model.price,
-            model.volume_24h
+            model.volume24h
         )
     }
 }
