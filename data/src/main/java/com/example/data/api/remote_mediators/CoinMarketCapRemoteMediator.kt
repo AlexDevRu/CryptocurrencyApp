@@ -8,17 +8,11 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
-import com.example.data.api.responses.CurrencyResponse
 import com.example.data.database.CurrencyDatabase
-import com.example.data.database.entities.CurrencyEntity
 import com.example.data.database.entities.CurrencyRemoteKeys
 import com.example.data.database.entities.CurrencyWithQuotes
-import com.example.data.mappers.CurrencyResponseMapper
-import com.example.data.mappers.QuoteItemMapper
-import com.example.domain.models.Currency
+import com.example.data.mappers.toEntity
 import com.example.domain.models.CurrencyParameters
-import com.example.domain.models.QuoteItem
-import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -163,12 +157,12 @@ class CoinMarketCapRemoteMediator(
 
                 val currList = mutableListOf<CurrencyWithQuotes>()
                 for(currency in currencies) {
-                    val quotes = QuoteItemMapper.fromModel(currency.quote)
-                    val cwithQuotes = CurrencyWithQuotes(
-                        CurrencyResponseMapper.toDbEntity(currency),
+                    val quotes = currency.quote.map { it.value.toEntity(it.key) }
+                    val currencyWithQuotes = CurrencyWithQuotes(
+                        currency.toEntity(),
                         quotes
                     )
-                    currList.add(cwithQuotes)
+                    currList.add(currencyWithQuotes)
                 }
                 currencyDatabase.currencyDao().insertAll(currList)
             }

@@ -1,14 +1,14 @@
 package com.example.domain.models
 
 data class QuoteItem(
-    val last_updated: String,
-    val market_cap: Double,
-    val percent_change_1h: Double,
-    val percent_change_24h: Double,
-    val percent_change_30d: Double,
-    val percent_change_60d: Double,
-    val percent_change_7d: Double,
-    val percent_change_90d: Double,
+    val lastUpdated: String,
+    val marketCap: Double,
+    val percentChange1h: Double,
+    val percentChange24h: Double,
+    val percentChange30d: Double,
+    val percentChange60d: Double,
+    val percentChange7d: Double,
+    val percentChange90d: Double,
     val price: Double,
-    val volume_24h: Double
+    val volume24h: Double
 )

@@ -1,29 +1,26 @@
 package com.example.data.mappers
 
 import com.example.data.database.entities.ArticleEntity
-import com.example.domain.mappers.IMapper
 import com.example.domain.models.news.Article
 
-object ArticleEntityMapper: IMapper<ArticleEntity, Article> {
-    override fun toModel(entity: ArticleEntity): Article {
-        return Article(
-            entity.sourceName,
-            entity.title,
-            entity.description,
-            entity.url,
-            entity.urlToImage,
-            entity.published
-        )
-    }
+fun ArticleEntity.toModel(): Article {
+    return Article(
+        sourceName,
+        title,
+        description,
+        url,
+        urlToImage,
+        published
+    )
+}
 
-    override fun fromModel(model: Article): ArticleEntity {
-        return ArticleEntity(
-            sourceName = model.sourceName,
-            title = model.title,
-            description = model.description,
-            url = model.url,
-            urlToImage = model.urlToImage,
-            published = model.published
-        )
-    }
+fun Article.toEntity(): ArticleEntity {
+    return ArticleEntity(
+        sourceName = sourceName,
+        title = title,
+        description = description,
+        url = url,
+        urlToImage = urlToImage,
+        published = published
+    )
 }

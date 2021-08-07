@@ -19,7 +19,7 @@ interface CurrencyDao {
         currencyId=currencies.id and
         name like :query and
         (price between :priceMin and :priceMax) and
-        (market_cap between :marketCapMin and :marketCapMax)""")
+        (marketCap between :marketCapMin and :marketCapMax)""")
     fun getCurrencies(
         query: String,
         priceMin: Double, priceMax: Double,
@@ -31,7 +31,7 @@ interface CurrencyDao {
     suspend fun getCurrencyById(id: Int): CurrencyWithQuotes?
 
 
-    @Query("select * from currencies order by last_updated desc limit 1")
+    @Query("select * from currencies order by lastUpdated desc limit 1")
     suspend fun getLatestCurrency(): CurrencyWithQuotes?
 
 

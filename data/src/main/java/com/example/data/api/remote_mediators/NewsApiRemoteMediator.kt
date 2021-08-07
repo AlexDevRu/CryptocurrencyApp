@@ -11,10 +11,9 @@ import com.example.data.api.NewsApiService
 import com.example.data.database.CurrencyDatabase
 import com.example.data.database.entities.ArticleEntity
 import com.example.data.database.entities.ArticleRemoteKeys
-import com.example.data.mappers.ArticleResponseMapper
+import com.example.data.mappers.toEntity
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.*
 
 @ExperimentalPagingApi
 class NewsApiRemoteMediator(
@@ -91,7 +90,7 @@ class NewsApiRemoteMediator(
 
             Log.d("asd", "news api ${page}")
 
-            val endOfPaginationReached = articles.isEmpty()
+            val endOfPaginationReached = articles.size < state.config.pageSize
 
             currencyDatabase.withTransaction {
                 // clear all tables in the database
@@ -103,9 +102,7 @@ class NewsApiRemoteMediator(
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 Log.d("asd", "nextKey $nextKey, prevKey $prevKey")
 
-                val dbEntities = ArticleResponseMapper.toEntity(articles)
-                for(a in dbEntities)
-                    a.id = UUID.randomUUID()
+                val dbEntities = articles.map { it.toEntity() }
 
                 val keys = dbEntities.map {
                     ArticleRemoteKeys(articleId = it.id, prevKey = prevKey, nextKey = nextKey)

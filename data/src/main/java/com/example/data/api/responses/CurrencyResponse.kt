@@ -11,7 +11,6 @@ data class CurrencyResponse(
     val max_supply: Double,
     val name: String,
     val num_market_pairs: Int,
-    val platform: Any,
     val quote: Map<String, QuoteItem>,
     val slug: String,
     val symbol: String,

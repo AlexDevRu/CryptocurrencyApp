@@ -20,4 +20,12 @@ class ArticleTypeConverters {
     fun fromDate(date: Date): Long {
         return date.time
     }
+    @TypeConverter
+    fun toStringList(string: String?): List<String>? {
+        return if(string.isNullOrEmpty()) null else string.split(";")
+    }
+    @TypeConverter
+    fun fromStringList(list: List<String>?): String? {
+        return if(list.isNullOrEmpty()) null else list.joinToString(";")
+    }
 }

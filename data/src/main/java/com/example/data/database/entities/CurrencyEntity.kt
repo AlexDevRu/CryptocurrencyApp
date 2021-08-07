@@ -9,5 +9,12 @@ data class CurrencyEntity(
     @PrimaryKey var id: Int,
     var name: String? = null,
     var symbol: String? = null,
-    var last_updated: Date
+    var lastUpdated: Date,
+    val cmcRank: Int = 0,
+    val circulatingSupply: Double = 0.0,
+    val dateAdded: Date = Date(),
+    val maxSupply: Double = 0.0,
+    val marketPairs: Int = 0,
+    val tags: List<String>? = null,
+    val totalSupply: Double = 0.0,
 )

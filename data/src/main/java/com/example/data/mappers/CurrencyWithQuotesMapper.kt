@@ -1,37 +1,37 @@
 package com.example.data.mappers
 
 import com.example.data.database.entities.CurrencyWithQuotes
-import com.example.domain.mappers.IMapper
 import com.example.domain.models.Currency
 import com.example.domain.models.QuoteItem
 
-object CurrencyWithQuotesMapper: IMapper<CurrencyWithQuotes, Currency> {
-    override fun toModel(entity: CurrencyWithQuotes): Currency {
-        val quotes = mutableMapOf<String, QuoteItem>()
-        for(quote in entity.quotes)
-            quotes.put(quote.key, QuoteItem(
-                last_updated = quote.last_updated,
-                market_cap = quote.market_cap,
-                percent_change_1h = quote.percent_change_1h,
-                percent_change_24h = quote.percent_change_24h,
-                percent_change_30d = quote.percent_change_30d,
-                percent_change_60d = quote.percent_change_60d,
-                percent_change_7d = quote.percent_change_7d,
-                percent_change_90d = quote.percent_change_90d,
-                price = quote.price,
-                volume_24h = quote.volume_24h
-            ))
+fun CurrencyWithQuotes.toModel(): Currency {
+    val quotes = mutableMapOf<String, QuoteItem>()
+    for(quote in quotes)
+        quotes.put(quote.key, QuoteItem(
+            lastUpdated = quote.value.lastUpdated,
+            marketCap = quote.value.marketCap,
+            percentChange1h = quote.value.percentChange1h,
+            percentChange24h = quote.value.percentChange24h,
+            percentChange7d = quote.value.percentChange7d,
+            percentChange30d = quote.value.percentChange30d,
+            percentChange60d = quote.value.percentChange60d,
+            percentChange90d = quote.value.percentChange90d,
+            price = quote.value.price,
+            volume24h = quote.value.volume24h
+        ))
 
-        return Currency(
-            entity.currency.id,
-            entity.currency.name,
-            entity.currency.symbol,
-            entity.currency.last_updated,
-            quotes
-        )
-    }
-
-    override fun fromModel(model: Currency): CurrencyWithQuotes {
-        TODO("Not yet implemented")
-    }
+    return Currency(
+        currency.id,
+        currency.name,
+        currency.symbol,
+        currency.lastUpdated,
+        currency.cmcRank,
+        currency.circulatingSupply,
+        currency.dateAdded,
+        currency.maxSupply,
+        currency.marketPairs,
+        currency.tags,
+        currency.totalSupply,
+        quotes
+    )
 }

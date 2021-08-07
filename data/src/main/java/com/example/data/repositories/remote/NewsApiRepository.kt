@@ -11,7 +11,7 @@ import com.example.domain.aliases.ArticleFlow
 import com.example.domain.repositories.remote.INewsApiRepository
 import javax.inject.Inject
 import androidx.paging.map
-import com.example.data.mappers.ArticleMapper
+import com.example.data.mappers.toModel
 import kotlinx.coroutines.flow.map
 
 class NewsApiRepository @Inject constructor(
@@ -39,7 +39,7 @@ class NewsApiRepository @Inject constructor(
             }
         ).flow.map { pagingData ->
             pagingData.map {
-                ArticleMapper.toModel(it)
+                it.toModel()
             }
         }
     }

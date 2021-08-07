@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.example.data.api.ApiConstants
 import com.example.data.api.ApiConstants.STARTING_PAGE_INDEX
 import com.example.data.api.NewsApiService
-import com.example.data.mappers.ArticleResponseMapper
+import com.example.data.mappers.toModel
 import com.example.domain.models.news.Article
 import retrofit2.HttpException
 import java.io.IOException
@@ -26,9 +26,9 @@ class NewsPageSource(private val service: NewsApiService,
         return try {
             val response = service.getNewsByQuery(query, position, params.loadSize).articles
 
-            val photos = ArticleResponseMapper.toModel(response)
+            val articles = response.map { it.toModel() }
 
-            val nextKey = if (photos.isNullOrEmpty()) {
+            val nextKey = if (articles.isNullOrEmpty()) {
                 null
             } else {
                 // initial load size = 3 * NETWORK_PAGE_SIZE
@@ -36,7 +36,7 @@ class NewsPageSource(private val service: NewsApiService,
                 position + (params.loadSize / ApiConstants.NEWS_PER_PAGE)
             }
             LoadResult.Page(
-                data = photos,
+                data = articles,
                 prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
                 nextKey = nextKey
             )

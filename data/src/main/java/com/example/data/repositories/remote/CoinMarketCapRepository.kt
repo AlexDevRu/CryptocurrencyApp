@@ -9,7 +9,8 @@ import com.example.data.api.CoinMarketCapService
 import com.example.data.api.remote_mediators.CoinMarketCapRemoteMediator
 import com.example.data.database.CurrencyDatabase
 import com.example.data.database.entities.CurrencyWithQuotes
-import com.example.data.mappers.*
+import com.example.data.mappers.toEntity
+import com.example.data.mappers.toModel
 import com.example.domain.aliases.CurrencyFlow
 import com.example.domain.common.Result
 import com.example.domain.models.Currency
@@ -49,15 +50,16 @@ class CoinMarketCapRepository @Inject constructor(
             }
         ).flow.map { pagingData ->
             pagingData.map {
-                CurrencyWithQuotesMapper.toModel(it)
+                it.toModel()
             }
         }
     }
 
     override suspend fun getCurrencyInfo(id: Int): Result<CurrencyMetadata> {
         return try {
-            val response = service.getCurrencyInfo(id.toString())
-            val result = CurrencyMetadataMapper.toModel(response.data[id.toString()]!!)
+            val strId = id.toString()
+            val response = service.getCurrencyInfo(strId)
+            val result = response.data[strId]!!.toModel()
             Result.Success(result)
         } catch (exception: IOException) {
             Result.Failure(exception)
@@ -72,10 +74,10 @@ class CoinMarketCapRepository @Inject constructor(
         try {
             val currencyInDb = currencyDatabase.currencyDao().getLatestCurrency()
             if(currencyInDb != null)
-                return Result.Success(CurrencyWithQuotesMapper.toModel(currencyInDb))
+                return Result.Success(currencyInDb.toModel())
 
             val response = service.getLatestCurrency()
-            return Result.Success(CurrencyResponseMapper.toModel(response.data.first()))
+            return Result.Success(response.data.first().toModel())
         } catch (exception: IOException) {
             return Result.Failure(exception)
         } catch (exception: HttpException) {
@@ -89,11 +91,11 @@ class CoinMarketCapRepository @Inject constructor(
         return try {
             val response = service.getCurrencyById(id.toString()).data[id.toString()]!!
             val currencyWithQuotes = CurrencyWithQuotes(
-                CurrencyResponseMapper.toDbEntity(response),
-                QuoteItemMapper.fromModel(response.quote)
+                response.toEntity(),
+                response.quote.map { it.value.toEntity(it.key) }
             )
             currencyDatabase.currencyDao().updateCurrency(currencyWithQuotes)
-            Result.Success(CurrencyWithQuotesMapper.toModel(currencyWithQuotes))
+            Result.Success(currencyWithQuotes.toModel())
         } catch (exception: IOException) {
             return getCurrencyFromDb(id)
         } catch (exception: HttpException) {
@@ -106,7 +108,7 @@ class CoinMarketCapRepository @Inject constructor(
     private suspend fun getCurrencyFromDb(id: Int): Result<Currency> {
         return try {
             val currencyWithQuotes = currencyDatabase.currencyDao().getCurrencyById(id)!!
-            Result.Success(CurrencyWithQuotesMapper.toModel(currencyWithQuotes))
+            Result.Success(currencyWithQuotes.toModel())
         } catch (e: IOException) {
             Result.Failure(e)
         }

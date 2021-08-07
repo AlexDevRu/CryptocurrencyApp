@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
 import com.example.data.api.responses.CurrencyResponse
-import com.example.data.mappers.CurrencyResponseMapper
+import com.example.data.mappers.toModel
 import com.example.domain.models.Currency
 import com.example.domain.models.CurrencyParameters
 import retrofit2.HttpException
@@ -40,8 +40,8 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
             ).data*/ emptyList<CurrencyResponse>()
 
             val query = parameters.searchQuery.lowercase()
-            val currencyList = CurrencyResponseMapper.toModel(currencyResult).filter {
-                it.name!!.lowercase().contains(query)
+            val currencyList = currencyResult.filter {
+                it.name.lowercase().contains(query)
             }
 
             val nextKey = if (currencyList.isNullOrEmpty()) {
@@ -50,7 +50,7 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
                 position + params.loadSize
             }
             LoadResult.Page(
-                data = currencyList,
+                data = currencyList.map { it.toModel() },
                 prevKey = if (position == ApiConstants.STARTING_PAGE_INDEX) null else position - params.loadSize,
                 nextKey = nextKey
             )
