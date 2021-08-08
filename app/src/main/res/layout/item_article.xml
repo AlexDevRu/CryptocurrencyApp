@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="kotlin.jvm.functions.Function0" />
 
         <variable
@@ -16,37 +17,36 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:onClick="@{() -> onClick.invoke()}"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:layout_margin="6dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_indent"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> onClick.invoke()}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
-            android:padding="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:padding="@dimen/base_indent">
 
             <ImageView
                 android:id="@+id/articleImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:srcUrl="@{article.urlToImage}"
+                android:layout_width="@dimen/article_image_size"
+                android:layout_height="@dimen/article_image_size"
+                android:contentDescription="@string/article_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:srcUrl="@{article.urlToImage}"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/articleTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/base_indent"
                 android:text="@{article.title}"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/articleImage"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/articleImage"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Ariana Grande is headlining Fortnite’s next concert series" />
 
@@ -54,20 +54,20 @@
                 android:id="@+id/published"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="12sp"
+                android:layout_marginTop="@dimen/base_indent"
                 android:textColor="@color/gray"
+                android:textSize="@dimen/small_textsize"
                 app:date="@{article.published}"
-                tools:text="27 февраля 2021"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/barrier" />
+                app:layout_constraintTop_toBottomOf="@id/barrier"
+                tools:text="27 февраля 2021" />
 
             <TextView
                 android:id="@+id/source"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/base_indent"
                 android:text="@{article.sourceName}"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/base_indent"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="@{article.description}"

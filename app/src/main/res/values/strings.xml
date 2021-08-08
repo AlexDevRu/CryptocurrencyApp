@@ -4,6 +4,22 @@
 
     <string name="all">Все</string>
     <string name="market_cap">Рыночная капитализация</string>
+    <string name="volume_24h">Объем 24ч</string>
+    <string name="added">Добавлено</string>
+    <string name="updated">Обновлено</string>
+    <string name="circulating">В обращении</string>
+    <string name="total_supply">Общее количество</string>
+    <string name="max_supply">Максимальное количество</string>
+    <string name="cmc_rank">Рейтинг</string>
+    <string name="num_market_pairs">Рыночные пары</string>
+    <string name="tags">Теги</string>
+
+    <string name="error">Ошибка</string>
+
+    <string-array name="currency_data_table_header">
+        <item>Название</item>
+        <item>Значение</item>
+    </string-array>
 
     <string-array name="currency_types">
         <item>@string/all</item>
@@ -41,4 +57,21 @@
     </string-array>
 
     <string name="no_data">Нет данных</string>
+    <string name="cryptocurrency_icon">Иконка криптовалюты</string>
+    <string name="buy_cryptocurrency">Купить криптовалюту</string>
+    <string name="links">Ссылки</string>
+    <string name="icon">Иконка</string>
+    <string name="web_site">веб-сайт</string>
+    <string name="tech_documentation">тех. документация</string>
+    <string name="twitter">твиттер</string>
+    <string name="reddit">реддит</string>
+    <string name="message_board">доска сообщений</string>
+    <string name="announcement">аннонсмент</string>
+    <string name="chat">чат</string>
+    <string name="explorer">проводник</string>
+    <string name="source_code">исходный код</string>
+    <string name="logo">Логотип</string>
+    <string name="article_image">Картинка статьи</string>
+    <string name="retry">Повторить</string>
+    <string name="search_hint">Поиск...</string>
 </resources>

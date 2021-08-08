@@ -2,13 +2,8 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tooltip"
+    style="@style/lineGraphTooltipStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="4dp"
-    tools:text="4856456"
-    android:textSize="14sp"
-    android:background="@color/black"
-    android:textColor="@color/white"
-    android:ellipsize="end"
-    android:singleLine="true"
-    android:textAppearance="?android:attr/textAppearanceSmall" />
+    android:padding="@dimen/small_indent"
+    tools:text="4856456" />

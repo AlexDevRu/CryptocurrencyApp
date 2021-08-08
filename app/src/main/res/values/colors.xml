@@ -15,4 +15,5 @@
     <color name="orange">#FF9800</color>
     <color name="pink">#FF5CF2</color>
     <color name="light_green">#8BC34A</color>
+    <color name="ripple_color">#33AAAAAA</color>
 </resources>

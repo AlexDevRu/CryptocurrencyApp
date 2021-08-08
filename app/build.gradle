@@ -88,6 +88,8 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.florent37:expansionpanel:1.2.4'
+    implementation 'com.github.salehyarahmadi:DataTable:v1.0.0'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

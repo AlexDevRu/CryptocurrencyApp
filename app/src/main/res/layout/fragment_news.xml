@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.NewsVM" />
@@ -18,18 +19,18 @@
             layout="@layout/search_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:query="@{viewModel.searchQuery}"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:query="@{viewModel.searchQuery}" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/newsSwipeList"
-            app:onRefresh="@{() -> viewModel.retry()}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:visibility="@{!viewModel.loading}"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
+            app:onRefresh="@{() -> viewModel.retry()}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/newsList"
@@ -64,5 +65,5 @@
             app:onRetryClick="@{() -> viewModel.retry()}"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    
+
 </layout>

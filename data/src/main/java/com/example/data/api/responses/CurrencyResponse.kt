@@ -1,7 +1,5 @@
 package com.example.data.api.responses
 
-import com.example.domain.models.QuoteItem
-
 data class CurrencyResponse(
     val circulating_supply: Double,
     val cmc_rank: Int,
@@ -11,7 +9,7 @@ data class CurrencyResponse(
     val max_supply: Double,
     val name: String,
     val num_market_pairs: Int,
-    val quote: Map<String, QuoteItem>,
+    val quote: Map<String, QuoteItemResponse>,
     val slug: String,
     val symbol: String,
     val tags: List<String>,

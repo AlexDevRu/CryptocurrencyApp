@@ -7,7 +7,6 @@ import com.example.kulakov_p4_cryptocurrency_app.parcelable.QuoteItemArg
 object QuoteItemMapper: IMapper<QuoteItemArg, QuoteItem> {
     override fun toModel(entity: QuoteItemArg): QuoteItem {
         return QuoteItem(
-            entity.lastUpdated,
             entity.marketCap,
             entity.percentChange1h,
             entity.percentChange24h,
@@ -22,7 +21,6 @@ object QuoteItemMapper: IMapper<QuoteItemArg, QuoteItem> {
 
     override fun fromModel(model: QuoteItem): QuoteItemArg {
         return QuoteItemArg(
-            model.lastUpdated,
             model.marketCap,
             model.percentChange1h,
             model.percentChange24h,

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM" />
@@ -14,36 +15,36 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:onClick="@{() -> handler.onItemClick()}"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:layout_margin="6dp"
-        app:cardElevation="4dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_indent"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> handler.onItemClick()}"
+        app:cardElevation="@dimen/currency_item_elevation">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:padding="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/medium_indent">
 
             <ImageView
                 android:id="@+id/currencyImageView"
-                tools:background="@color/black"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                app:srcUrl="@{viewModel.thumbUrl}"
+                android:layout_width="@dimen/currency_thumb_size"
+                android:layout_height="@dimen/currency_thumb_size"
+                android:contentDescription="@string/cryptocurrency_icon"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcUrl="@{viewModel.thumbUrl}"
+                tools:background="@color/black" />
 
             <TextView
                 android:id="@+id/currencyTitle"
+                style="@style/headerStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/medium_indent"
+                android:layout_marginEnd="@dimen/medium_indent"
                 android:text="@{viewModel.titleWithSymbol}"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/currencyPercentChange1h"
                 app:layout_constraintStart_toEndOf="@id/currencyImageView"
                 app:layout_constraintTop_toTopOf="@id/currencyImageView"
@@ -53,24 +54,23 @@
                 android:id="@+id/currencyPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:usd="@{viewModel.quoteUSD.price}"
+                android:layout_marginEnd="@dimen/medium_indent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:usd="@{viewModel.quoteUSD.price}"
                 tools:text="$3465" />
 
             <TextView
                 android:id="@+id/currencyPercentChange1h"
+                style="@style/currencyPercentChangeStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:padding="4dp"
+                android:layout_marginTop="@dimen/small_indent"
                 app:layout_constraintEnd_toEndOf="@id/currencyPrice"
                 app:layout_constraintTop_toBottomOf="@id/currencyPrice"
-                app:percents="@{viewModel.quoteUSD.percent_change_1h}"
-                tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
+                app:percents="@{viewModel.quoteUSD.percentChange1h}"
                 tools:background="@drawable/positive_percent_bg"
+                tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
                 tools:text="11.1234%" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.CurrencyDetailVM" />
@@ -13,357 +14,325 @@
             type="com.example.kulakov_p4_cryptocurrency_app.views.fragments.CurrencyDetailFragment.Handler" />
     </data>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:snackbarBackground="@{@color/red}"
+        app:snackbarMessage="@{viewModel.currencyError}">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:padding="16dp"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            app:onRefresh="@{viewModel::updateCurrency}">
 
-
-            <ImageView
-                android:id="@+id/currencyImageView"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                tools:background="@color/black"
-                app:srcUrl="@{viewModel.currencyVM.thumbUrl}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/currencyTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:text="@{viewModel.currencyVM.titleWithSymbol}"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:transitionName="currencyTitle"
-                app:layout_constraintEnd_toStartOf="@id/barrier"
-                app:layout_constraintStart_toEndOf="@id/currencyImageView"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="sldkfjklnmnmvbnsfj" />
-
-            <TextView
-                android:id="@+id/currencyPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textSize="16sp"
-                app:usd="@{viewModel.currencyVM.quoteUSD.price}"
-                tools:text="$3454" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/barrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="start"
-                app:constraint_referenced_ids="currencyPrice,currencyPercentChange1h" />
-
-            <TextView
-                android:id="@+id/currencyPercentChange1h"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/white"
-                android:padding="4dp"
-                app:layout_constraintEnd_toEndOf="@id/currencyPrice"
-                app:layout_constraintTop_toBottomOf="@id/currencyPrice"
-                android:textSize="16sp"
-                app:percents="@{viewModel.currencyVM.quoteUSD.percent_change_1h}"
-                tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
-                tools:background="@drawable/positive_percent_bg"
-                tools:text="0.12%" />
-
-            <Button
-                android:id="@+id/buyButton"
-                android:onClick="@{() -> handler.onBuyCryptoCurrency()}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/currencyImageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:backgroundTint="@color/black"
-                android:text="Купить криптовалюту" />
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.metadataLoading}"
-                tools:visibility="visible"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/marketCapTextView" />
-
-            <com.example.kulakov_p4_cryptocurrency_app.views.custom.CustomLineChart
-                android:id="@+id/priceGraph"
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:data="@{viewModel.currencyVM.priceDataList}"
-                app:labels="@{@stringArray/graph_labels}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/buyButton" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/marketCapTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@{`Рыночная капитализация: $` + viewModel.currencyVM.quoteUSD.market_cap}"
-                app:layout_constraintTop_toBottomOf="@id/priceGraph"
-                tools:text="Рыночная капитализация: $46567" />
-
-            <LinearLayout
-                android:id="@+id/description"
-                app:layout_constraintTop_toBottomOf="@id/marketCapTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="20dp"
-                android:visibility="@{viewModel.metadataGetSuccessfull}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <com.github.florent37.expansionpanel.ExpansionHeader
-                    android:layout_height="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    app:expansion_headerIndicator="@id/descriptionHeaderIndicator"
-                    app:expansion_layout="@id/descriptionLayout"
-                    app:expansion_toggleOnClick="true">
-
-                    <TextView
-                        android:id="@+id/descriptionHeader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Описание"
-                        android:textStyle="bold"
-                        android:textSize="20sp" />
-
-                    <!-- HEADER INDICATOR -->
-                    <ImageView
-                        android:adjustViewBounds="true"
-                        android:id="@+id/descriptionHeaderIndicator"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_width="wrap_content"
-                        app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
-
-                </com.github.florent37.expansionpanel.ExpansionHeader>
-
-                <com.github.florent37.expansionpanel.ExpansionLayout
-                    android:id="@+id/descriptionLayout"
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
+                    android:paddingTop="@dimen/big_indent"
+                    android:paddingBottom="@dimen/big_indent">
+
+                    <ImageView
+                        android:id="@+id/currencyImageView"
+                        android:layout_width="@dimen/currency_thumb_big_size"
+                        android:layout_height="@dimen/currency_thumb_big_size"
+                        android:layout_marginStart="@dimen/big_indent"
+                        android:contentDescription="@string/cryptocurrency_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcUrl="@{viewModel.currencyVM.thumbUrl}"
+                        tools:background="@color/black" />
 
                     <TextView
-                        android:id="@+id/descriptionBody"
+                        android:id="@+id/currencyTitle"
+                        style="@style/headerStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/base_indent"
+                        android:layout_marginEnd="@dimen/base_indent"
+                        android:text="@{viewModel.currencyVM.titleWithSymbol}"
+                        android:transitionName="currencyTitle"
+                        app:layout_constraintEnd_toStartOf="@id/barrier"
+                        app:layout_constraintStart_toEndOf="@id/currencyImageView"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="sldkfjklnmnmvbnsfj" />
+
+                    <TextView
+                        android:id="@+id/currencyPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/big_indent"
+                        android:textSize="@dimen/big_textsize"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:usd="@{viewModel.currencyVM.quoteUSD.price}"
+                        tools:text="$3454" />
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/barrier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="start"
+                        app:constraint_referenced_ids="currencyPrice,currencyPercentChange1h" />
+
+                    <TextView
+                        android:id="@+id/currencyPercentChange1h"
+                        style="@style/currencyPercentChangeStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_indent"
+                        android:textSize="@dimen/big_textsize"
+                        app:layout_constraintEnd_toEndOf="@id/currencyPrice"
+                        app:layout_constraintTop_toBottomOf="@id/currencyPrice"
+                        app:percents="@{viewModel.currencyVM.quoteUSD.percentChange1h}"
+                        tools:background="@drawable/positive_percent_bg"
+                        tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
+                        tools:text="0.12%" />
+
+                    <Button
+                        android:id="@+id/buyButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/black"
+                        android:onClick="@{() -> handler.onBuyCryptoCurrency()}"
+                        android:text="@string/buy_cryptocurrency"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/currencyImageView" />
+
+                    <com.example.kulakov_p4_cryptocurrency_app.views.custom.CustomLineChart
+                        android:id="@+id/priceGraph"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:visibility="@{viewModel.metadataGetSuccessfull}"
-                        android:textSize="16sp"
-                        android:lineSpacingMultiplier="1.3"
-                        android:autoLink="all"
-                        android:linksClickable="true"
-                        android:textColorLink="@color/blue"
-                        android:text="@{viewModel.currencyMetadataVM.description}"
-                        tools:text="sdlfjdfjldfgdfgdfgdfgdfgdfgdfgdfgdgfdfgdfgdfgdfgsdfdsfsfsdfdfsdfj" />
+                        android:layout_marginStart="@dimen/big_indent"
+                        android:layout_marginEnd="@dimen/big_indent"
+                        app:data="@{viewModel.currencyVM.priceDataList}"
+                        app:labels="@{@stringArray/graph_labels}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/buyButton" />
 
-                </com.github.florent37.expansionpanel.ExpansionLayout>
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:visibility="@{viewModel.metadataGetSuccessfull}"
-                app:layout_constraintTop_toBottomOf="@id/description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.github.florent37.expansionpanel.ExpansionHeader
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    app:expansion_headerIndicator="@id/linksHeaderIndicator"
-                    app:expansion_layout="@id/linksLayout"
-                    app:expansion_toggleOnClick="true">
+                    <ir.androidexception.datatable.DataTable
+                        android:id="@+id/currencyDataTable"
+                        style="@style/dataTableStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/big_indent"
+                        android:layout_marginTop="@dimen/bigger_indent"
+                        android:layout_marginEnd="@dimen/big_indent"
+                        app:headerList="@{@stringArray/currency_data_table_header}"
+                        app:layout_constraintTop_toBottomOf="@id/priceGraph"
+                        app:rowsList="@{viewModel.currencyData}" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tagsHeader"
+                        style="@style/headerStyle"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:text="Ссылки"/>
+                        android:layout_marginStart="@dimen/bigger_indent"
+                        android:layout_marginTop="@dimen/bigger_indent"
+                        android:layout_marginEnd="@dimen/bigger_indent"
+                        android:text="@string/tags"
+                        android:visibility="@{!viewModel.currencyVM.currency.tags.empty}"
+                        app:layout_constraintTop_toBottomOf="@id/currencyDataTable" />
 
-                    <!-- HEADER INDICATOR -->
-                    <ImageView
-                        android:adjustViewBounds="true"
-                        android:id="@+id/linksHeaderIndicator"
-                        android:layout_gravity="center_vertical|end"
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/tagsContainer"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_width="wrap_content"
-                        app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+                        android:layout_marginStart="@dimen/big_indent"
+                        android:layout_marginTop="@dimen/medium_indent"
+                        android:layout_marginEnd="@dimen/big_indent"
+                        app:elements="@{viewModel.currencyVM.currency.tags}"
+                        app:flexWrap="wrap"
+                        app:layout_constraintTop_toBottomOf="@id/tagsHeader" />
 
-
-                </com.github.florent37.expansionpanel.ExpansionHeader>
-
-                <com.github.florent37.expansionpanel.ExpansionLayout
-                    android:id="@+id/linksLayout"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/big_indent"
+                        android:layout_marginTop="@dimen/bigger_indent"
+                        android:layout_marginEnd="@dimen/big_indent"
+                        android:text="@{viewModel.currencyMetadataVM.description}"
+                        android:textSize="@dimen/big_textsize"
+                        android:visibility="@{viewModel.metadataGetSuccessfull}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tagsContainer"
+                        tools:text="sdlfjdfjldfgdfgdfgdfgdgsdfdsfsfsdfdfsdfj" />
 
                     <LinearLayout
+                        android:id="@+id/currencyLinksContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginStart="@dimen/big_indent"
+                        android:layout_marginTop="@dimen/medium_indent"
+                        android:layout_marginEnd="@dimen/big_indent"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.metadataGetSuccessfull}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/description">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/websiteButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/purple_700"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/purple_700"
-                            app:icon="@drawable/ic_web"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.websiteUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.websiteUrls != null &amp;&amp; !viewModel.currencyMetadataVM.websiteUrls.empty}"
+                        <com.github.florent37.expansionpanel.ExpansionHeader
+                            android:id="@+id/currencyLinks"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="веб-сайт" />
+                            app:expansion_headerIndicator="@id/linksHeaderIndicator"
+                            app:expansion_layout="@id/linksLayout"
+                            app:expansion_toggleOnClick="true">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/techDocButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/green"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/green"
-                            app:icon="@drawable/ic_tech_doc"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.technicalDocUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.technicalDocUrls != null &amp;&amp; !viewModel.currencyMetadataVM.technicalDocUrls.empty}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="тех. документация" />
+                            <TextView
+                                style="@style/headerStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/links" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/twitterButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/blue"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/blue"
-                            app:icon="@drawable/ic_twitter"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.twitterUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.twitterUrls != null &amp;&amp; !viewModel.currencyMetadataVM.twitterUrls.empty}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="твиттер" />
+                            <ImageView
+                                android:id="@+id/linksHeaderIndicator"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical|end"
+                                android:layout_marginStart="@dimen/big_indent"
+                                android:contentDescription="@string/icon"
+                                app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/redditButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/red"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/red"
-                            app:icon="@drawable/ic_reddit"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.redditUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.redditUrls != null &amp;&amp; !viewModel.currencyMetadataVM.redditUrls.empty}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="реддит" />
+                        </com.github.florent37.expansionpanel.ExpansionHeader>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/messageBoardButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/light_green"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/light_green"
-                            app:icon="@drawable/ic_message_board"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.messageBoardUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.messageBoardUrls != null &amp;&amp; !viewModel.currencyMetadataVM.messageBoardUrls.empty}"
+                        <com.github.florent37.expansionpanel.ExpansionLayout
+                            android:id="@+id/linksLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="доска сообщений" />
+                            android:layout_height="wrap_content">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/announcementButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/orange"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/orange"
-                            app:icon="@drawable/ic_announcement"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.announcementUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.announcementUrls != null &amp;&amp; !viewModel.currencyMetadataVM.announcementUrls.empty}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="аннонсмент" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/chatButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/teal_700"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/teal_700"
-                            app:icon="@drawable/ic_chat"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.chatUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.chatUrls != null &amp;&amp; !viewModel.currencyMetadataVM.chatUrls.empty}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="чат" />
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/websiteButton"
+                                    style="@style/websiteLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.websiteUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.websiteUrls != null &amp;&amp; !viewModel.currencyMetadataVM.websiteUrls.empty}" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/explorerButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/pink"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/pink"
-                            app:icon="@drawable/ic_explorer"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.explorerUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.explorerUrls != null &amp;&amp; !viewModel.currencyMetadataVM.explorerUrls.empty}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="проводник" />
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/techDocButton"
+                                    style="@style/techDocLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.technicalDocUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.technicalDocUrls != null &amp;&amp; !viewModel.currencyMetadataVM.technicalDocUrls.empty}" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/sourceCodeButton"
-                            style="@style/currencyDetailLinkStyle"
-                            android:textColor="@color/black"
-                            android:layout_margin="4dp"
-                            app:strokeColor="@color/black"
-                            app:icon="@drawable/ic_code"
-                            android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.sourceCodeUrls)}"
-                            android:visibility="@{viewModel.currencyMetadataVM.sourceCodeUrls != null &amp;&amp; !viewModel.currencyMetadataVM.sourceCodeUrls.empty}"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="исходный код" />
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/twitterButton"
+                                    style="@style/twitterLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.twitterUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.twitterUrls != null &amp;&amp; !viewModel.currencyMetadataVM.twitterUrls.empty}" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/redditButton"
+                                    style="@style/redditLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.redditUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.redditUrls != null &amp;&amp; !viewModel.currencyMetadataVM.redditUrls.empty}" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/messageBoardButton"
+                                    style="@style/messageBoardLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.messageBoardUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.messageBoardUrls != null &amp;&amp; !viewModel.currencyMetadataVM.messageBoardUrls.empty}" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/announcementButton"
+                                    style="@style/announcementLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.announcementUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.announcementUrls != null &amp;&amp; !viewModel.currencyMetadataVM.announcementUrls.empty}" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/chatButton"
+                                    style="@style/chatLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.chatUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.chatUrls != null &amp;&amp; !viewModel.currencyMetadataVM.chatUrls.empty}" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/explorerButton"
+                                    style="@style/explorerLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.explorerUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.explorerUrls != null &amp;&amp; !viewModel.currencyMetadataVM.explorerUrls.empty}" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/sourceCodeButton"
+                                    style="@style/sourceCodeLinkStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/small_indent"
+                                    android:onClick="@{() -> handler.onLinkClick(viewModel.currencyMetadataVM.sourceCodeUrls)}"
+                                    android:visibility="@{viewModel.currencyMetadataVM.sourceCodeUrls != null &amp;&amp; !viewModel.currencyMetadataVM.sourceCodeUrls.empty}" />
+
+                            </LinearLayout>
+
+                        </com.github.florent37.expansionpanel.ExpansionLayout>
 
                     </LinearLayout>
 
-                </com.github.florent37.expansionpanel.ExpansionLayout>
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/base_indent"
+                        android:visibility="@{viewModel.metadataLoading}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tagsContainer"
+                        tools:visibility="visible" />
 
-            </LinearLayout>
+                    <include
+                        layout="@layout/item_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/base_indent"
+                        android:visibility="@{viewModel.metadataError != null}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tagsContainer"
+                        app:message="@{viewModel.metadataError}"
+                        app:onRetryClick="@{() -> viewModel.getMetadata()}"
+                        tools:visibility="gone" />
 
-            <include
-                layout="@layout/item_error"
-                app:message="@{viewModel.metadataError}"
-                app:onRetryClick="@{() -> viewModel.getMetadata()}"
-                android:visibility="@{viewModel.metadataError != null}"
-                tools:visibility="visible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/marketCapTextView" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.currencyUpdated}"
+            tools:visibility="visible" />
 
-    </ScrollView>
+    </FrameLayout>
 
 </layout>

@@ -25,7 +25,7 @@ fun CurrencyResponse.toModel(): Currency {
         num_market_pairs,
         tags,
         total_supply,
-        quote
+        quote.mapValues { it.value.toModel() }
     )
 }
 

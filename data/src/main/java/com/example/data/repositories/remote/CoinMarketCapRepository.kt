@@ -113,4 +113,8 @@ class CoinMarketCapRepository @Inject constructor(
             Result.Failure(e)
         }
     }
+
+    /*fun searchCurrencyByQuery(): Result<List<Currency>> {
+
+    }*/
 }

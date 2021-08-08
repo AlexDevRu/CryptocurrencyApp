@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.SignInVM" />
@@ -21,48 +22,46 @@
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/logo"
             android:src="@drawable/splash_icon"
-            app:layout_constraintBottom_toTopOf="@+id/signInTextView"
+            app:layout_constraintBottom_toTopOf="@id/signInTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/signInTextView"
+            style="@style/signInTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_in"
-            android:textSize="@dimen/sign_in_textsize"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/icon"
-            app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
+            app:layout_constraintBottom_toTopOf="@id/sign_in_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/icon" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
-            android:onClick="@{() -> handler.onSignIn()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> handler.onSignIn()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            style="@style/signInErrorStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/bigger_indent"
             android:gravity="center"
-            android:layout_margin="20dp"
             android:text="@{viewModel.error}"
-            android:textColor="@color/red"
-            android:textSize="@dimen/error_sign_in_textsize"
-            android:textStyle="bold"
             android:visibility="@{viewModel.error != null}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_button"
+            app:layout_constraintTop_toBottomOf="@id/sign_in_button"
             tools:text="error" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

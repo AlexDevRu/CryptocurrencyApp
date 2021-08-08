@@ -137,7 +137,8 @@ class CoinMarketCapRemoteMediator(
 
             delay(4000)*/
 
-            Log.w("asd", "currencies ${currencies.map { it.id }}")
+            Log.w("asd", "currencies ${currencies}")
+            Log.w("asd", "currencies quote ${currencies[0].quote}")
 
             val endOfPaginationReached = currencies.size < state.config.pageSize
 
@@ -155,16 +156,16 @@ class CoinMarketCapRemoteMediator(
                 }
                 currencyDatabase.currencyRemoteKeysDao().insertAll(keys)
 
-                val currList = mutableListOf<CurrencyWithQuotes>()
+                val entityList = mutableListOf<CurrencyWithQuotes>()
                 for(currency in currencies) {
                     val quotes = currency.quote.map { it.value.toEntity(it.key) }
                     val currencyWithQuotes = CurrencyWithQuotes(
                         currency.toEntity(),
                         quotes
                     )
-                    currList.add(currencyWithQuotes)
+                    entityList.add(currencyWithQuotes)
                 }
-                currencyDatabase.currencyDao().insertAll(currList)
+                currencyDatabase.currencyDao().insertAll(entityList)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: IOException) {

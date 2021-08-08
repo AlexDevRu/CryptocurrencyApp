@@ -70,6 +70,14 @@ class CurrencyDetailFragment: BaseFragment<FragmentCurrencyDetailBinding>
                 dialog.show()
             }
         }
+
+        binding.currencyLinks.addListener { _, isExpanded ->
+            if(isExpanded) binding.scrollView.smoothScrollTo(
+                binding.currencyLinksContainer.x.toInt(),
+                binding.currencyLinksContainer.y.toInt(),
+                1000
+            )
+        }
     }
 
     private fun openLink(link: String) {

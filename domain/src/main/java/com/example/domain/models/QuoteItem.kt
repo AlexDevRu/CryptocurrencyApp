@@ -1,7 +1,6 @@
 package com.example.domain.models
 
 data class QuoteItem(
-    val lastUpdated: String,
     val marketCap: Double,
     val percentChange1h: Double,
     val percentChange24h: Double,

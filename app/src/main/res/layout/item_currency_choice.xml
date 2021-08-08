@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM" />
@@ -14,34 +15,33 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:onClick="@{() -> handler.onItemClick()}"
-        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> handler.onItemClick()}"
+        android:padding="@dimen/base_indent">
 
         <ImageView
             android:id="@+id/currencyImageView"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            app:srcUrl="@{viewModel.thumbUrl}"
+            android:layout_width="@dimen/currency_thumb_size"
+            android:layout_height="@dimen/currency_thumb_size"
+            android:contentDescription="@string/cryptocurrency_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:srcUrl="@{viewModel.thumbUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/currencyTitle"
+            style="@style/headerStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:layout_marginStart="@dimen/base_indent"
+            android:text="@{viewModel.titleWithSymbol}"
             app:layout_constraintBottom_toBottomOf="@id/currencyImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/currencyImageView"
             app:layout_constraintTop_toTopOf="@id/currencyImageView"
-            android:text="@{viewModel.titleWithSymbol}"
-            tools:text="TextView" />
+            tools:text="Bitcoin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

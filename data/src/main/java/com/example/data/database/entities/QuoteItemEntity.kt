@@ -14,7 +14,6 @@ import java.util.*
 data class QuoteItemEntity(
     @PrimaryKey var id: UUID = UUID.randomUUID(),
     var key: String,
-    var lastUpdated: String,
     var marketCap: Double,
     var percentChange1h: Double,
     var percentChange24h: Double,

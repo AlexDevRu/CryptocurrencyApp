@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.ConverterVM" />
@@ -14,111 +15,111 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="@dimen/big_indent">
 
         <ImageView
-            android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/fromCurrencyImageView"
+            android:layout_width="@dimen/currency_thumb_converter_size"
+            android:layout_height="@dimen/currency_thumb_converter_size"
+            android:contentDescription="@string/cryptocurrency_icon"
             android:onClick="@{() -> handler.onFirstItemClick()}"
-            app:srcUrl="@{viewModel.fromCurrency.thumbUrl}"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:srcUrl="@{viewModel.fromCurrency.thumbUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/toCurrencyImageView"
+            android:layout_width="@dimen/currency_thumb_converter_size"
+            android:layout_height="@dimen/currency_thumb_converter_size"
+            android:layout_marginTop="@dimen/big_indent"
+            android:contentDescription="@string/cryptocurrency_icon"
             android:onClick="@{() -> handler.onSecondItemClick()}"
-            app:srcUrl="@{viewModel.toCurrency.thumbUrl}"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="16dp"
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fromCurrencyImageView"
+            app:srcUrl="@{viewModel.toCurrency.thumbUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/fromCurrencyTitle"
+            style="@style/headerStyle"
             android:layout_width="0dp"
-            android:text="@{viewModel.fromCurrency.titleWithSymbol}"
-            tools:text="sdhfdkjhf"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginStart="16dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/big_indent"
+            android:labelFor="@id/fromNumber"
+            android:text="@{viewModel.fromCurrency.titleWithSymbol}"
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fromCurrencyImageView"
-            app:layout_constraintTop_toTopOf="@+id/fromCurrencyImageView"/>
+            app:layout_constraintStart_toEndOf="@id/fromCurrencyImageView"
+            app:layout_constraintTop_toTopOf="@id/fromCurrencyImageView"
+            tools:text="sdhfdkjhf" />
 
         <EditText
-            android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/fromNumber"
+            style="@style/editTextConverterStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal"
+            android:importantForAutofill="no"
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
             app:doubleNumber="@={viewModel.fromValue}"
-            android:textColor="@color/black"
-            tools:text="677"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/fromCurrencyTitle"
-            app:layout_constraintTop_toBottomOf="@id/fromCurrencyTitle" />
+            app:layout_constraintTop_toBottomOf="@id/fromCurrencyTitle"
+            tools:text="677" />
 
 
         <TextView
-            android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/toCurrencyTitle"
+            style="@style/headerStyle"
             android:layout_width="0dp"
-            tools:text="sdhfdkjhf"
-            android:text="@{viewModel.toCurrency.titleWithSymbol}"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginStart="16dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/big_indent"
+            android:labelFor="@id/toNumber"
+            android:text="@{viewModel.toCurrency.titleWithSymbol}"
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/fromCurrencyImageView"
-            app:layout_constraintTop_toTopOf="@id/toCurrencyImageView"/>
+            app:layout_constraintTop_toTopOf="@id/toCurrencyImageView"
+            tools:text="sdhfdkjhf" />
 
         <EditText
-            android:visibility="@{!viewModel.initialCurrencyLoading}"
             android:id="@+id/toNumber"
+            style="@style/editTextConverterStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal"
+            android:importantForAutofill="no"
+            android:visibility="@{!viewModel.initialCurrencyLoading}"
             app:doubleNumber="@={viewModel.toValue}"
-            android:textColor="@color/black"
-            tools:text="677"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/toCurrencyTitle"
-            app:layout_constraintTop_toBottomOf="@id/toCurrencyTitle" />
+            app:layout_constraintTop_toBottomOf="@id/toCurrencyTitle"
+            tools:text="677" />
 
         <include
             layout="@layout/item_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:inProgress="@{viewModel.initialCurrencyLoading}"
-            tools:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
         <com.example.kulakov_p4_cryptocurrency_app.views.custom.CustomLineChart
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:dataList="@{viewModel.graphDataList}"
             app:labels="@{@stringArray/graph_labels}"
-            app:legendLabels="@{viewModel.legendLabels}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toNumber"/>
+            app:layout_constraintTop_toBottomOf="@id/toNumber"
+            app:legendLabels="@{viewModel.legendLabels}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

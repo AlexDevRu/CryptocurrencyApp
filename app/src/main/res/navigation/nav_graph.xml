@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/converterFragment">
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -63,7 +63,11 @@
         tools:layout="@layout/fragment_news">
         <action
             android:id="@+id/action_newsFragment_to_webViewFragment"
-            app:destination="@id/webViewFragment">
+            app:destination="@id/webViewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="url"
                 app:argType="string" />
