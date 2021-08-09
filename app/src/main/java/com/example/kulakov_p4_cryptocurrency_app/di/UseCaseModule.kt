@@ -4,8 +4,7 @@ import com.example.domain.repositories.local.IPreferncesStorage
 import com.example.domain.repositories.remote.ICoinMarketCapRespository
 import com.example.domain.repositories.remote.INewsApiRepository
 import com.example.domain.use_cases.*
-import com.example.domain.use_cases.preferences.GetSignInStatusUseCase
-import com.example.domain.use_cases.preferences.SaveSignInStatusUseCase
+import com.example.domain.use_cases.preferences.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,4 +40,20 @@ object UseCaseModule {
     @Provides
     fun providesUpdateCurrencyByIdUseCase(repository: ICoinMarketCapRespository)
             = UpdateCurrencyByIdUseCase(repository)
+
+    @Provides
+    fun providesGetLanguageUseCase(repository: IPreferncesStorage)
+            = GetLanguageUseCase(repository)
+
+    @Provides
+    fun providesSaveLanguageUseCase(repository: IPreferncesStorage)
+            = SaveLanguageUseCase(repository)
+
+    @Provides
+    fun providesGetThemeUseCase(repository: IPreferncesStorage)
+            = GetThemeUseCase(repository)
+
+    @Provides
+    fun providesSaveThemeUseCase(repository: IPreferncesStorage)
+            = SaveThemeUseCase(repository)
 }

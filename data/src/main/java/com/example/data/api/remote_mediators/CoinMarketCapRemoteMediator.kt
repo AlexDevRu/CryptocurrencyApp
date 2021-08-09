@@ -149,7 +149,7 @@ class CoinMarketCapRemoteMediator(
                     currencyDatabase.currencyDao().clearAll()
                 }
                 val prevKey = if (page == ApiConstants.STARTING_PAGE_INDEX) null else page - 1
-                val nextKey = if (endOfPaginationReached) null else page + (state.config.pageSize / ApiConstants.CURRENCY_PER_PAGE)
+                val nextKey = if (endOfPaginationReached) null else page + 1
                 Log.e("asd", "nextKey $nextKey, prevKey $prevKey")
                 val keys = currencies.map {
                     CurrencyRemoteKeys(currencyId = it.id, prevKey = prevKey, nextKey = nextKey)

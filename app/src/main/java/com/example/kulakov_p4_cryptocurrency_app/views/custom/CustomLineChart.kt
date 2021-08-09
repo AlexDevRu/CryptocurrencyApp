@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.children
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.github.mikephil.charting.charts.LineChart
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.flexbox.FlexboxLayout
 
 
 class CustomLineChart @JvmOverloads constructor(
@@ -25,7 +27,7 @@ class CustomLineChart @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ): FrameLayout(context, attrs, defStyleAttr) {
 
-    private var legendContainer: LinearLayout
+    private var legendContainer: FlexboxLayout
     private var lineChart: LineChart
 
     companion object {
@@ -38,6 +40,8 @@ class CustomLineChart @JvmOverloads constructor(
         lineChart.apply {
             xAxis.setDrawGridLines(false)
             xAxis.textSize = 14f
+            xAxis.textColor = if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) Color.WHITE else Color.BLACK
+            axisRight.textColor = if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) Color.WHITE else Color.BLACK
             extraBottomOffset = 4f
             extraLeftOffset = 5f
             extraRightOffset = 5f
@@ -100,8 +104,8 @@ class CustomLineChart @JvmOverloads constructor(
         val checkBox = CheckBox(context)
         val colorValue = context.resources.getColor(color)
         checkBox.buttonTintList = ColorStateList.valueOf(colorValue)
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
+        val layoutParams = FlexboxLayout.LayoutParams(
+            FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.WRAP_CONTENT
         )
         layoutParams.marginEnd = 10
         checkBox.layoutParams = layoutParams

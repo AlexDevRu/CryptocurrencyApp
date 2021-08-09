@@ -1,16 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.kulakov_p4_cryptocurrency_app.view_models.SettingsVM" />
     </data>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/big_indent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/language" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/langSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="true"
+                android:selectedItemPosition="@={viewModel.selectedLangPosition}"
+                android:spinnerMode="dropdown"
+                app:entries="@{@stringArray/settings_langs}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/theme" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/themeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="true"
+                android:selectedItemPosition="@={viewModel.selectedThemePosition}"
+                android:spinnerMode="dropdown"
+                app:entries="@{@stringArray/settings_themes}" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/signOutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_out"/>
 
     </LinearLayout>
 </layout>

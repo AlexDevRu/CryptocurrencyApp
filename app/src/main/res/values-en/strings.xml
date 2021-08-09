@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kulakov_P4_Cryptocurrency_app</string>
+    <string name="sign_in">Sign In</string>
+
+    <string name="all">All</string>
+    <string name="market_cap">Market capitalization</string>
+    <string name="volume_24h">Volume 24h</string>
+    <string name="added">Added</string>
+    <string name="updated">Updated</string>
+    <string name="circulating">Circulating supply</string>
+    <string name="total_supply">Total supply</string>
+    <string name="max_supply">Maximum supply</string>
+    <string name="cmc_rank">Rating</string>
+    <string name="num_market_pairs">Market pairs</string>
+    <string name="tags">Tags</string>
+
+    <string name="error">Error</string>
+
+    <string-array name="currency_data_table_header">
+        <item>Name</item>
+        <item>Value</item>
+    </string-array>
+
+    <string-array name="currency_types">
+        <item>@string/all</item>
+        <item>Coins</item>
+        <item>Tokens</item>
+    </string-array>
+
+    <string-array name="currency_tags">
+        <item>@string/all</item>
+        <item>DeFi</item>
+        <item>Filesharing</item>
+    </string-array>
+
+    <string-array name="sort_types">
+        <item>Name</item>
+        <item>Symbol</item>
+        <item>Date added</item>
+        <item>@string/market_cap</item>
+        <item>Price</item>
+    </string-array>
+
+    <string-array name="sort_dirs">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+
+    <string-array name="graph_labels">
+        <item>90d</item>
+        <item>60d</item>
+        <item>30d</item>
+        <item>7d</item>
+        <item>24h</item>
+        <item>1h</item>
+        <item>now</item>
+    </string-array>
+
+    <string-array name="settings_langs">
+        <item>Русский</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="settings_themes">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string name="no_data">No data</string>
+    <string name="cryptocurrency_icon">cryptocurrency icon</string>
+    <string name="buy_cryptocurrency">Buy cryptocurrency</string>
+    <string name="links">Links</string>
+    <string name="icon">Icon</string>
+    <string name="web_site">web-site</string>
+    <string name="tech_documentation">tech. documentation</string>
+    <string name="twitter">twitter</string>
+    <string name="reddit">reddit</string>
+    <string name="message_board">message board</string>
+    <string name="announcement">announcement</string>
+    <string name="chat">chat</string>
+    <string name="explorer">explorer</string>
+    <string name="source_code">source code</string>
+    <string name="logo">Logo</string>
+    <string name="article_image">Article image</string>
+    <string name="retry">Retry</string>
+    <string name="search_hint">Search…</string>
+    <string name="main">Main</string>
+    <string name="news">News</string>
+    <string name="converter">Converter</string>
+    <string name="settings">Settings</string>
+    <string name="price">Price</string>
+    <string name="tag">Tag</string>
+    <string name="cryptocurrency_type">Cryptocurrency type</string>
+    <string name="sort_ad_filter">Sort and filter</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="sign_out">Sign out</string>
+</resources>

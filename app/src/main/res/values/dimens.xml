@@ -16,4 +16,5 @@
     <dimen name="article_image_size">100dp</dimen>
     <dimen name="currency_item_elevation">2dp</dimen>
     <dimen name="line_graph_height">250dp</dimen>
+    <dimen name="search_view_max">3000dp</dimen>
 </resources>

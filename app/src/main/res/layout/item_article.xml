@@ -36,6 +36,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcUrl="@{article.urlToImage}"
+                app:resizeWidth="@{100}"
+                app:resizeHeight="@{100}"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView

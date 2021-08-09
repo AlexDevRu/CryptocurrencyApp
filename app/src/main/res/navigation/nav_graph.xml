@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/signInFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -93,5 +93,13 @@
         <action
             android:id="@+id/action_currencyChoiceFragment_to_converterFragment"
             app:destination="@id/converterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
 </navigation>

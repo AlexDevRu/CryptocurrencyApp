@@ -4,149 +4,147 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.SortFilterVM" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/sort_filter_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/sort_filter_bg">
 
         <TextView
             android:id="@+id/header"
+            style="@style/headerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            android:text="@string/sort_ad_filter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:text="Сортировка и фильтр"
-            android:gravity="center" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/typesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/header"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/base_indent"
+            android:text="@string/cryptocurrency_type"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="Тип криптовалюты" />
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/typesSpinner"
-            android:layout_marginTop="6dp"
-            app:layout_constraintTop_toBottomOf="@id/typesTextView"
-            app:layout_constraintStart_toStartOf="@id/typesTextView"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_indent"
             android:drawSelectorOnTop="true"
+            android:selectedItemPosition="@={viewModel.selectedTypePosition}"
             android:spinnerMode="dropdown"
             app:entries="@{@stringArray/currency_types}"
-            android:selectedItemPosition="@={viewModel.selectedTypePosition}"
-            android:layout_height="wrap_content" />
+            app:layout_constraintStart_toStartOf="@id/typesTextView"
+            app:layout_constraintTop_toBottomOf="@id/typesTextView" />
 
 
         <TextView
             android:id="@+id/tagsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/header"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/base_indent"
+            android:text="@string/tag"
             app:layout_constraintStart_toStartOf="@+id/tagsSpinner"
-            android:text="Тег" />
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/tagsSpinner"
-            android:layout_marginTop="6dp"
-            app:layout_constraintTop_toBottomOf="@id/tagsTextView"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_indent"
             android:drawSelectorOnTop="true"
+            android:selectedItemPosition="@={viewModel.selectedTagPosition}"
             android:spinnerMode="dropdown"
             app:entries="@{@stringArray/currency_tags}"
-            android:selectedItemPosition="@={viewModel.selectedTagPosition}"
-            android:layout_height="wrap_content" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tagsTextView" />
 
 
         <TextView
             android:id="@+id/priceTextView"
-            app:layout_constraintTop_toBottomOf="@+id/tagsSpinner"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="6dp"
-            android:text="Цена"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_indent"
+            android:text="@string/price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tagsSpinner" />
 
 
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/priceSlider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priceTextView"
-            app:values="@array/initial_price_slider_values"
-            app:startValue="@={viewModel.priceMin}"
-            app:endValue="@={viewModel.priceMax}"
             android:valueFrom="@integer/value_min"
-            android:valueTo="@integer/price_max" />
+            android:valueTo="@integer/price_max"
+            app:endValue="@={viewModel.priceMax}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceTextView"
+            app:startValue="@={viewModel.priceMin}"
+            app:values="@array/initial_price_slider_values" />
 
         <TextView
             android:id="@+id/marketCapTextView"
-            app:layout_constraintTop_toBottomOf="@+id/priceSlider"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="6dp"
-            android:text="Рыночная капитализация"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_indent"
+            android:text="@string/market_cap"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priceSlider" />
 
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/marketCapSlider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/marketCapTextView"
-            app:values="@array/initial_market_cap_slider_values"
-            app:startValue="@={viewModel.marketCapMin}"
-            app:endValue="@={viewModel.marketCapMax}"
             android:valueFrom="@integer/value_min"
-            android:valueTo="@integer/market_cap_max" />
+            android:valueTo="@integer/market_cap_max"
+            app:endValue="@={viewModel.marketCapMax}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/marketCapTextView"
+            app:startValue="@={viewModel.marketCapMin}"
+            app:values="@array/initial_market_cap_slider_values" />
 
         <TextView
             android:id="@+id/sortTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="@dimen/medium_indent"
             android:text="Сортировка"
-            app:layout_constraintTop_toBottomOf="@id/marketCapSlider"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/marketCapSlider" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sortTypeSpinner"
-            app:layout_constraintStart_toEndOf="@id/sortTextView"
-            app:layout_constraintTop_toTopOf="@id/sortTextView"
-            android:layout_marginStart="6dp"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_indent"
             android:drawSelectorOnTop="true"
+            android:selectedItemPosition="@={viewModel.selectedSortTypePosition}"
             android:spinnerMode="dropdown"
             app:entries="@{@stringArray/sort_types}"
-            android:selectedItemPosition="@={viewModel.selectedSortTypePosition}"
-            android:layout_height="wrap_content" />
+            app:layout_constraintStart_toEndOf="@id/sortTextView"
+            app:layout_constraintTop_toTopOf="@id/sortTextView" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/sortDirSpinner"
-            app:layout_constraintStart_toStartOf="@id/sortTypeSpinner"
-            app:layout_constraintTop_toBottomOf="@id/sortTypeSpinner"
-            android:layout_marginTop="6dp"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_indent"
             android:drawSelectorOnTop="true"
+            android:selectedItemPosition="@={viewModel.selectedSortDirPosition}"
             android:spinnerMode="dropdown"
             app:entries="@{@stringArray/sort_dirs}"
-            android:selectedItemPosition="@={viewModel.selectedSortDirPosition}"
-            android:layout_height="wrap_content" />
-
+            app:layout_constraintStart_toStartOf="@id/sortTypeSpinner"
+            app:layout_constraintTop_toBottomOf="@id/sortTypeSpinner" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

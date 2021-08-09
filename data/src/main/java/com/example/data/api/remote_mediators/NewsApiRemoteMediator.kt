@@ -85,7 +85,7 @@ class NewsApiRemoteMediator(
             val articles = service.getNewsByQuery(
                 query,
                 page,
-                ApiConstants.NEWS_PER_PAGE
+                state.config.pageSize
             ).articles
 
             Log.d("asd", "news api ${page}")

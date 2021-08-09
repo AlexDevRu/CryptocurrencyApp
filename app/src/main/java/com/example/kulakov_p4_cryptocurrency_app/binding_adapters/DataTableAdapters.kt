@@ -26,7 +26,7 @@ fun DataTable.build(rowsList: List<DataTableItem>?, headerList: Array<String>) {
             .value(context.resources.getString(rowItem.title))
 
         var value = when(rowItem.value) {
-            is Double -> "%.4f".format(rowItem.value.toDouble()).replace(Regex(",?0*$"), "")
+            is Double -> "%.4f".format(rowItem.value.toDouble()).replace(Regex("[.,]?0*$"), "")
             is Date -> SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(rowItem.value)
             is Int -> rowItem.value.toString()
             else -> ""

@@ -56,6 +56,16 @@
         <item>сейчас</item>
     </string-array>
 
+    <string-array name="settings_langs">
+        <item>Русский</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="settings_themes">
+        <item>Светлая</item>
+        <item>Темная</item>
+    </string-array>
+
     <string name="no_data">Нет данных</string>
     <string name="cryptocurrency_icon">Иконка криптовалюты</string>
     <string name="buy_cryptocurrency">Купить криптовалюту</string>
@@ -73,5 +83,16 @@
     <string name="logo">Логотип</string>
     <string name="article_image">Картинка статьи</string>
     <string name="retry">Повторить</string>
-    <string name="search_hint">Поиск...</string>
+    <string name="search_hint">Поиск…</string>
+    <string name="main">Главная</string>
+    <string name="news">Новости</string>
+    <string name="converter">Конвертер</string>
+    <string name="settings">Настройки</string>
+    <string name="price">Цена</string>
+    <string name="tag">Тег</string>
+    <string name="cryptocurrency_type">Тип криптовалюты</string>
+    <string name="sort_ad_filter">Сортировка и фильтр</string>
+    <string name="language">Язык</string>
+    <string name="theme">Тема</string>
+    <string name="sign_out">Выйти из аккаунта</string>
 </resources>
