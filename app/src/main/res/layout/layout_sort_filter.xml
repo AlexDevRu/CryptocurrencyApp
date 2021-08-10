@@ -8,6 +8,10 @@
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.SortFilterVM" />
+
+        <variable
+            name="isOnline"
+            type="androidx.databinding.ObservableBoolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,6 +47,7 @@
             android:drawSelectorOnTop="true"
             android:selectedItemPosition="@={viewModel.selectedTypePosition}"
             android:spinnerMode="dropdown"
+            app:enabled="@{isOnline}"
             app:entries="@{@stringArray/currency_types}"
             app:layout_constraintStart_toStartOf="@id/typesTextView"
             app:layout_constraintTop_toBottomOf="@id/typesTextView" />

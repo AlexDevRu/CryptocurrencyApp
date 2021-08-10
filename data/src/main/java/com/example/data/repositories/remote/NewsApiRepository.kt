@@ -26,7 +26,7 @@ class NewsApiRepository @Inject constructor(
             config = PagingConfig(
                 pageSize = ApiConstants.NEWS_PER_PAGE,
                 enablePlaceholders = false,
-                initialLoadSize = ApiConstants.NEWS_PER_PAGE * 2,
+                initialLoadSize = ApiConstants.NEWS_PER_PAGE,
                 prefetchDistance = 1
             ),
             remoteMediator = NewsApiRemoteMediator(

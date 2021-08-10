@@ -11,8 +11,8 @@ import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyAdapter
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyLoadStateAdapter
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentMainBinding
 import com.example.kulakov_p4_cryptocurrency_app.view_models.MainVM
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,8 +40,8 @@ class MainFragment: BaseFragment<FragmentMainBinding>
             val isListEmpty = state.refresh is LoadState.NotLoading && adapter.itemCount == 0
             viewModel.isResultEmpty.set(isListEmpty)
 
-            viewModel.listIsShown.set(state.source.refresh is LoadState.NotLoading || state.mediator?.refresh is LoadState.NotLoading)
-            viewModel.loading.set(state.source.refresh is LoadState.Loading && !viewModel.listIsShown.get())
+            viewModel.listIsShown.set(state.refresh is LoadState.NotLoading)
+            viewModel.loading.set(state.refresh is LoadState.Loading)
 
             val errorState = state.source.append as? LoadState.Error
                 ?: state.source.prepend as? LoadState.Error
@@ -68,13 +68,22 @@ class MainFragment: BaseFragment<FragmentMainBinding>
                 }
         }
 
-        observe()
+        observeData()
     }
 
-    private fun observe() {
+    private fun observeData() {
+        internetObserver.observe(viewLifecycleOwner) {
+            if(viewModel.isOnline.get() == it)
+                return@observe
+            viewModel.isOnline.set(it)
+            if(!it) {
+                Snackbar.make(binding.root, resources.getString(R.string.offline_message), Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
         viewModel.setCurrencies.observe(viewLifecycleOwner) {
             getAllCurrenciesJob?.cancel()
-            getAllCurrenciesJob = lifecycleScope.launch(Dispatchers.IO) {
+            getAllCurrenciesJob = lifecycleScope.launch {
                 viewModel.getCurrencies().collectLatest {
                     adapter.submitData(it)
                 }

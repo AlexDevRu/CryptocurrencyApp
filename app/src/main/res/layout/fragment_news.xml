@@ -28,14 +28,14 @@
             android:id="@+id/newsSwipeList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="@{!viewModel.loading}"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:onRefresh="@{() -> viewModel.retry()}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/newsList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.listIsShown}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -53,16 +53,17 @@
             tools:visibility="visible" />
 
         <!--<include
+            layout="@layout/item_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            layout="@layout/item_error"
-            app:layout_constraintBottom_toBottomOf="@id/newsSwipeList"
-            app:layout_constraintEnd_toEndOf="@id/newsSwipeList"
-            app:layout_constraintStart_toStartOf="@id/newsSwipeList"
-            app:layout_constraintTop_toTopOf="@id/newsSwipeList"
-            tools:visibility="gone"
+            android:visibility="@{viewModel.error != null}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:message="@{viewModel.error}"
-            app:onRetryClick="@{() -> viewModel.retry()}"/>-->
+            app:onRetryClick="@{() -> viewModel.retry()}"
+            tools:visibility="visible" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

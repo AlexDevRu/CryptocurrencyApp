@@ -42,7 +42,6 @@ class SettingsFragment: BaseFragment<FragmentSettingsBinding>
                 if(it == "dark") AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 viewModel.saveTheme(it)
-                requireActivity().recreate()
             }
         })
 

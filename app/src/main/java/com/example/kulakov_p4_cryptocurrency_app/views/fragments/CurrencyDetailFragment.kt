@@ -4,7 +4,15 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Selection
+import android.text.Spannable
+import android.text.method.LinkMovementMethod
+import android.text.method.MovementMethod
+import android.text.style.ClickableSpan
+import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -78,6 +86,103 @@ class CurrencyDetailFragment: BaseFragment<FragmentCurrencyDetailBinding>
                 1000
             )
         }
+
+        /*binding.description.movementMethod = object : MovementMethod {
+            override fun initialize(widget: TextView, text: Spannable) {}
+            override fun onKeyDown(
+                widget: TextView?,
+                text: Spannable?,
+                keyCode: Int,
+                event: KeyEvent?
+            ): Boolean {
+                return false
+            }
+
+            override fun onKeyUp(
+                widget: TextView?,
+                text: Spannable?,
+                keyCode: Int,
+                event: KeyEvent?
+            ): Boolean {
+                return false
+            }
+
+            override fun onKeyOther(view: TextView?, text: Spannable?, event: KeyEvent?): Boolean {
+                return false
+            }
+
+            override fun onTakeFocus(widget: TextView, text: Spannable, direction: Int) {}
+            override fun onTrackballEvent(
+                widget: TextView,
+                text: Spannable,
+                event: MotionEvent
+            ): Boolean {
+                return false
+            }
+
+            /**
+             * Borrowed code for detecting and selecting link from
+             * [LinkMovementMethod.onTouchEvent]
+             */
+            override fun onTouchEvent(
+                widget: TextView,
+                buffer: Spannable,
+                event: MotionEvent
+            ): Boolean {
+                val action = event.action
+                if (action == MotionEvent.ACTION_UP ||
+                    action == MotionEvent.ACTION_DOWN
+                ) {
+                    var x = event.x
+                    var y = event.y.toInt()
+                    x -= widget.totalPaddingLeft
+                    y -= widget.totalPaddingTop
+                    x += widget.scrollX
+                    y += widget.scrollY
+                    val layout = widget.layout
+                    val line = layout.getLineForVertical(y)
+                    val off = layout.getOffsetForHorizontal(line, x)
+                    val link = buffer.getSpans(
+                        off, off,
+                        ClickableSpan::class.java
+                    )
+                    if (link.size != 0) {
+                        if (action == MotionEvent.ACTION_UP) {
+                            // do whatever else you want here on link being clicked
+                            link.forEach {
+                                it.onClick()
+                                val linkAction = CurrencyDetailFragmentDirections.actionCurrencyDetailFragmentToWebViewFragment(link.first().toString())
+                                findNavController().navigate(linkAction)
+                            }
+
+                            Selection.removeSelection(buffer)
+                        } else if (action == MotionEvent.ACTION_DOWN) {
+                            Selection.setSelection(
+                                buffer,
+                                buffer.getSpanStart(link[0]),
+                                buffer.getSpanEnd(link[0])
+                            )
+                        }
+                        return true
+                    } else {
+                        Selection.removeSelection(buffer)
+                    }
+                }
+                return false
+            }
+
+            override fun onGenericMotionEvent(
+                widget: TextView,
+                text: Spannable,
+                event: MotionEvent
+            ): Boolean {
+                return false
+            }
+
+            override fun canSelectArbitrarily(): Boolean {
+                return false
+            }
+        }*/
     }
 
     private fun openLink(link: String) {

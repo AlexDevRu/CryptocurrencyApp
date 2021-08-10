@@ -29,10 +29,11 @@ class NewsVM @Inject constructor(
     }
 
     val searchQuery = ObservableField<String>()
-    var currentQuery: String? = null
+    private var currentQuery: String = ""
 
     val error = ObservableField<String>()
     val loading = ObservableBoolean(false)
+    val listIsShown = ObservableBoolean(false)
     val isResultEmpty = ObservableBoolean(false)
 
     val scrollListToPosition = SingleLiveEvent<Int>()
@@ -47,6 +48,11 @@ class NewsVM @Inject constructor(
     init {
         searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.w("asd", "searchQuery ${searchQuery.get()}")
+            if(currentQuery == searchQuery.get().orEmpty())
+                return@PropertyChangedCallback
+
+            currentQuery = searchQuery.get().orEmpty()
+
             searchJob?.cancel()
             searchJob = viewModelScope.launch(Dispatchers.IO) {
                 delay(1500)

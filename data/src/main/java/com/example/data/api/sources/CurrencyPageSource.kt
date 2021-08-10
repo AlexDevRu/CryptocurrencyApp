@@ -17,8 +17,8 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
 
     override fun getRefreshKey(state: PagingState<Int, Currency>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(ApiConstants.CURRENCY_PER_PAGE)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(ApiConstants.CURRENCY_PER_PAGE)
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
@@ -26,9 +26,9 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
         val position = params.key ?: ApiConstants.STARTING_PAGE_INDEX
 
         return try {
-            val currencyResult = /*service.getCurrencies(
+            val currencyResult = service.getCurrencies(
                 ApiConstants.CURRENCY_PER_PAGE,
-                position,
+                ((position - 1) * params.loadSize) + 1,
                 parameters.type,
                 parameters.tag,
                 parameters.priceMin,
@@ -37,21 +37,16 @@ class CurrencyPageSource(private val service: CoinMarketCapService,
                 parameters.marketCapMax,
                 parameters.sortType,
                 parameters.sortDir
-            ).data*/ emptyList<CurrencyResponse>()
+            ).data
 
-            val query = parameters.searchQuery.lowercase()
-            val currencyList = currencyResult.filter {
-                it.name.lowercase().contains(query)
-            }
-
-            val nextKey = if (currencyList.isNullOrEmpty()) {
+            val nextKey = if (currencyResult.isNullOrEmpty()) {
                 null
             } else {
                 position + params.loadSize
             }
             LoadResult.Page(
-                data = currencyList.map { it.toModel() },
-                prevKey = if (position == ApiConstants.STARTING_PAGE_INDEX) null else position - params.loadSize,
+                data = currencyResult.map { it.toModel() },
+                prevKey = if (position == ApiConstants.STARTING_PAGE_INDEX) null else position - 1,
                 nextKey = nextKey
             )
         } catch (exception: IOException) {

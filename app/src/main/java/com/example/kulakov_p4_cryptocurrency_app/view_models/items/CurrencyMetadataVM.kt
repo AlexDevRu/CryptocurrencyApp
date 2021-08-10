@@ -51,5 +51,8 @@ class CurrencyMetadataVM: BaseObservable() {
 
     @get:Bindable
     val description:String?
-        get() = currencyMetadata?.description
+        get() = currencyMetadata?.description/*?.replace(
+            Regex("(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)[^\\.]*\\/?"),
+            { """<a href="${it.value}">${it.value}</a>""" }
+        )*/
 }

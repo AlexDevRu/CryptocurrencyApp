@@ -12,19 +12,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="bgc">@color/black</item>
+        <item name="tc">@color/white</item>
         <item name="android:textViewStyle">@style/baseTextAppearance</item>
         <item name="android:editTextColor">?attr/tc</item>
         <item name="android:textColorHint">?attr/tc</item>
         <item name="bottomNavigationStyle">@style/darkBottomNavigationStyle</item>
     </style>
 
-    <style name="DarkTheme" parent="Theme.Kulakov_P4_Cryptocurrency_app">
-        <item name="bgc">@color/black</item>
-        <item name="tc">@color/white</item>
-    </style>
-
     <style name="darkBottomNavigationStyle">
         <item name="itemTextColor">@color/white</item>
-        <item name="itemIconTint">@color/purple_200</item>
+        <item name="itemIconTint">@color/white</item>
     </style>
 </resources>

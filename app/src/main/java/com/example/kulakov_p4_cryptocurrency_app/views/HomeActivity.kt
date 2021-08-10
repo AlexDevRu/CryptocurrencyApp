@@ -24,19 +24,12 @@ class HomeActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*val settings: SharedPreferences = getSharedPreferences(PreferencesStorage.STORAGE_NAME, Context.MODE_PRIVATE)
-        val theme = settings.getString(
-            PreferencesStorage.THEME,
-            PreferencesStorage.THEME_DEFAULT
-        ).toString()
 
-        if(theme == "dark") setTheme(R.style.DarkTheme)
-        else setTheme(R.style.LightTheme)*/
 
-        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        /*if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
             setTheme(R.style.DarkTheme)
         else
-            setTheme(R.style.LightTheme)
+            setTheme(R.style.LightTheme)*/
 
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -58,6 +51,15 @@ class HomeActivity: AppCompatActivity() {
                 else -> View.VISIBLE
             }
         }
+
+        /*val settings: SharedPreferences = getSharedPreferences(PreferencesStorage.STORAGE_NAME, Context.MODE_PRIVATE)
+        val theme = settings.getString(
+            PreferencesStorage.THEME,
+            PreferencesStorage.THEME_DEFAULT
+        ).toString()
+
+        if(theme == "dark") AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)*/
     }
 
     override fun attachBaseContext(base: Context) {

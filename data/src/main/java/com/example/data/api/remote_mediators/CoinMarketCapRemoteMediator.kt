@@ -83,7 +83,7 @@ class CoinMarketCapRemoteMediator(
         Log.w("asd", "page = $page, pageSize = ${state.config.pageSize}, start = ${(page - 1) * state.config.pageSize + 1}")
 
         try {
-            val currencies = service.getCurrencies(
+            var currencies = service.getCurrencies(
                 state.config.pageSize,
                 ((page - 1) * state.config.pageSize) + 1,
                 parameters.type,
@@ -96,51 +96,12 @@ class CoinMarketCapRemoteMediator(
                 parameters.sortDir
             ).data
 
-            /*var currencies = mutableListOf<CurrencyResponse>()
-            for(i in 1..1000) currencies.add(
-                CurrencyResponse(i.toDouble(),
-                    i,
-                    "2018-08-09T22:53:32.000Z",
-                    i,
-                    "2018-08-09T22:53:32.000Z",
-                    i.toDouble(),
-                    "name$i",
-                    1,
-                    9,
-                    mapOf("USD" to QuoteItem(
-                        "2018-08-09T22:53:32.000Z",
-                        i.toDouble(),
-                        (i + 1).toDouble(),
-                        (i + 2).toDouble(),
-                        (i + 3).toDouble(),
-                        (i + 4).toDouble(),
-                        (i + 5).toDouble(),
-                        (i + 6).toDouble(),
-                        (i + 7).toDouble(),
-                        (i + 8).toDouble()
-                    )
-                    ),
-                    "slug",
-                    "symbol_$i",
-                    listOf("kjf"),
-                    (i).toDouble()
-                )
-            )
-            val start = (page - 1) * state.config.pageSize
-            val end = start + state.config.pageSize
-            if(start >= currencies.size)
-                currencies = mutableListOf()
-            else if(end < currencies.size)
-                currencies = currencies.subList(start, end)
-            else
-                currencies = currencies.subList(start, currencies.size)
-
-            delay(4000)*/
+            if(parameters.searchQuery.isNotEmpty())
+                currencies = currencies.filter { it.name.lowercase().contains(parameters.searchQuery.trim().lowercase()) }
 
             Log.w("asd", "currencies ${currencies}")
-            Log.w("asd", "currencies quote ${currencies[0].quote}")
 
-            val endOfPaginationReached = currencies.size < state.config.pageSize
+            val endOfPaginationReached = currencies.isEmpty()
 
             currencyDatabase.withTransaction {
                 // clear all tables in the database

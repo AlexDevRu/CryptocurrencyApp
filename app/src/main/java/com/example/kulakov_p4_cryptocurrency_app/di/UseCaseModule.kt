@@ -56,4 +56,8 @@ object UseCaseModule {
     @Provides
     fun providesSaveThemeUseCase(repository: IPreferncesStorage)
             = SaveThemeUseCase(repository)
+
+    @Provides
+    fun providesSearchCurrencyByQuery(repository: ICoinMarketCapRespository)
+            = SearchCurrencyByQuery(repository)
 }

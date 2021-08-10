@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.domain.aliases.CurrencyFlow
 import com.example.domain.use_cases.GetCurrenciesUseCase
+import com.example.domain.use_cases.SearchCurrencyByQuery
 import com.example.kulakov_p4_cryptocurrency_app.events.SingleLiveEvent
 import com.example.kulakov_p4_cryptocurrency_app.utils.PropertyChangedCallback
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
@@ -21,15 +22,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainVM @Inject constructor(
-    private val getCurrenciesUseCase: GetCurrenciesUseCase
+    private val getCurrenciesUseCase: GetCurrenciesUseCase,
+    private val searchCurrencyByQuery: SearchCurrencyByQuery
 ): BaseVM() {
 
     val searchQuery = ObservableField<String>()
+    private var currentQuery: String = ""
 
     val error = ObservableField<String>()
     val loading = ObservableBoolean(false)
     val isResultEmpty = ObservableBoolean(false)
     val listIsShown = ObservableBoolean(false)
+    val isOnline = ObservableBoolean(false)
 
     val scrollListToPosition = SingleLiveEvent<Int>()
 
@@ -44,7 +48,11 @@ class MainVM @Inject constructor(
 
     init {
         searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback {
+            if(currentQuery == searchQuery.get().orEmpty())
+                return@PropertyChangedCallback
+
             Log.w("asd", "searchQuery ${searchQuery.get()}")
+
             sortFilterVM.parameters.searchQuery = searchQuery.get().orEmpty()
             searchJob?.cancel()
             searchJob = viewModelScope.launch(Dispatchers.IO) {
@@ -68,7 +76,10 @@ class MainVM @Inject constructor(
 
         Log.e("asd", "sortFilterVM.parameters ${sortFilterVM.parameters}")
 
-        val newResult = getCurrenciesUseCase.invoke(sortFilterVM.parameters).cachedIn(viewModelScope)
+        val newResult = if(searchQuery.get().isNullOrEmpty())
+            getCurrenciesUseCase.invoke(sortFilterVM.parameters).cachedIn(viewModelScope)
+        else
+            searchCurrencyByQuery.invoke(sortFilterVM.parameters).cachedIn(viewModelScope)
 
         currentResult = newResult
 

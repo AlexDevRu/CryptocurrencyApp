@@ -14,6 +14,7 @@
     <string name="cmc_rank">Rating</string>
     <string name="num_market_pairs">Market pairs</string>
     <string name="tags">Tags</string>
+    <string name="offline_message">There is no internet connection. Some functions of the application are disabled.</string>
 
     <string name="error">Error</string>
 

@@ -36,9 +36,11 @@ class NewsFragment: BaseFragment<FragmentNewsBinding>
         val footer = CurrencyLoadStateAdapter { adapter.retry() }
 
         adapter.addLoadStateListener { state ->
-            viewModel.loading.set(state.refresh == LoadState.Loading)
             val isListEmpty = state.refresh is LoadState.NotLoading && adapter.itemCount == 0
             viewModel.isResultEmpty.set(isListEmpty)
+
+            viewModel.loading.set(state.refresh is LoadState.Loading)
+            viewModel.listIsShown.set(state.refresh is LoadState.NotLoading)
 
             header.loadState = state.mediator
                 ?.refresh

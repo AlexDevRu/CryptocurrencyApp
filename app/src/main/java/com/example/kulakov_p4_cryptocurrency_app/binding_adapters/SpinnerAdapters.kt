@@ -15,6 +15,11 @@ fun bindAdapterToSpinner(spinner: Spinner, list: Array<String>) {
     spinner.adapter = ArrayAdapter<Any?>(spinner.context, android.R.layout.simple_spinner_dropdown_item, list)
 }
 
+@BindingAdapter("enabled")
+fun bindAdapterToSpinner(spinner: Spinner, enabled: Boolean) {
+    spinner.isEnabled = enabled
+}
+
 @BindingAdapter(value = ["selectedValue", "selectedValueAttrChanged"], requireAll = false)
 fun bindSpinnerData(
     pAppCompatSpinner: Spinner,

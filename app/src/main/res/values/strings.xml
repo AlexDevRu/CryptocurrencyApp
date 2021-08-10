@@ -13,6 +13,7 @@
     <string name="cmc_rank">Рейтинг</string>
     <string name="num_market_pairs">Рыночные пары</string>
     <string name="tags">Теги</string>
+    <string name="offline_message">Интернет соединение отсутсвует. Некоторые функции приложения отключены.</string>
 
     <string name="error">Ошибка</string>
 

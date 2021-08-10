@@ -11,4 +11,5 @@ interface ICoinMarketCapRespository {
     suspend fun getCurrencyInfo(id: Int): Result<CurrencyMetadata>
     suspend fun getLatestCurrencyUseCase(): Result<Currency>
     suspend fun updateCurrencyById(id: Int): Result<Currency>
+    suspend fun searchCurrencyByQuery(parameters: CurrencyParameters): CurrencyFlow
 }

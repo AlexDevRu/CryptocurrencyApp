@@ -2,6 +2,7 @@ package com.example.data.database.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.example.data.database.entities.CurrencyEntity
 import com.example.data.database.entities.CurrencyWithQuotes
 import com.example.data.database.entities.QuoteItemEntity
@@ -59,4 +60,8 @@ interface CurrencyDao {
         deleteCurrencyById(currencyWithQuotes.currency.id)
         insert(currencyWithQuotes)
     }
+
+
+    @RawQuery(observedEntities = [CurrencyEntity::class, QuoteItemEntity::class])
+    fun getAll(query: SupportSQLiteQuery): PagingSource<Int, CurrencyWithQuotes>
 }

@@ -23,7 +23,6 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
     val marketCapMin = ObservableFloat()
     val marketCapMax = ObservableFloat()
 
-
     val parameters = CurrencyParameters(
         types[selectedTypePosition.get()],
         types[selectedTagPosition.get()],
@@ -48,24 +47,32 @@ class SortFilterVM(onChange: () -> Unit): BaseObservable() {
 
         priceMin.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.d("asd", "price min ${priceMin.get()}")
+            if(parameters.priceMin == priceMin.get().toDouble())
+                return@PropertyChangedCallback
             parameters.priceMin = priceMin.get().toDouble()
             onChange()
         })
 
         priceMax.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.d("asd", "price max ${priceMax.get()}")
+            if(parameters.priceMax == priceMax.get().toDouble())
+                return@PropertyChangedCallback
             parameters.priceMax = priceMax.get().toDouble()
             onChange()
         })
 
         marketCapMin.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.d("asd", "market min ${marketCapMin.get()}")
+            if(parameters.marketCapMin == marketCapMin.get().toDouble())
+                return@PropertyChangedCallback
             parameters.marketCapMin = marketCapMin.get().toDouble()
             onChange()
         })
 
         marketCapMax.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.d("asd", "market max ${marketCapMax.get()}")
+            if(parameters.marketCapMax == marketCapMax.get().toDouble())
+                return@PropertyChangedCallback
             parameters.marketCapMax = marketCapMax.get().toDouble()
             onChange()
         })
