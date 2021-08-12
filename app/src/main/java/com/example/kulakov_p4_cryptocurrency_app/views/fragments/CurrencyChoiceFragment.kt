@@ -45,7 +45,7 @@ class CurrencyChoiceFragment: BaseFragment<FragmentCurrencyChoiceBinding>
             viewModel.isResultEmpty.set(isListEmpty)
 
             viewModel.listIsShown.set(state.source.refresh is LoadState.NotLoading || state.mediator?.refresh is LoadState.NotLoading)
-            viewModel.loading.set(state.source.refresh is LoadState.Loading && !viewModel.listIsShown.get())
+            viewModel.loading.set(state.source.refresh is LoadState.Loading || state.mediator?.refresh is LoadState.Loading)
 
             val errorState = state.source.append as? LoadState.Error
                 ?: state.source.prepend as? LoadState.Error
