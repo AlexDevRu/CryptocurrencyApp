@@ -26,7 +26,6 @@ class CurrencyChoiceVM @Inject constructor(
 ): BaseVM() {
 
     val searchQuery = ObservableField<String>()
-    private var currentQuery: String = ""
 
     val error = ObservableField<String>()
     val loading = ObservableBoolean(false)
@@ -47,8 +46,11 @@ class CurrencyChoiceVM @Inject constructor(
     init {
         searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback {
             Log.w("asd", "searchQuery ${searchQuery.get()}")
-            if(currentQuery == searchQuery.get().orEmpty()) return@PropertyChangedCallback
+            if(parameters.searchQuery == searchQuery.get().orEmpty())
+                return@PropertyChangedCallback
+
             parameters.searchQuery = searchQuery.get().orEmpty()
+
             searchJob?.cancel()
             searchJob = viewModelScope.launch(Dispatchers.IO) {
                 delay(1500)

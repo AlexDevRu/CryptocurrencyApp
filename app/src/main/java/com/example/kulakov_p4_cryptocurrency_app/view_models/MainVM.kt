@@ -27,7 +27,6 @@ class MainVM @Inject constructor(
 ): BaseVM() {
 
     val searchQuery = ObservableField<String>()
-    private var currentQuery: String = ""
 
     val error = ObservableField<String>()
     val loading = ObservableBoolean(false)
@@ -48,7 +47,7 @@ class MainVM @Inject constructor(
 
     init {
         searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback {
-            if(currentQuery == searchQuery.get().orEmpty())
+            if(sortFilterVM.parameters.searchQuery == searchQuery.get().orEmpty())
                 return@PropertyChangedCallback
 
             Log.w("asd", "searchQuery ${searchQuery.get()}")

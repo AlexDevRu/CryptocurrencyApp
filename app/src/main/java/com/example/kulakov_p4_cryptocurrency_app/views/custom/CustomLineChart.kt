@@ -51,6 +51,7 @@ class CustomLineChart @JvmOverloads constructor(
             legend.isEnabled = false
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             axisLeft.isEnabled = false
+            isScaleXEnabled = false
             marker = CustomMarkerView(context, R.layout.layout_tooltip)
             setNoDataText(context.getString(R.string.no_data))
         }
