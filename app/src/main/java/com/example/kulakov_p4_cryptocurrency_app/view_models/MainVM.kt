@@ -8,9 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.domain.aliases.CurrencyFlow
+import com.example.domain.models.Currency
 import com.example.domain.use_cases.GetCurrenciesUseCase
-import com.example.domain.use_cases.SearchCurrencyByQuery
-import com.example.kulakov_p4_cryptocurrency_app.events.SingleLiveEvent
+import com.example.domain.use_cases.SearchCurrencyByQueryUseCase
+import com.example.domain.use_cases.firebase.DeleteFavoriteCurrencyUseCase
+import com.example.domain.use_cases.firebase.SaveFavoriteCurrencyUseCase
 import com.example.kulakov_p4_cryptocurrency_app.utils.PropertyChangedCallback
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,18 +25,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MainVM @Inject constructor(
     private val getCurrenciesUseCase: GetCurrenciesUseCase,
-    private val searchCurrencyByQuery: SearchCurrencyByQuery
+    private val searchCurrencyByQueryUseCase: SearchCurrencyByQueryUseCase,
+    private val saveFavoriteCurrencyUseCase: SaveFavoriteCurrencyUseCase,
+    private val deleteFavoriteCurrencyUseCase: DeleteFavoriteCurrencyUseCase
 ): BaseVM() {
 
     val searchQuery = ObservableField<String>()
 
-    val error = ObservableField<String>()
-    val loading = ObservableBoolean(false)
-    val isResultEmpty = ObservableBoolean(false)
-    val listIsShown = ObservableBoolean(false)
+    val listVM = RecyclerViewVM()
     val isOnline = ObservableBoolean(false)
-
-    val scrollListToPosition = SingleLiveEvent<Int>()
 
     private var currentResult: CurrencyFlow? = null
 
@@ -44,6 +43,7 @@ class MainVM @Inject constructor(
     val setCurrencies: LiveData<Boolean> = _setCurrencies
 
     private var searchJob: Job? = null
+    private var updateFavoriteJob: Job? = null
 
     init {
         searchQuery.addOnPropertyChangedCallback(PropertyChangedCallback {
@@ -63,7 +63,6 @@ class MainVM @Inject constructor(
 
     fun retry() {
         currentResult = null
-        scrollListToPosition.postValue(0)
         _setCurrencies.postValue(true)
     }
 
@@ -78,10 +77,21 @@ class MainVM @Inject constructor(
         val newResult = if(searchQuery.get().isNullOrEmpty())
             getCurrenciesUseCase.invoke(sortFilterVM.parameters).cachedIn(viewModelScope)
         else
-            searchCurrencyByQuery.invoke(sortFilterVM.parameters).cachedIn(viewModelScope)
+            searchCurrencyByQueryUseCase.invoke(sortFilterVM.parameters).cachedIn(viewModelScope)
 
         currentResult = newResult
 
         return newResult
+    }
+
+    fun updateFavorite(currency: Currency) {
+        updateFavoriteJob?.cancel()
+        updateFavoriteJob = viewModelScope.launch(Dispatchers.IO) {
+            Log.w("asd", "currency updated ${currency.addedToFavorite}")
+            if(currency.addedToFavorite != null)
+                saveFavoriteCurrencyUseCase.invoke(currency)
+            else
+                deleteFavoriteCurrencyUseCase.invoke(currency)
+        }
     }
 }

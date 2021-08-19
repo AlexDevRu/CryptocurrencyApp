@@ -12,14 +12,16 @@ class ArticleTypeConverters {
     fun fromUUID(uuid: UUID?): String? {
         return uuid?.toString()
     }
+
     @TypeConverter
-    fun toDate(milliseconds: Long): Date {
-        return Date(milliseconds)
+    fun toDate(milliseconds: Long?): Date? {
+        return if(milliseconds != null) Date(milliseconds) else null
     }
     @TypeConverter
-    fun fromDate(date: Date): Long {
-        return date.time
+    fun fromDate(date: Date?): Long? {
+        return date?.time
     }
+
     @TypeConverter
     fun toStringList(string: String?): List<String>? {
         return if(string.isNullOrEmpty()) null else string.split(";")

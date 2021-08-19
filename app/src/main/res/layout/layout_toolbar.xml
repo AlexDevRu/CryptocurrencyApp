@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="query"
+            type="androidx.databinding.ObservableField&lt;String>" />
+
+        <variable
+            name="searchableInfo"
+            type="com.example.kulakov_p4_cryptocurrency_app.utils.SearchDestination" />
+    </data>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:theme="@style/searchViewTheme">
+
+            <ImageButton
+                android:id="@+id/menuButton"
+                android:layout_width="@dimen/menu_button_width"
+                android:layout_height="0dp"
+                android:background="@null"
+                android:contentDescription="@string/menu"
+                android:src="@drawable/ic_baseline_menu_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/toolbarTitle"
+                style="@style/toolbarTitleStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_indent"
+                android:layout_marginEnd="@dimen/base_indent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/searchView"
+                app:layout_constraintStart_toEndOf="@id/menuButton"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Главная" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                style="@style/searchViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:query="@={query}"
+                app:searchableInfo="@{searchableInfo}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+</layout>

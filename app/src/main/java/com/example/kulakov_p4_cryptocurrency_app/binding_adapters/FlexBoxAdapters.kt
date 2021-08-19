@@ -1,6 +1,7 @@
 package com.example.kulakov_p4_cryptocurrency_app.binding_adapters
 
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.google.android.flexbox.FlexboxLayout
@@ -13,8 +14,8 @@ fun FlexboxLayout.elements(elements: List<String>? = null) {
     for(element in elements) {
         val textView = TextView(context)
         textView.text = element
-        textView.background = context.resources.getDrawable(R.drawable.tag_bg)
-        textView.setTextColor(resources.getColor(R.color.black))
+        textView.background = ContextCompat.getDrawable(context, R.drawable.tag_bg)
+        textView.setTextColor(ContextCompat.getColor(context, R.color.black))
         val layoutParams = FlexboxLayout.LayoutParams(
             FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.WRAP_CONTENT
         )

@@ -14,15 +14,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.domain.common.Result
-import com.example.domain.use_cases.UpdateCurrencyByIdUseCase
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.ui_models.DataTableItem
 import androidx.databinding.library.baseAdapters.BR
+import com.example.domain.use_cases.GetUpdatedCurrencyUseCase
 
 @HiltViewModel
 class CurrencyDetailVM @Inject constructor(
     private val getCurrencyInfoUseCase: GetCurrencyInfoUseCase,
-    private val updateCurrencyByIdUseCase: UpdateCurrencyByIdUseCase
+    private val getUpdatedCurrencyUseCase: GetUpdatedCurrencyUseCase
 ): BaseVM() {
 
     val currencyVM = ObservableField<CurrencyVM>()
@@ -82,11 +82,11 @@ class CurrencyDetailVM @Inject constructor(
     }
 
     fun updateCurrency() {
-        val id = currencyVM.get()?.currency?.id ?: return
+        val currency = currencyVM.get()?.currency ?: return
 
         currencyUpdated.set(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val updatedCurrencyResult = updateCurrencyByIdUseCase.invoke(id)
+            val updatedCurrencyResult = getUpdatedCurrencyUseCase.invoke(currency)
             when(updatedCurrencyResult) {
                 is Result.Success -> {
                     currencyVM.get()?.currency = updatedCurrencyResult.value

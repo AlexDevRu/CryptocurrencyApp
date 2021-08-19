@@ -1,9 +1,12 @@
 package com.example.kulakov_p4_cryptocurrency_app.di
 
 import com.example.domain.repositories.local.IPreferncesStorage
-import com.example.domain.repositories.remote.ICoinMarketCapRespository
+import com.example.domain.repositories.remote.ICoinMarketCapRepository
+import com.example.domain.repositories.remote.IFirebaseRepository
 import com.example.domain.repositories.remote.INewsApiRepository
 import com.example.domain.use_cases.*
+import com.example.domain.use_cases.firebase.DeleteFavoriteCurrencyUseCase
+import com.example.domain.use_cases.firebase.SaveFavoriteCurrencyUseCase
 import com.example.domain.use_cases.preferences.*
 import dagger.Module
 import dagger.Provides
@@ -22,11 +25,11 @@ object UseCaseModule {
             = SaveSignInStatusUseCase(repository)
 
     @Provides
-    fun providesGetCurrenciesUseCase(repository: ICoinMarketCapRespository)
+    fun providesGetCurrenciesUseCase(repository: ICoinMarketCapRepository)
             = GetCurrenciesUseCase(repository)
 
     @Provides
-    fun providesGetCurrencyInfoUseCase(repository: ICoinMarketCapRespository)
+    fun providesGetCurrencyInfoUseCase(repository: ICoinMarketCapRepository)
             = GetCurrencyInfoUseCase(repository)
 
     @Provides
@@ -34,12 +37,12 @@ object UseCaseModule {
             = GetNewsUseCase(repository)
 
     @Provides
-    fun providesGetLatestCurrencyUseCase(repository: ICoinMarketCapRespository)
+    fun providesGetLatestCurrencyUseCase(repository: ICoinMarketCapRepository)
             = GetLatestCurrencyUseCase(repository)
 
     @Provides
-    fun providesUpdateCurrencyByIdUseCase(repository: ICoinMarketCapRespository)
-            = UpdateCurrencyByIdUseCase(repository)
+    fun providesGetUpdatedCurrencyUseCase(repository: ICoinMarketCapRepository)
+            = GetUpdatedCurrencyUseCase(repository)
 
     @Provides
     fun providesGetLanguageUseCase(repository: IPreferncesStorage)
@@ -58,6 +61,23 @@ object UseCaseModule {
             = SaveThemeUseCase(repository)
 
     @Provides
-    fun providesSearchCurrencyByQuery(repository: ICoinMarketCapRespository)
-            = SearchCurrencyByQuery(repository)
+    fun providesSearchCurrencyByQuery(repository: ICoinMarketCapRepository)
+            = SearchCurrencyByQueryUseCase(repository)
+
+    @Provides
+    fun providesGetFavoriteCurrenciesUseCase(
+        coinMarketCapRepository: ICoinMarketCapRepository
+    ) = GetFavoriteCurrenciesUseCase(coinMarketCapRepository)
+
+    @Provides
+    fun providesSaveFavoriteCurrencyUseCase(
+        firebaseRepository: IFirebaseRepository,
+        coinMarketCapRepository: ICoinMarketCapRepository
+    ) = SaveFavoriteCurrencyUseCase(firebaseRepository, coinMarketCapRepository)
+
+    @Provides
+    fun providesDeleteFavoriteCurrencyUseCase(
+        firebaseRepository: IFirebaseRepository,
+        coinMarketCapRepository: ICoinMarketCapRepository
+    ) = DeleteFavoriteCurrencyUseCase(firebaseRepository, coinMarketCapRepository)
 }

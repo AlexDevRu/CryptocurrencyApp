@@ -5,10 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.example.kulakov_p4_cryptocurrency_app.databinding.LayoutToolbarBinding
 import com.example.kulakov_p4_cryptocurrency_app.utils.InternetUtil
+import com.example.kulakov_p4_cryptocurrency_app.view_models.MainActivityVM
+import com.example.kulakov_p4_cryptocurrency_app.views.MainActivity
+import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment<TBinding: ViewDataBinding>(
     @LayoutRes private val layout: Int
@@ -17,6 +22,9 @@ abstract class BaseFragment<TBinding: ViewDataBinding>(
     protected lateinit var binding: TBinding
 
     protected lateinit var internetObserver: InternetUtil
+
+    protected val mainActivityVM: MainActivityVM
+        get() = (requireActivity() as MainActivity).mainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,5 +35,24 @@ abstract class BaseFragment<TBinding: ViewDataBinding>(
         binding.lifecycleOwner = viewLifecycleOwner
         internetObserver = InternetUtil(requireContext())
         return binding.root
+    }
+
+    protected fun showSnackBar(@StringRes messageRes: Int) {
+        Snackbar.make(binding.root, resources.getString(messageRes), Snackbar.LENGTH_SHORT).show()
+    }
+
+    protected fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    protected fun initToolbar(toolbarBinding: LayoutToolbarBinding) {
+        toolbarBinding.toolbarTitle.text = mainActivityVM.currentFragmentTitle
+        toolbarBinding.menuButton.setOnClickListener {
+            mainActivityVM.openDrawer()
+        }
+        toolbarBinding.searchView.setOnQueryTextFocusChangeListener { _, b ->
+            toolbarBinding.menuButton.visibility = if(b) View.GONE else View.VISIBLE
+            toolbarBinding.toolbarTitle.visibility = if(b) View.GONE else View.VISIBLE
+        }
     }
 }

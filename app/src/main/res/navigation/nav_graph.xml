@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.SignInFragment"
-        android:label="SignInFragment"
+        android:label="@string/authorization"
         tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_mainFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.MainFragment"
-        android:label="MainFragment"
+        android:label="@string/main"
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_currencyDetailFragment"
@@ -59,7 +59,7 @@
     <fragment
         android:id="@+id/newsFragment"
         android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.NewsFragment"
-        android:label="NewsFragment"
+        android:label="@string/news"
         tools:layout="@layout/fragment_news">
         <action
             android:id="@+id/action_newsFragment_to_webViewFragment"
@@ -76,20 +76,16 @@
     <fragment
         android:id="@+id/converterFragment"
         android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.ConverterFragment"
-        android:label="ConverterFragment"
+        android:label="@string/converter"
         tools:layout="@layout/fragment_converter">
-
         <action
             android:id="@+id/action_converterFragment_to_currencyChoiceFragment"
             app:destination="@id/currencyChoiceFragment" />
-        <action
-            android:id="@+id/action_converterFragment_to_currencyDetailFragment"
-            app:destination="@id/currencyDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/currencyChoiceFragment"
         android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.CurrencyChoiceFragment"
-        android:label="CurrencyChoiceFragment" >
+        android:label="@string/choose_currency" >
         <action
             android:id="@+id/action_currencyChoiceFragment_to_converterFragment"
             app:destination="@id/converterFragment" />
@@ -97,9 +93,21 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.SettingsFragment"
-        android:label="SettingsFragment" >
+        android:label="@string/settings" >
         <action
             android:id="@+id/action_settingsFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.kulakov_p4_cryptocurrency_app.views.fragments.FavoriteFragment"
+        android:label="@string/favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_currencyDetailFragment"
+            app:destination="@id/currencyDetailFragment">
+            <argument
+                android:name="currencyArg"
+                app:argType="com.example.kulakov_p4_cryptocurrency_app.parcelable.CurrencyArg" />
+        </action>
     </fragment>
 </navigation>

@@ -1,5 +1,6 @@
 package com.example.data.repositories.remote
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -10,6 +11,7 @@ import com.example.data.api.CoinMarketCapService
 import com.example.data.api.remote_mediators.CoinMarketCapRemoteMediator
 import com.example.data.database.CurrencyDatabase
 import com.example.data.database.entities.CurrencyWithQuotes
+import com.example.data.mappers.toCurrencyWithQuotes
 import com.example.data.mappers.toEntity
 import com.example.data.mappers.toModel
 import com.example.domain.aliases.CurrencyFlow
@@ -17,7 +19,8 @@ import com.example.domain.common.Result
 import com.example.domain.models.Currency
 import com.example.domain.models.CurrencyMetadata
 import com.example.domain.models.CurrencyParameters
-import com.example.domain.repositories.remote.ICoinMarketCapRespository
+import com.example.domain.repositories.remote.ICoinMarketCapRepository
+import com.example.domain.repositories.remote.IFirebaseRepository
 import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
@@ -25,8 +28,9 @@ import javax.inject.Inject
 
 class CoinMarketCapRepository @Inject constructor(
     private val service: CoinMarketCapService,
+    private val firebaseRepository: IFirebaseRepository,
     private val currencyDatabase: CurrencyDatabase
-): ICoinMarketCapRespository {
+): ICoinMarketCapRepository {
 
     @ExperimentalPagingApi
     override suspend fun getAllCurrencies(parameters: CurrencyParameters): CurrencyFlow {
@@ -48,7 +52,7 @@ class CoinMarketCapRepository @Inject constructor(
         }
     }
 
-    override suspend fun getLatestCurrencyUseCase(): Result<Currency> {
+    override suspend fun getLatestCurrency(): Result<Currency> {
         try {
             val currencyInDb = currencyDatabase.currencyDao().getLatestCurrency()
             if(currencyInDb != null)
@@ -65,19 +69,17 @@ class CoinMarketCapRepository @Inject constructor(
         }
     }
 
-    override suspend fun updateCurrencyById(id: Int): Result<Currency> {
+    override suspend fun getUpdatedCurrency(currency: Currency): Result<Currency> {
         return try {
-            val response = service.getCurrencyById(id.toString()).data[id.toString()]!!
-            val currencyWithQuotes = CurrencyWithQuotes(
-                response.toEntity(),
-                response.quote.map { it.value.toEntity(it.key) }
-            )
+            val strId = currency.id.toString()
+            val response = service.getCurrencyById(strId).data[strId]!!
+            val currencyWithQuotes = response.toCurrencyWithQuotes(currency.addedToFavorite)
             currencyDatabase.currencyDao().updateCurrency(currencyWithQuotes)
             Result.Success(currencyWithQuotes.toModel())
         } catch (exception: IOException) {
-            return getCurrencyFromDb(id)
+            return getCurrencyFromDb(currency.id)
         } catch (exception: HttpException) {
-            return getCurrencyFromDb(id)
+            return getCurrencyFromDb(currency.id)
         } catch (exception: Exception) {
             Result.Failure(exception)
         }
@@ -112,18 +114,14 @@ class CoinMarketCapRepository @Inject constructor(
             remoteMediator = CoinMarketCapRemoteMediator(
                 parameters,
                 service,
+                firebaseRepository,
                 currencyDatabase
             ),
             pagingSourceFactory = {
-                /*currencyDatabase.currencyDao().getCurrencies(
-                    dbQuery,
-                    parameters.priceMin, parameters.priceMax,
-                    parameters.marketCapMin, parameters.marketCapMax
-                )*/
                 currencyDatabase.currencyDao().getAll(
                     SimpleSQLiteQuery(
                         """select * from currencies, quotes where 
-                        currencyId=currencies.id and
+                        quotes.currencyId=currencies.id and
                         name like ? and
                         (price between ? and ?) and
                         (marketCap between ? and ?) and
@@ -144,5 +142,44 @@ class CoinMarketCapRepository @Inject constructor(
     @ExperimentalPagingApi
     override suspend fun searchCurrencyByQuery(parameters: CurrencyParameters): CurrencyFlow {
         return createPagerFlow(5000, parameters)
+    }
+
+    override suspend fun getCurrenciesByIds(ids: List<Int>): Result<List<Currency>> {
+        try {
+            if(ids.isEmpty())
+                return Result.Success(emptyList())
+
+            val response = service.getCurrencyById(ids.joinToString(","))
+            val favoriteList = response.data.values.map {
+                it.toModel()
+            }.toList()
+
+            return Result.Success(favoriteList)
+        } catch (exception: IOException) {
+            return Result.Failure(exception)
+        } catch (exception: HttpException) {
+            return Result.Failure(exception)
+        }
+    }
+
+    override suspend fun updateCurrency(currency: Currency): Result<Unit> {
+        return try {
+            Log.d("asd", "update entity ${currency.toEntity()}")
+            currencyDatabase.currencyDao().updateCurrency(currency.toEntity())
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Failure(e)
+        }
+    }
+
+    override suspend fun getFavoriteCurrencies(query: String): Result<List<Currency>> {
+        return try {
+            val dbQuery = "%${query.trim().lowercase().replace(' ', '%')}%"
+            val favoriteList = currencyDatabase.currencyDao().getFavoriteCurrencies(dbQuery)
+            Log.d("asd", "favoriteList ${favoriteList}")
+            Result.Success(favoriteList.map { it.toModel() })
+        } catch (e: java.lang.Exception) {
+            Result.Failure(e)
+        }
     }
 }

@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.CheckBox
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.github.mikephil.charting.charts.LineChart
@@ -89,7 +89,7 @@ class CustomLineChart @JvmOverloads constructor(
             if(dataSet != null) {
                 lineDataSets.add(dataSet)
                 val checkBox = addCheckBox(color)
-                checkBoxMap.put(checkBox, dataSet)
+                checkBoxMap[checkBox] = dataSet
             }
         }
 
@@ -103,7 +103,7 @@ class CustomLineChart @JvmOverloads constructor(
 
     private fun addCheckBox(color: Int = DEFAULT_COLORS[0]): CheckBox {
         val checkBox = CheckBox(context)
-        val colorValue = context.resources.getColor(color)
+        val colorValue = ContextCompat.getColor(context, color)
         checkBox.buttonTintList = ColorStateList.valueOf(colorValue)
         val layoutParams = FlexboxLayout.LayoutParams(
             FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.WRAP_CONTENT
@@ -111,7 +111,7 @@ class CustomLineChart @JvmOverloads constructor(
         layoutParams.marginEnd = 10
         checkBox.layoutParams = layoutParams
         checkBox.isChecked = true
-        checkBox.setOnCheckedChangeListener { checkbox, b ->
+        checkBox.setOnCheckedChangeListener { _, b ->
             onCheckedChangeCheckBox(checkBox, b)
         }
         legendContainer.addView(checkBox)
@@ -157,7 +157,7 @@ class CustomLineChart @JvmOverloads constructor(
         }
         val dataSet = LineDataSet(entries, null)
         dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        dataSet.color = context.resources.getColor(color)
+        dataSet.color = ContextCompat.getColor(context, color)
         dataSet.lineWidth = 3f
         dataSet.circleRadius = 4f
         dataSet.setCircleColor(Color.BLUE)

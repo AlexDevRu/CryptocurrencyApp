@@ -14,5 +14,6 @@ data class Currency(
     val marketPairs: Int = 0,
     val tags: List<String>? = null,
     val totalSupply: Double = 0.0,
-    val quote: Map<String, QuoteItem> = mapOf()
+    var addedToFavorite: Date? = null,
+    var quote: Map<String, QuoteItem> = mapOf()
 )

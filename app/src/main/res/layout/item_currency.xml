@@ -44,18 +44,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/medium_indent"
                 android:layout_marginEnd="@dimen/medium_indent"
-                android:text="@{viewModel.titleWithSymbol}"
+                android:text="@{viewModel.currency.name}"
                 app:layout_constraintEnd_toStartOf="@id/currencyPercentChange1h"
                 app:layout_constraintStart_toEndOf="@id/currencyImageView"
                 app:layout_constraintTop_toTopOf="@id/currencyImageView"
-                tools:text="Bitcoin | BTC fghgfh gfh gf h fgh fgh fg" />
+                tools:text="Bitcoin" />
+
+            <TextView
+                android:id="@+id/currencySymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/currencyTitle"
+                app:layout_constraintStart_toStartOf="@id/currencyTitle"
+                android:layout_marginTop="@dimen/small_indent"
+                android:textSize="12sp"
+                tools:text="Symbol"
+                android:text="@{viewModel.currency.symbol}" />
 
             <TextView
                 android:id="@+id/currencyPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/medium_indent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/favoriteButton"
                 app:layout_constraintTop_toTopOf="parent"
                 app:usd="@{viewModel.quoteUSD.price}"
                 tools:text="$3465" />
@@ -72,6 +83,19 @@
                 tools:background="@drawable/positive_percent_bg"
                 tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
                 tools:text="11.1234%" />
+
+            <ImageButton
+                android:id="@+id/favoriteButton"
+                android:onClick="@{() -> handler.onUpdateFavorite()}"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@null"
+                android:src="@drawable/ic_baseline_star_24"
+                android:tint="@{viewModel.favorite ? @color/yellow : @color/gray}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/update_favorite" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

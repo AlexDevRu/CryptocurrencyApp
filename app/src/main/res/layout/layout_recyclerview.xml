@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.kulakov_p4_cryptocurrency_app.view_models.RecyclerViewVM" />
+
+        <variable
+            name="retryHandler"
+            type="kotlin.jvm.functions.Function0&lt;kotlin.Unit>" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:onRefresh="@{() -> retryHandler.invoke()}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{!viewModel.loading &amp;&amp; viewModel.error == null &amp;&amp; !viewModel.isResultEmpty}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.loading}" />
+
+        <include
+            android:id="@+id/error"
+            layout="@layout/item_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:isVisible="@{viewModel.error != null &amp;&amp; !viewModel.loading}"
+            app:message="@{viewModel.error}"
+            app:onRetryClick="@{retryHandler}"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/emptyResult"
+            layout="@layout/layout_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.isResultEmpty}"
+            tools:visibility="visible" />
+
+    </FrameLayout>
+</layout>

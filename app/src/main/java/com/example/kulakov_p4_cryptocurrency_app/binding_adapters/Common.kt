@@ -6,7 +6,9 @@ import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.databinding.BindingConversion
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -20,6 +22,11 @@ fun convertBooleanToVisibility(view: View, visible: Any?) {
     }
 }
 
+@BindingConversion
+fun convToBoolean(value: Boolean): Int {
+    return if(value) View.VISIBLE else View.GONE
+}
+
 @BindingAdapter(value=["snackbarMessage", "snackbarBackground"])
 fun View.showSnackbarMessage(message: String?, @ColorRes snackbarBackground: Int? = null) {
     if(!message.isNullOrEmpty()) {
@@ -30,7 +37,7 @@ fun View.showSnackbarMessage(message: String?, @ColorRes snackbarBackground: Int
         )
 
         if(snackbarBackground != null)
-            snack = snack.setBackgroundTint(resources.getColor(snackbarBackground)).setTextColor(Color.WHITE)
+            snack = snack.setBackgroundTint(ContextCompat.getColor(context, snackbarBackground)).setTextColor(Color.WHITE)
 
         val view = snack.view
         val params = view.layoutParams as FrameLayout.LayoutParams
@@ -49,39 +56,3 @@ fun View.showSnackbarMessage(message: String?, @ColorRes snackbarBackground: Int
         snack.show()
     }
 }
-
-/*@BindingAdapter(value = ["flashbarActivity", "flashbarTitle", "flashbarMessage",
-    "flashbarBackground", "flashbarIcon"], requireAll = false)
-fun View.showFlashbar(activity: FragmentActivity, title: String? = null, message: String? = null,
-                      @ColorRes colorBg: Int? = null, @DrawableRes icon: Int? = null) {
-    if(!message.isNullOrEmpty()) {
-        var builder = Flashbar.Builder(activity)
-            .gravity(Flashbar.Gravity.TOP)
-
-        if(!title.isNullOrEmpty())
-            builder = builder.title(title)
-
-        if(!message.isNullOrEmpty())
-            builder = builder.message(message)
-
-        if(colorBg != null)
-            builder = builder.backgroundColorRes(colorBg)
-
-        if(icon != null)
-            builder = builder.showIcon().icon(icon)
-
-        builder.enterAnimation(
-                FlashAnim.with(context)
-                .animateBar()
-                .duration(750)
-                .alpha()
-                .overshoot()
-            )
-            .exitAnimation(
-                FlashAnim.with(context)
-                .animateBar()
-                .duration(400)
-                .accelerateDecelerate()
-            ).build().show()
-    }
-}*/

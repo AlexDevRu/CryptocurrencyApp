@@ -10,7 +10,6 @@ import androidx.paging.cachedIn
 import com.example.domain.aliases.CurrencyFlow
 import com.example.domain.models.CurrencyParameters
 import com.example.domain.use_cases.GetCurrenciesUseCase
-import com.example.kulakov_p4_cryptocurrency_app.events.SingleLiveEvent
 import com.example.kulakov_p4_cryptocurrency_app.utils.PropertyChangedCallback
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,19 +26,14 @@ class CurrencyChoiceVM @Inject constructor(
 
     val searchQuery = ObservableField<String>()
 
-    val error = ObservableField<String>()
-    val loading = ObservableBoolean(false)
-    val isResultEmpty = ObservableBoolean(false)
-    val listIsShown = ObservableBoolean(false)
-
-    val scrollListToPosition = SingleLiveEvent<Int>()
+    val listVM = RecyclerViewVM()
 
     private var currentResult: CurrencyFlow? = null
 
     private val _setCurrencies = MutableLiveData(true)
     val setCurrencies: LiveData<Boolean> = _setCurrencies
 
-    val parameters = CurrencyParameters()
+    private val parameters = CurrencyParameters()
 
     private var searchJob: Job? = null
 
@@ -61,7 +55,6 @@ class CurrencyChoiceVM @Inject constructor(
 
     fun retry() {
         currentResult = null
-        scrollListToPosition.postValue(0)
         _setCurrencies.postValue(true)
     }
 
@@ -72,9 +65,7 @@ class CurrencyChoiceVM @Inject constructor(
         }
 
         val newResult = getCurrenciesUseCase.invoke(parameters).cachedIn(viewModelScope)
-
         currentResult = newResult
-
         return newResult
     }
 }

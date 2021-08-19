@@ -18,6 +18,7 @@ object CurrencyArgMapper: IMapper<CurrencyArg, Currency> {
             entity.marketPairs,
             entity.tags,
             entity.totalSupply,
+            entity.addedToFavorite,
             entity.quote.mapValues { entry -> QuoteItemMapper.toModel(entry.value) }
         )
     }
@@ -35,6 +36,7 @@ object CurrencyArgMapper: IMapper<CurrencyArg, Currency> {
             model.marketPairs,
             model.tags,
             model.totalSupply,
+            model.addedToFavorite,
             model.quote.mapValues { entry -> QuoteItemMapper.fromModel(entry.value) }
         )
     }

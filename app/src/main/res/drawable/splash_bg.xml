@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <color android:color="@color/black"/>
+        <bitmap android:gravity="left"
+            android:src="@drawable/splash_img_bg"/>
     </item>
 
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash_icon"/>
+            android:src="@drawable/cryptocurrency"/>
     </item>
 </layer-list>

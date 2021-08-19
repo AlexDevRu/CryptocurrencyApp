@@ -17,4 +17,6 @@
     <dimen name="currency_item_elevation">2dp</dimen>
     <dimen name="line_graph_height">250dp</dimen>
     <dimen name="search_view_max">3000dp</dimen>
+    <dimen name="menu_button_width">50dp</dimen>
+    <dimen name="profile_image_size">100dp</dimen>
 </resources>

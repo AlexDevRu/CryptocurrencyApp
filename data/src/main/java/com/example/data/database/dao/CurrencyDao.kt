@@ -15,18 +15,6 @@ interface CurrencyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun _insertQuotes(quotes: List<QuoteItemEntity>)
 
-    @Query("""
-        select * from currencies, quotes where 
-        currencyId=currencies.id and
-        name like :query and
-        (price between :priceMin and :priceMax) and
-        (marketCap between :marketCapMin and :marketCapMax)""")
-    fun getCurrencies(
-        query: String,
-        priceMin: Double, priceMax: Double,
-        marketCapMin: Double, marketCapMax: Double
-    ): PagingSource<Int, CurrencyWithQuotes>
-
 
     @Query("select * from currencies where id=:id")
     suspend fun getCurrencyById(id: Int): CurrencyWithQuotes?
@@ -36,7 +24,7 @@ interface CurrencyDao {
     suspend fun getLatestCurrency(): CurrencyWithQuotes?
 
 
-    suspend fun insertAll(currencies: List<CurrencyWithQuotes>) {
+    suspend fun insert(currencies: List<CurrencyWithQuotes>) {
         for(currencyWithQuotes in currencies) {
             insert(currencyWithQuotes)
         }
@@ -64,4 +52,17 @@ interface CurrencyDao {
 
     @RawQuery(observedEntities = [CurrencyEntity::class, QuoteItemEntity::class])
     fun getAll(query: SupportSQLiteQuery): PagingSource<Int, CurrencyWithQuotes>
+
+
+
+    @Update
+    suspend fun updateCurrency(currency: CurrencyEntity)
+
+    @Query("""
+        select * from currencies
+        where addedToFavorite is not null and
+        name like :query
+        order by addedToFavorite desc
+        """)
+    suspend fun getFavoriteCurrencies(query: String): List<CurrencyWithQuotes>
 }

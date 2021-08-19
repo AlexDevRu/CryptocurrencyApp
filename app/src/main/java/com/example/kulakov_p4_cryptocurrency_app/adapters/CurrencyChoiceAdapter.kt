@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Currency
 import com.example.kulakov_p4_cryptocurrency_app.R
+import com.example.kulakov_p4_cryptocurrency_app.adapters.diff_util.CurrencyDiff
 import com.example.kulakov_p4_cryptocurrency_app.databinding.ItemCurrencyChoiceBinding
 import com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM
 
@@ -51,10 +51,5 @@ class CurrencyChoiceAdapter(private val onCurrencyClick: (currency: Currency?) -
                 executePendingBindings()
             }
         }
-    }
-
-    class CurrencyDiff : DiffUtil.ItemCallback<Currency>() {
-        override fun areItemsTheSame(oldItem: Currency, newItem: Currency) = oldItem.id == newItem.id
-        override fun areContentsTheSame(oldItem: Currency, newItem: Currency) = oldItem == newItem
     }
 }

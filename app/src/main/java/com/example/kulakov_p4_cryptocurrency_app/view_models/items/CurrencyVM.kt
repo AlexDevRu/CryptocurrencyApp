@@ -4,6 +4,8 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.example.domain.models.Currency
 import com.example.domain.models.QuoteItem
+import androidx.databinding.library.baseAdapters.BR
+import java.util.*
 
 class CurrencyVM: BaseObservable() {
 
@@ -12,6 +14,15 @@ class CurrencyVM: BaseObservable() {
         set(value) {
             field = value
             notifyChange()
+        }
+
+    @Bindable
+    var favorite: Boolean = currency?.addedToFavorite != null
+        get() = currency?.addedToFavorite != null
+        set(value) {
+            field = value
+            currency?.addedToFavorite = if(field) Date() else null
+            notifyPropertyChanged(BR.favorite)
         }
 
     @get:Bindable
@@ -41,5 +52,5 @@ class CurrencyVM: BaseObservable() {
             )
         }
 
-    private fun calculatePrice(percent: Double) = quoteUSD!!.price * (1 - percent / 100)
+    private fun calculatePrice(percent: Double) = quoteUSD!!.price / (1 + percent / 100)
 }

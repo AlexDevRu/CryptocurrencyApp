@@ -17,5 +17,6 @@ data class CurrencyArg(
     val marketPairs: Int = 0,
     val tags: List<String>? = null,
     val totalSupply: Double = 0.0,
+    val addedToFavorite: Date? = null,
     val quote: Map<String, QuoteItemArg>
 ): Parcelable

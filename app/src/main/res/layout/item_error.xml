@@ -13,6 +13,10 @@
             type="ObservableField&lt;String>" />
 
         <variable
+            name="isVisible"
+            type="Boolean" />
+
+        <variable
             name="onRetryClick"
             type="Function0&lt;kotlin.Unit>" />
     </data>
@@ -21,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:visibility="@{isVisible}"
         android:orientation="vertical">
 
         <TextView

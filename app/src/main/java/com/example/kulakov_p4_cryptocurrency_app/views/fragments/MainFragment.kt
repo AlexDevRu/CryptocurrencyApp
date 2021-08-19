@@ -6,17 +6,19 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.example.domain.repositories.remote.IFirebaseRepository
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyAdapter
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyLoadStateAdapter
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentMainBinding
+import com.example.kulakov_p4_cryptocurrency_app.utils.SearchDestination
 import com.example.kulakov_p4_cryptocurrency_app.view_models.MainVM
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment: BaseFragment<FragmentMainBinding>
@@ -24,7 +26,7 @@ class MainFragment: BaseFragment<FragmentMainBinding>
 
     private val viewModel: MainVM by viewModels()
 
-    private val adapter = CurrencyAdapter()
+    private lateinit var adapter: CurrencyAdapter
 
     private var getAllCurrenciesJob: Job? = null
 
@@ -33,15 +35,16 @@ class MainFragment: BaseFragment<FragmentMainBinding>
 
         binding.viewModel = viewModel
 
+        adapter = CurrencyAdapter(viewModel::updateFavorite)
+
         val header = CurrencyLoadStateAdapter { adapter.retry() }
         val footer = CurrencyLoadStateAdapter { adapter.retry() }
 
         adapter.addLoadStateListener { state ->
             val isListEmpty = state.refresh is LoadState.NotLoading && adapter.itemCount == 0
-            viewModel.isResultEmpty.set(isListEmpty)
+            viewModel.listVM.isResultEmpty.set(isListEmpty)
 
-            viewModel.listIsShown.set(state.source.refresh is LoadState.NotLoading || state.mediator?.refresh is LoadState.NotLoading)
-            viewModel.loading.set(state.refresh is LoadState.Loading || state.mediator?.refresh is LoadState.Loading)
+            viewModel.listVM.loading.set(state.refresh is LoadState.Loading || state.mediator?.refresh is LoadState.Loading)
 
             val errorState = state.source.append as? LoadState.Error
                 ?: state.source.prepend as? LoadState.Error
@@ -53,31 +56,30 @@ class MainFragment: BaseFragment<FragmentMainBinding>
                     is HttpException -> (it.error as HttpException).message()
                     else -> it.error.localizedMessage.orEmpty()
                 }
-                viewModel.error.set(error)
+                viewModel.listVM.error.set(error)
             }
         }
 
         binding.currencyList.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
 
-        binding.currencyList.apply {
-            postponeEnterTransition()
-            viewTreeObserver
-                .addOnPreDrawListener {
-                    startPostponedEnterTransition()
-                    true
-                }
-        }
+        binding.currencyList.prepareToSharedTransition(this)
+
+        initToolbar(binding.toolbar)
 
         observeData()
     }
 
+    @Inject
+    lateinit var firebaseRepository: IFirebaseRepository
+
     private fun observeData() {
         internetObserver.observe(viewLifecycleOwner) {
-            if(viewModel.isOnline.get() == it)
-                return@observe
+            if(viewModel.isOnline.get() == it) return@observe
+
             viewModel.isOnline.set(it)
+
             if(!it) {
-                Snackbar.make(binding.root, resources.getString(R.string.offline_message), Snackbar.LENGTH_SHORT).show()
+                showSnackBar(R.string.offline_message)
             }
         }
 
@@ -90,9 +92,10 @@ class MainFragment: BaseFragment<FragmentMainBinding>
             }
         }
 
-        viewModel.scrollListToPosition.observe(viewLifecycleOwner, {
-            if(it != null)
-                binding.currencyList.scrollToPosition(it)
-        })
+        mainActivityVM.searchableLiveData.observe(viewLifecycleOwner) {
+            if(it?.destination == SearchDestination.MAIN) {
+                viewModel.searchQuery.set(it.query)
+            }
+        }
     }
 }

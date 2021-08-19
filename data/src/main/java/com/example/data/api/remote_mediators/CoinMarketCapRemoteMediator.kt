@@ -11,8 +11,9 @@ import com.example.data.api.CoinMarketCapService
 import com.example.data.database.CurrencyDatabase
 import com.example.data.database.entities.CurrencyRemoteKeys
 import com.example.data.database.entities.CurrencyWithQuotes
-import com.example.data.mappers.toEntity
+import com.example.data.mappers.toCurrencyWithQuotes
 import com.example.domain.models.CurrencyParameters
+import com.example.domain.repositories.remote.IFirebaseRepository
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -21,6 +22,7 @@ import java.io.IOException
 class CoinMarketCapRemoteMediator(
     private val parameters: CurrencyParameters,
     private val service: CoinMarketCapService,
+    private val firebaseRepository: IFirebaseRepository,
     private val currencyDatabase: CurrencyDatabase
 ) : RemoteMediator<Int, CurrencyWithQuotes>() {
 
@@ -83,6 +85,7 @@ class CoinMarketCapRemoteMediator(
         Log.w("asd", "page = $page, pageSize = ${state.config.pageSize}, start = ${(page - 1) * state.config.pageSize + 1}")
 
         try {
+
             var currencies = service.getCurrencies(
                 state.config.pageSize,
                 ((page - 1) * state.config.pageSize) + 1,
@@ -95,6 +98,8 @@ class CoinMarketCapRemoteMediator(
                 parameters.sortType,
                 parameters.sortDir
             ).data
+
+            val ids = firebaseRepository.getFavorite()
 
             if(parameters.searchQuery.isNotEmpty())
                 currencies = currencies.filter { it.name.lowercase().contains(parameters.searchQuery.trim().lowercase()) }
@@ -119,14 +124,15 @@ class CoinMarketCapRemoteMediator(
 
                 val entityList = mutableListOf<CurrencyWithQuotes>()
                 for(currency in currencies) {
-                    val quotes = currency.quote.map { it.value.toEntity(it.key) }
-                    val currencyWithQuotes = CurrencyWithQuotes(
-                        currency.toEntity(),
-                        quotes
-                    )
+
+                    val favoriteItem = ids.find { it.currencyId == currency.id }
+
+                    val currencyWithQuotes = currency.toCurrencyWithQuotes(favoriteItem?.addedToFavorite)
+                    currencyDatabase.currencyDao().insert(currencyWithQuotes)
+
                     entityList.add(currencyWithQuotes)
                 }
-                currencyDatabase.currencyDao().insertAll(entityList)
+                currencyDatabase.currencyDao().insert(entityList)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: IOException) {

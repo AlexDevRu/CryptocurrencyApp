@@ -31,12 +31,7 @@ class NewsVM @Inject constructor(
     val searchQuery = ObservableField<String>()
     private var currentQuery: String = ""
 
-    val error = ObservableField<String>()
-    val loading = ObservableBoolean(false)
-    val listIsShown = ObservableBoolean(false)
-    val isResultEmpty = ObservableBoolean(false)
-
-    val scrollListToPosition = SingleLiveEvent<Int>()
+    val listVM = RecyclerViewVM()
 
     private val _setNews = MutableLiveData(true)
     val setNews: LiveData<Boolean> = _setNews
@@ -62,7 +57,6 @@ class NewsVM @Inject constructor(
     }
 
     fun retry() {
-        scrollListToPosition.postValue(0)
         currentResult = null
         _setNews.postValue(true)
     }

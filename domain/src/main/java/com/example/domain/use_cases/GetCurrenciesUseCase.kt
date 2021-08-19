@@ -1,8 +1,11 @@
 package com.example.domain.use_cases
 
 import com.example.domain.models.CurrencyParameters
-import com.example.domain.repositories.remote.ICoinMarketCapRespository
+import com.example.domain.repositories.remote.ICoinMarketCapRepository
 
-class GetCurrenciesUseCase(private val repository: ICoinMarketCapRespository) {
-    suspend operator fun invoke(parameters: CurrencyParameters = CurrencyParameters()) = repository.getAllCurrencies(parameters)
+class GetCurrenciesUseCase(
+    private val coinMarketCapRepository: ICoinMarketCapRepository
+) {
+    suspend operator fun invoke(parameters: CurrencyParameters = CurrencyParameters())
+    = coinMarketCapRepository.getAllCurrencies(parameters)
 }

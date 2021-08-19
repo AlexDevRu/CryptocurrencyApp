@@ -2,10 +2,7 @@ package com.example.kulakov_p4_cryptocurrency_app.view_models
 
 import android.util.Log
 import androidx.databinding.ObservableInt
-import com.example.domain.use_cases.preferences.GetLanguageUseCase
-import com.example.domain.use_cases.preferences.SaveLanguageUseCase
-import com.example.domain.use_cases.preferences.SaveSignInStatusUseCase
-import com.example.domain.use_cases.preferences.SaveThemeUseCase
+import com.example.domain.use_cases.preferences.*
 import com.example.kulakov_p4_cryptocurrency_app.events.SingleLiveEvent
 import com.example.kulakov_p4_cryptocurrency_app.utils.PropertyChangedCallback
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
@@ -17,10 +14,12 @@ class SettingsVM @Inject constructor(
     private val saveLanguageUseCase: SaveLanguageUseCase,
     private val getLanguageUseCase: GetLanguageUseCase,
     private val saveThemeUseCase: SaveThemeUseCase,
-    private val saveSignInStatusUseCase: SaveSignInStatusUseCase
+    private val getThemeUseCase: GetThemeUseCase
 ): BaseVM() {
     val setLanguage = SingleLiveEvent<String>()
     val setTheme = SingleLiveEvent<String>()
+
+    var initLanguage = false
 
     val locales = listOf("ru", "en")
     val selectedLangPosition = ObservableInt(0)
@@ -56,7 +55,7 @@ class SettingsVM @Inject constructor(
         saveThemeUseCase.invoke(theme)
     }
 
-    fun signOut() {
-        saveSignInStatusUseCase.invoke(false)
-    }
+    fun getLanguage() = getLanguageUseCase.invoke()
+
+    fun getTheme() = getThemeUseCase.invoke()
 }

@@ -6,16 +6,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Currency
 import com.example.kulakov_p4_cryptocurrency_app.R
+import com.example.kulakov_p4_cryptocurrency_app.adapters.diff_util.CurrencyDiff
 import com.example.kulakov_p4_cryptocurrency_app.databinding.ItemCurrencyBinding
 import com.example.kulakov_p4_cryptocurrency_app.parcelable.mappers.CurrencyArgMapper
 import com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM
 import com.example.kulakov_p4_cryptocurrency_app.views.fragments.MainFragmentDirections
 
-class CurrencyAdapter: PagingDataAdapter<Currency, CurrencyAdapter.CurrencyHolder>(CurrencyDiff()) {
+class CurrencyAdapter(private val updateFavoriteHandler: (Currency) -> Unit)
+    : PagingDataAdapter<Currency, CurrencyAdapter.CurrencyHolder>(CurrencyDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyHolder {
         val binding = DataBindingUtil.inflate<ItemCurrencyBinding>(
@@ -34,12 +35,15 @@ class CurrencyAdapter: PagingDataAdapter<Currency, CurrencyAdapter.CurrencyHolde
 
     interface Handler {
         fun onItemClick()
+        fun onUpdateFavorite()
     }
 
     inner class CurrencyHolder(private val binding: ItemCurrencyBinding)
         : RecyclerView.ViewHolder(binding.root) {
+
+        val viewModel = CurrencyVM()
+
         init {
-            val viewModel = CurrencyVM()
             binding.viewModel = viewModel
         }
 
@@ -62,14 +66,14 @@ class CurrencyAdapter: PagingDataAdapter<Currency, CurrencyAdapter.CurrencyHolde
                         val action = MainFragmentDirections.actionMainFragmentToCurrencyDetailFragment(arg)
                         itemView.findNavController().navigate(action, extras)
                     }
+
+                    override fun onUpdateFavorite() {
+                        viewModel?.favorite = !viewModel?.favorite!!
+                        updateFavoriteHandler(viewModel?.currency!!)
+                    }
                 }
                 executePendingBindings()
             }
         }
-    }
-
-    class CurrencyDiff : DiffUtil.ItemCallback<Currency>() {
-        override fun areItemsTheSame(oldItem: Currency, newItem: Currency) = oldItem.id == newItem.id
-        override fun areContentsTheSame(oldItem: Currency, newItem: Currency) = oldItem == newItem
     }
 }

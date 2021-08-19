@@ -29,11 +29,12 @@ class SettingsFragment: BaseFragment<FragmentSettingsBinding>
             Log.w("asd", "locale observer $it")
             if(it != null) {
                 viewModel.saveLanguage(it)
-                LocaleManager.setLocale(requireActivity(), it)
+                requireActivity().recreate()
+                //LocaleManager.setLocale(requireActivity(), it)
             }
         })
 
-        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
+        if(viewModel.getTheme() == "dark")
             viewModel.selectedThemePosition.set(1)
 
         viewModel.setTheme.observe(viewLifecycleOwner, {
@@ -44,11 +45,5 @@ class SettingsFragment: BaseFragment<FragmentSettingsBinding>
                 viewModel.saveTheme(it)
             }
         })
-
-        binding.signOutButton.setOnClickListener {
-            viewModel.signOut()
-            val action = SettingsFragmentDirections.actionSettingsFragmentToSignInFragment()
-            findNavController().navigate(action)
-        }
     }
 }

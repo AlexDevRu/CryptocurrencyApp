@@ -1,27 +1,5 @@
 package com.example.kulakov_p4_cryptocurrency_app.binding_adapters
 
-/*import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.widget.EditText
-import androidx.core.widget.addTextChangedListener
-import androidx.core.widget.doAfterTextChanged
-import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseBindingAdapter
-import androidx.databinding.InverseBindingListener
-import io.reactivex.subjects.BehaviorSubject
-
-@BindingAdapter("doubleNumber")
-fun rxText(editText: EditText, subject: BehaviorSubject<Double>) {
-
-    editText.text = Editable.Factory.getInstance().newEditable(subject.value.toString())
-
-    editText.addTextChangedListener {
-        Log.w("asd", "edit $it")
-        subject.onNext(if(it.isNullOrEmpty()) 0.0 else it.toString().toDouble())
-    }
-}*/
-
 import android.text.Editable
 import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged

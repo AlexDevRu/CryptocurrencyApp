@@ -1,18 +1,22 @@
 package com.example.kulakov_p4_cryptocurrency_app.view_models
 
-import android.util.Log
-import androidx.databinding.*
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableDouble
+import androidx.databinding.ObservableField
+import androidx.databinding.library.baseAdapters.BR
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.domain.common.Result
 import com.example.domain.use_cases.GetLatestCurrencyUseCase
+import com.example.kulakov_p4_cryptocurrency_app.utils.PropertyChangedCallback
 import com.example.kulakov_p4_cryptocurrency_app.view_models.base.BaseVM
 import com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.databinding.library.baseAdapters.BR
-import com.example.kulakov_p4_cryptocurrency_app.utils.PropertyChangedCallback
 
 @HiltViewModel
 class ConverterVM @Inject constructor(
@@ -23,15 +27,16 @@ class ConverterVM @Inject constructor(
 
     val initialCurrencyLoading = ObservableBoolean(false)
 
+    private val _initialCurrencyError = MutableLiveData<String>()
+    val initialCurrencyError: LiveData<String> = _initialCurrencyError
+
     var firstSelected = false
     var secondSelected = false
 
     val fromValue = ObservableDouble(0.0)
     val toValue = ObservableDouble(0.0)
 
-
     var setFromCurrency = true
-
 
     @get:Bindable
     val graphDataList: List<List<Double>?>
@@ -64,13 +69,14 @@ class ConverterVM @Inject constructor(
             val initialCurrencyResult = getLatestCurrencyUseCase.invoke()
             when(initialCurrencyResult) {
                 is Result.Success -> {
+                    _initialCurrencyError.postValue("")
                     fromCurrency.get()?.currency = initialCurrencyResult.value
                     toCurrency.get()?.currency = initialCurrencyResult.value
                     notifyPropertyChanged(BR.graphDataList)
                     notifyPropertyChanged(BR.legendLabels)
                 }
-                else -> {
-
+                is Result.Failure -> {
+                    _initialCurrencyError.postValue(initialCurrencyResult.throwable.message)
                 }
             }
             initialCurrencyLoading.set(false)

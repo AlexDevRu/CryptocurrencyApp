@@ -10,6 +10,7 @@ import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyLoadStateAdapter
 import com.example.kulakov_p4_cryptocurrency_app.adapters.NewsAdapter
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentNewsBinding
+import com.example.kulakov_p4_cryptocurrency_app.utils.SearchDestination
 import com.example.kulakov_p4_cryptocurrency_app.view_models.NewsVM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -37,10 +38,9 @@ class NewsFragment: BaseFragment<FragmentNewsBinding>
 
         adapter.addLoadStateListener { state ->
             val isListEmpty = state.refresh is LoadState.NotLoading && adapter.itemCount == 0
-            viewModel.isResultEmpty.set(isListEmpty)
+            viewModel.listVM.isResultEmpty.set(isListEmpty)
 
-            viewModel.loading.set(state.refresh is LoadState.Loading || state.mediator?.refresh is LoadState.Loading)
-            viewModel.listIsShown.set(state.refresh is LoadState.NotLoading || state.mediator?.refresh is LoadState.NotLoading)
+            viewModel.listVM.loading.set(state.refresh is LoadState.Loading || state.mediator?.refresh is LoadState.Loading)
 
             header.loadState = state.mediator
                 ?.refresh
@@ -58,11 +58,13 @@ class NewsFragment: BaseFragment<FragmentNewsBinding>
                     is HttpException -> (it.error as HttpException).message()
                     else -> it.error.localizedMessage.orEmpty()
                 }
-                viewModel.error.set(error)
+                viewModel.listVM.error.set(error)
             }
         }
 
         binding.newsList.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
+
+        initToolbar(binding.toolbar)
 
         observe()
     }
@@ -77,9 +79,10 @@ class NewsFragment: BaseFragment<FragmentNewsBinding>
             }
         }
 
-        viewModel.scrollListToPosition.observe(viewLifecycleOwner, {
-            if(it != null)
-                binding.newsList.scrollToPosition(it)
-        })
+        mainActivityVM.searchableLiveData.observe(viewLifecycleOwner) {
+            if(it?.destination == SearchDestination.NEWS) {
+                viewModel.searchQuery.set(it.query)
+            }
+        }
     }
 }

@@ -34,3 +34,11 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    firebaseBoom = "28.3.0"
+    playServicesAuth = "19.2.0"
+    paging = "3.0.1"
+    retrofit = "2.9.0"
+    dagger = "2.37"
+}

@@ -12,6 +12,6 @@ object LocaleManager {
         config.locale = locale
         //activity.applicationContext.createConfigurationContext(config)
         activity.baseContext.resources.updateConfiguration(config, activity.baseContext.resources.displayMetrics)
-        activity.recreate()
+        //activity.recreate()
     }
 }

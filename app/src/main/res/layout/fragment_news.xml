@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
             type="com.example.kulakov_p4_cryptocurrency_app.view_models.NewsVM" />
+
+        <variable
+            name="searchableInfoNews"
+            type="com.example.kulakov_p4_cryptocurrency_app.utils.SearchDestination" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,54 +19,25 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/search_toolbar"
+            layout="@layout/layout_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:query="@{viewModel.searchQuery}" />
+            app:query="@{viewModel.searchQuery}"
+            app:searchableInfo="@{searchableInfoNews.NEWS}"/>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/newsSwipeList"
+        <com.example.kulakov_p4_cryptocurrency_app.views.custom.CustomRecyclerView
+            android:id="@+id/newsList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:recyclerViewModel="@{viewModel.listVM}"
+            app:onRetry="@{() -> viewModel.retry()}"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:onRefresh="@{() -> viewModel.retry()}">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/newsList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.listIsShown}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <include
-            android:id="@+id/loading"
-            layout="@layout/item_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:inProgress="@{viewModel.loading}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:visibility="visible" />
-
-        <!--<include
-            layout="@layout/item_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{viewModel.error != null}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:message="@{viewModel.error}"
-            app:onRetryClick="@{() -> viewModel.retry()}"
-            tools:visibility="visible" />-->
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

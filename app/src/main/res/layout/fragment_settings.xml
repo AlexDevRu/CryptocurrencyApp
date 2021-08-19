@@ -55,11 +55,5 @@
                 app:entries="@{@stringArray/settings_themes}" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/signOutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_out"/>
-
     </LinearLayout>
 </layout>

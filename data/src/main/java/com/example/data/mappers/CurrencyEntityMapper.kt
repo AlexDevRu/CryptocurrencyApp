@@ -2,6 +2,7 @@ package com.example.data.mappers
 
 import com.example.data.database.entities.CurrencyEntity
 import com.example.domain.models.Currency
+import java.util.*
 
 fun CurrencyEntity.toModel(): Currency {
     return Currency(
@@ -31,6 +32,7 @@ fun Currency.toEntity(): CurrencyEntity {
         maxSupply,
         marketPairs,
         tags,
-        totalSupply
+        totalSupply,
+        addedToFavorite
     )
 }

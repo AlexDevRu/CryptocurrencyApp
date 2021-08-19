@@ -19,6 +19,21 @@ fun QuoteItemResponse.toEntity(key: String): QuoteItemEntity {
     )
 }
 
+fun QuoteItem.toEntity(key: String): QuoteItemEntity {
+    return QuoteItemEntity(
+        key = key,
+        marketCap = marketCap,
+        percentChange1h = percentChange1h,
+        percentChange24h = percentChange24h,
+        percentChange7d = percentChange7d,
+        percentChange30d = percentChange30d,
+        percentChange60d = percentChange60d,
+        percentChange90d = percentChange90d,
+        price = price,
+        volume24h = volume24h
+    )
+}
+
 fun QuoteItemResponse.toModel(): QuoteItem {
     return QuoteItem(
         marketCap = market_cap,
@@ -30,5 +45,19 @@ fun QuoteItemResponse.toModel(): QuoteItem {
         percentChange90d = percent_change_90d,
         price = price,
         volume24h = volume_24h
+    )
+}
+
+fun QuoteItemEntity.toModel(): QuoteItem {
+    return QuoteItem(
+        marketCap = marketCap,
+        percentChange1h = percentChange1h,
+        percentChange24h = percentChange24h,
+        percentChange7d = percentChange7d,
+        percentChange30d = percentChange30d,
+        percentChange60d = percentChange60d,
+        percentChange90d = percentChange90d,
+        price = price,
+        volume24h = volume24h
     )
 }

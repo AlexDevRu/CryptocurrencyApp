@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.kulakov_p4_cryptocurrency_app.view_models.items.CurrencyVM" />
+
+        <variable
+            name="handler"
+            type="com.example.kulakov_p4_cryptocurrency_app.adapters.FavoriteCurrencyAdapter.Handler" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_indent"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> handler.onItemClick()}"
+        app:cardElevation="@dimen/currency_item_elevation">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/medium_indent">
+
+            <ImageView
+                android:id="@+id/currencyImageView"
+                android:layout_width="@dimen/currency_thumb_size"
+                android:layout_height="@dimen/currency_thumb_size"
+                android:contentDescription="@string/cryptocurrency_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcUrl="@{viewModel.thumbUrl}"
+                tools:background="@color/black" />
+
+            <TextView
+                android:id="@+id/currencyTitle"
+                style="@style/headerStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_indent"
+                android:layout_marginEnd="@dimen/medium_indent"
+                android:text="@{viewModel.currency.name}"
+                app:layout_constraintEnd_toStartOf="@id/currencyPercentChange1h"
+                app:layout_constraintStart_toEndOf="@id/currencyImageView"
+                app:layout_constraintTop_toTopOf="@id/currencyImageView"
+                tools:text="Bitcoin" />
+
+            <TextView
+                android:id="@+id/currencySymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/currencyTitle"
+                app:layout_constraintStart_toStartOf="@id/currencyTitle"
+                android:layout_marginTop="@dimen/small_indent"
+                android:textSize="12sp"
+                tools:text="Symbol"
+                android:text="@{viewModel.currency.symbol}" />
+
+            <TextView
+                android:id="@+id/currencyPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/medium_indent"
+                app:layout_constraintEnd_toStartOf="@id/deleteButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:usd="@{viewModel.quoteUSD.price}"
+                tools:text="$3465" />
+
+            <TextView
+                android:id="@+id/currencyPercentChange1h"
+                style="@style/currencyPercentChangeStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_indent"
+                app:layout_constraintEnd_toEndOf="@id/currencyPrice"
+                app:layout_constraintTop_toBottomOf="@id/currencyPrice"
+                app:percents="@{viewModel.quoteUSD.percentChange1h}"
+                tools:background="@drawable/positive_percent_bg"
+                tools:drawableEnd="@drawable/ic_baseline_arrow_drop_up_24"
+                tools:text="11.1234%" />
+
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:onClick="@{() -> handler.onDelete()}"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@null"
+                android:src="@drawable/ic_baseline_delete_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/delete_from_favorite" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

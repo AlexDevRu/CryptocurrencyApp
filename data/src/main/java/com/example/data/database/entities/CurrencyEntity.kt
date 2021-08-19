@@ -17,4 +17,5 @@ data class CurrencyEntity(
     val marketPairs: Int = 0,
     val tags: List<String>? = null,
     val totalSupply: Double = 0.0,
+    var addedToFavorite: Date? = null
 )

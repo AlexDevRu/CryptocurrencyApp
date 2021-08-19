@@ -3,6 +3,7 @@ package com.example.kulakov_p4_cryptocurrency_app.views.custom
 import android.content.Context
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.binding_adapters.usd
 import com.github.mikephil.charting.components.MarkerView
@@ -18,11 +19,11 @@ class CustomMarkerView(context: Context?, layoutResource: Int) :
     // content (user-interface)
     override fun refreshContent(e: Entry, highlight: Highlight) {
         if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            tvContent.setBackgroundColor(resources.getColor(R.color.white))
-            tvContent.setTextColor(resources.getColor(R.color.black))
+            tvContent.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            tvContent.setTextColor(ContextCompat.getColor(context, R.color.black))
         } else {
-            tvContent.setBackgroundColor(resources.getColor(R.color.black))
-            tvContent.setTextColor(resources.getColor(R.color.white))
+            tvContent.setBackgroundColor(ContextCompat.getColor(context, R.color.black))
+            tvContent.setTextColor(ContextCompat.getColor(context, R.color.white))
         }
         tvContent.usd(e.y.toDouble())
         super.refreshContent(e, highlight)

@@ -90,7 +90,7 @@
 
     <style name="sourceCodeLinkStyle" parent="currencyDetailLinkStyle">
         <item name="android:textColor">?attr/tc</item>
-        <item name="strokeColor">@color/black</item>
+        <item name="strokeColor">?attr/tc</item>
         <item name="icon">@drawable/ic_code</item>
         <item name="android:text">@string/source_code</item>
     </style>
@@ -145,5 +145,18 @@
         <item name="android:maxWidth">@dimen/search_view_max</item>
         <item name="searchIcon">@drawable/ic_baseline_search_24</item>
         <item name="closeIcon">@drawable/ic_baseline_close_24</item>
+        <item name="voiceIcon">@drawable/ic_baseline_mic_24</item>
+    </style>
+
+    <style name="circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="toolbarTitleStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/big_textsize</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
     </style>
 </resources>

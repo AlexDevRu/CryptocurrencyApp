@@ -13,6 +13,7 @@ import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyChoiceAdapter
 import com.example.kulakov_p4_cryptocurrency_app.adapters.CurrencyLoadStateAdapter
 import com.example.kulakov_p4_cryptocurrency_app.databinding.FragmentCurrencyChoiceBinding
+import com.example.kulakov_p4_cryptocurrency_app.utils.SearchDestination
 import com.example.kulakov_p4_cryptocurrency_app.view_models.ConverterVM
 import com.example.kulakov_p4_cryptocurrency_app.view_models.CurrencyChoiceVM
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,7 @@ class CurrencyChoiceFragment: BaseFragment<FragmentCurrencyChoiceBinding>
     (R.layout.fragment_currency_choice) {
 
     private val viewModel: CurrencyChoiceVM by viewModels()
-    private val sharedViewModel: ConverterVM by activityViewModels()
+    private val converterViewModel: ConverterVM by activityViewModels()
 
     private val adapter = CurrencyChoiceAdapter(::clickCurrencyHandler)
 
@@ -42,10 +43,9 @@ class CurrencyChoiceFragment: BaseFragment<FragmentCurrencyChoiceBinding>
 
         adapter.addLoadStateListener { state ->
             val isListEmpty = state.refresh is LoadState.NotLoading && adapter.itemCount == 0
-            viewModel.isResultEmpty.set(isListEmpty)
+            viewModel.listVM.isResultEmpty.set(isListEmpty)
 
-            viewModel.listIsShown.set(state.source.refresh is LoadState.NotLoading || state.mediator?.refresh is LoadState.NotLoading)
-            viewModel.loading.set(state.source.refresh is LoadState.Loading || state.mediator?.refresh is LoadState.Loading)
+            viewModel.listVM.loading.set(state.source.refresh is LoadState.Loading || state.mediator?.refresh is LoadState.Loading)
 
             val errorState = state.source.append as? LoadState.Error
                 ?: state.source.prepend as? LoadState.Error
@@ -57,20 +57,22 @@ class CurrencyChoiceFragment: BaseFragment<FragmentCurrencyChoiceBinding>
                     is HttpException -> (it.error as HttpException).message()
                     else -> it.error.localizedMessage.orEmpty()
                 }
-                viewModel.error.set(error)
+                viewModel.listVM.error.set(error)
             }
         }
 
         binding.currencyList.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
 
+        initToolbar(binding.toolbar)
+
         observe()
     }
 
     private fun clickCurrencyHandler(currency: Currency?) {
-        if(sharedViewModel.setFromCurrency)
-            sharedViewModel.fromCurrency.get()?.currency = currency
+        if(converterViewModel.setFromCurrency)
+            converterViewModel.fromCurrency.get()?.currency = currency
         else
-            sharedViewModel.toCurrency.get()?.currency = currency
+            converterViewModel.toCurrency.get()?.currency = currency
 
         val action = CurrencyChoiceFragmentDirections.actionCurrencyChoiceFragmentToConverterFragment()
         findNavController().navigate(action)
@@ -86,9 +88,10 @@ class CurrencyChoiceFragment: BaseFragment<FragmentCurrencyChoiceBinding>
             }
         }
 
-        viewModel.scrollListToPosition.observe(viewLifecycleOwner, {
-            if(it != null)
-                binding.currencyList.scrollToPosition(it)
-        })
+        mainActivityVM.searchableLiveData.observe(viewLifecycleOwner) {
+            if(it?.destination == SearchDestination.CHOICE) {
+                viewModel.searchQuery.set(it.query)
+            }
+        }
     }
 }

@@ -15,6 +15,10 @@ import com.example.kulakov_p4_cryptocurrency_app.view_models.SignInVM
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,13 +34,17 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
     @Inject
     lateinit var client: GoogleSignInClient
 
+    private lateinit var auth: FirebaseAuth
+
     private lateinit var signInResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(viewModel.userIsSigned())
+        if(viewModel.userIsSigned()) {
+            mainActivityVM.setCurrentUser()
             showMain()
+        }
 
         binding.viewModel = viewModel
 
@@ -46,6 +54,8 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
                 signInResultLauncher.launch(signInIntent)
             }
         }
+
+        auth = Firebase.auth
 
         signInResultLauncher = registerForActivityResult(
             StartActivityForResult(),
@@ -57,13 +67,28 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-            viewModel.saveSignInStatus(true)
-
-            showMain()
+            firebaseAuthWithGoogle(account.idToken!!)
         } catch (e: ApiException) {
             Log.w("asd", "signInResult:failed code=" + e.statusCode)
-            viewModel.error.set(e.localizedMessage)
+            viewModel.error.set(e.message)
         }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("asd", "signInWithCredential:success")
+                    viewModel.saveSignInStatus(true)
+                    showMain()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("asd", "signInWithCredential:failure", task.exception)
+                    viewModel.error.set(task.exception?.message)
+                }
+            }
     }
 
     private fun showMain() {
