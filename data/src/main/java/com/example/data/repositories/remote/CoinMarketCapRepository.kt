@@ -1,16 +1,12 @@
 package com.example.data.repositories.remote
 
 import android.util.Log
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.map
+import androidx.paging.*
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.data.api.ApiConstants
 import com.example.data.api.CoinMarketCapService
 import com.example.data.api.remote_mediators.CoinMarketCapRemoteMediator
 import com.example.data.database.CurrencyDatabase
-import com.example.data.database.entities.CurrencyWithQuotes
 import com.example.data.mappers.toCurrencyWithQuotes
 import com.example.data.mappers.toEntity
 import com.example.data.mappers.toModel
@@ -173,12 +169,37 @@ class CoinMarketCapRepository @Inject constructor(
     }
 
     override suspend fun getFavoriteCurrencies(query: String): Result<List<Currency>> {
+        try {
+            val ids = firebaseRepository.getFavorite()
+            if(ids.isNullOrEmpty())
+                return Result.Success(emptyList())
+
+            val response = service.getCurrencyById(ids.joinToString(","))
+
+            val favoriteList = response.data.mapValues { entry ->
+                val favoriteItem = ids.find { it.currencyId == entry.value.id }
+                return@mapValues entry.value.toCurrencyWithQuotes(favoriteItem?.addedToFavorite)
+            }.values.toList()
+
+            currencyDatabase.currencyDao().insert(favoriteList)
+
+            return Result.Success(favoriteList.map { it.toModel() })
+
+        } catch (exception: IOException) {
+            return getFavoriteFromDb(query)
+        } catch (exception: HttpException) {
+            return getFavoriteFromDb(query)
+        } catch (e: java.lang.Exception) {
+            return Result.Failure(e)
+        }
+    }
+
+    private suspend fun getFavoriteFromDb(query: String): Result<List<Currency>> {
         return try {
             val dbQuery = "%${query.trim().lowercase().replace(' ', '%')}%"
             val favoriteList = currencyDatabase.currencyDao().getFavoriteCurrencies(dbQuery)
-            Log.d("asd", "favoriteList ${favoriteList}")
             Result.Success(favoriteList.map { it.toModel() })
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             Result.Failure(e)
         }
     }

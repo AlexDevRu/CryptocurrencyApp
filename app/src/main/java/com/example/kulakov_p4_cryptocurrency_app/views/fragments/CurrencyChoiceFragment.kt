@@ -63,7 +63,7 @@ class CurrencyChoiceFragment: BaseFragment<FragmentCurrencyChoiceBinding>
 
         binding.currencyList.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
 
-        initToolbar(binding.toolbar)
+        initToolbar(binding.toolbar, R.string.choose_currency)
 
         observe()
     }

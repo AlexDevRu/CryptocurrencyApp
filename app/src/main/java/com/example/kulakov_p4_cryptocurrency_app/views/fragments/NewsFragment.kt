@@ -64,7 +64,7 @@ class NewsFragment: BaseFragment<FragmentNewsBinding>
 
         binding.newsList.adapter = adapter.withLoadStateHeaderAndFooter(header, footer)
 
-        initToolbar(binding.toolbar)
+        initToolbar(binding.toolbar, R.string.news)
 
         observe()
     }

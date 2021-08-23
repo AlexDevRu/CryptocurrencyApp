@@ -104,6 +104,7 @@ class CoinMarketCapRemoteMediator(
             if(parameters.searchQuery.isNotEmpty())
                 currencies = currencies.filter { it.name.lowercase().contains(parameters.searchQuery.trim().lowercase()) }
 
+            Log.w("asd", "favorite ids ${ids.size}")
             Log.w("asd", "currencies ${currencies}")
 
             val endOfPaginationReached = currencies.isEmpty()

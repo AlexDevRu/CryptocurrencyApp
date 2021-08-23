@@ -31,7 +31,7 @@ class CustomLineChart @JvmOverloads constructor(
     private var lineChart: LineChart
 
     companion object {
-        val DEFAULT_COLORS = arrayOf(R.color.purple_700, R.color.teal_700)
+        val DEFAULT_COLORS = arrayOf(R.color.purple_500, R.color.teal_700)
     }
 
     private val checkBoxMap = mutableMapOf<CheckBox, LineDataSet>()

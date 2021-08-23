@@ -64,7 +64,7 @@ class MainFragment: BaseFragment<FragmentMainBinding>
 
         binding.currencyList.prepareToSharedTransition(this)
 
-        initToolbar(binding.toolbar)
+        initToolbar(binding.toolbar, R.string.main)
 
         observeData()
     }

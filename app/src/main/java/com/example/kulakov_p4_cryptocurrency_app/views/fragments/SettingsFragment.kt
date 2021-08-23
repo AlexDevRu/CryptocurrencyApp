@@ -23,19 +23,19 @@ class SettingsFragment: BaseFragment<FragmentSettingsBinding>
 
         binding.viewModel = viewModel
 
-        viewModel.setCurrentLanguage()
+        viewModel.setCurrentTheme()
 
+        observe()
+    }
+
+    private fun observe() {
         viewModel.setLanguage.observe(viewLifecycleOwner, {
-            Log.w("asd", "locale observer $it")
             if(it != null) {
+                Log.w("asd", "locale observer $it")
                 viewModel.saveLanguage(it)
                 requireActivity().recreate()
-                //LocaleManager.setLocale(requireActivity(), it)
             }
         })
-
-        if(viewModel.getTheme() == "dark")
-            viewModel.selectedThemePosition.set(1)
 
         viewModel.setTheme.observe(viewLifecycleOwner, {
             if(it != null) {

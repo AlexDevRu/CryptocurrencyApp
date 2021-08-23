@@ -22,8 +22,6 @@ class MainActivityVM @Inject constructor(
     private val client: GoogleSignInClient
 ): ViewModel() {
 
-    var currentFragmentTitle = ""
-
     val searchableLiveData = SingleLiveEvent<SearchableResult>()
     val openNavigationView = SingleLiveEvent<Boolean>()
 

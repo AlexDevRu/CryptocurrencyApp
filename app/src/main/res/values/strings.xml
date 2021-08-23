@@ -63,6 +63,9 @@
         <item>English</item>
     </string-array>
 
+    <string name="russian" translatable="false">Русский</string>
+    <string name="english" translatable="false">English</string>
+
     <string-array name="settings_themes">
         <item>Светлая</item>
         <item>Темная</item>

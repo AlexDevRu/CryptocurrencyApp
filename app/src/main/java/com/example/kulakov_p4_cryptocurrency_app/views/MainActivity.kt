@@ -1,11 +1,10 @@
 package com.example.kulakov_p4_cryptocurrency_app.views
 
 import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -13,7 +12,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.data.repositories.local.PreferencesStorage
+import com.example.domain.use_cases.preferences.GetLanguageUseCase
+import com.example.domain.use_cases.preferences.GetThemeUseCase
 import com.example.kulakov_p4_cryptocurrency_app.R
 import com.example.kulakov_p4_cryptocurrency_app.binding_adapters.SEARCHABLE_DESTINATION
 import com.example.kulakov_p4_cryptocurrency_app.databinding.ActivityMainBinding
@@ -22,6 +22,7 @@ import com.example.kulakov_p4_cryptocurrency_app.utils.SearchDestination
 import com.example.kulakov_p4_cryptocurrency_app.view_models.MainActivityVM
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -33,8 +34,13 @@ class MainActivity: AppCompatActivity() {
 
     private lateinit var headerBinding: LayoutNavViewHeaderBinding
 
+    @Inject lateinit var getThemeUseCase: GetThemeUseCase
+    @Inject lateinit var getLanguageUseCase: GetLanguageUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setConfig()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -48,7 +54,6 @@ class MainActivity: AppCompatActivity() {
         binding.navView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            mainViewModel.currentFragmentTitle = destination.label.toString()
             binding.drawerLayout.setDrawerLockMode(
                 when(destination.id) {
                     R.id.signInFragment,
@@ -83,28 +88,21 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(applySelectedAppLanguage(base))
-    }
+    private fun setConfig() {
+        val lang = getLanguageUseCase.invoke()
+        val theme = getThemeUseCase.invoke()
 
-    private fun applySelectedAppLanguage(context: Context): Context {
-        val settings: SharedPreferences = context.getSharedPreferences(PreferencesStorage.STORAGE_NAME, Context.MODE_PRIVATE)
-        val lang = settings.getString(
-            PreferencesStorage.LANGUAGE,
-            PreferencesStorage.LANGUAGE_DEFAULT
-        ).toString()
-        val theme = settings.getString(
-            PreferencesStorage.THEME,
-            PreferencesStorage.THEME_DEFAULT
-        ).toString()
+        Log.d("asd", "from shared preferences: lang $lang, theme $theme")
+
         val locale = Locale(lang)
-        val newConfig = Configuration(context.resources.configuration)
+        val newConfig = Configuration(resources.configuration)
         Locale.setDefault(locale)
         newConfig.setLocale(locale)
+        baseContext.resources.updateConfiguration(newConfig, baseContext.resources.displayMetrics)
+
         AppCompatDelegate.setDefaultNightMode(
             if(theme == "dark") AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )
-        return context.createConfigurationContext(newConfig)
     }
 
     override fun onNewIntent(intent: Intent) {

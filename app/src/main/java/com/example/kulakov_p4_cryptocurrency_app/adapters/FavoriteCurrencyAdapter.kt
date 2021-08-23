@@ -29,7 +29,7 @@ class FavoriteCurrencyAdapter(private val deleteHandler: (Currency) -> Unit)
     }
 
     override fun onBindViewHolder(holder: CurrencyHolder, position: Int) {
-        getItem(position)?.let { photoItem -> holder.bind(photoItem, position) }
+        getItem(position)?.let { photoItem -> holder.bind(photoItem) }
     }
 
     interface Handler {
@@ -45,7 +45,7 @@ class FavoriteCurrencyAdapter(private val deleteHandler: (Currency) -> Unit)
             binding.viewModel = viewModel
         }
 
-        fun bind(currency: Currency, position: Int) {
+        fun bind(currency: Currency) {
             binding.apply {
                 viewModel?.currency = currency
                 currencyImageView.transitionName = "currencyImageView${currency.id}"

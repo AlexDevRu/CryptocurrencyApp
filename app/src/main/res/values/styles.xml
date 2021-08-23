@@ -33,8 +33,8 @@
     </style>
 
     <style name="websiteLinkStyle" parent="currencyDetailLinkStyle">
-        <item name="android:textColor">@color/purple_700</item>
-        <item name="strokeColor">@color/purple_700</item>
+        <item name="android:textColor">@color/purple_500</item>
+        <item name="strokeColor">@color/purple_500</item>
         <item name="icon">@drawable/ic_web</item>
         <item name="android:text">@string/web_site</item>
     </style>

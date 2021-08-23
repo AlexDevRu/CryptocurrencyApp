@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -45,14 +46,15 @@ abstract class BaseFragment<TBinding: ViewDataBinding>(
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
-    protected fun initToolbar(toolbarBinding: LayoutToolbarBinding) {
-        toolbarBinding.toolbarTitle.text = mainActivityVM.currentFragmentTitle
+    protected fun initToolbar(toolbarBinding: LayoutToolbarBinding, @StringRes titleRes: Int) {
+        toolbarBinding.toolbarTitle.text = resources.getString(titleRes)
         toolbarBinding.menuButton.setOnClickListener {
             mainActivityVM.openDrawer()
         }
         toolbarBinding.searchView.setOnQueryTextFocusChangeListener { _, b ->
-            toolbarBinding.menuButton.visibility = if(b) View.GONE else View.VISIBLE
-            toolbarBinding.toolbarTitle.visibility = if(b) View.GONE else View.VISIBLE
+            val visibility =  if(b) View.GONE else View.VISIBLE
+            toolbarBinding.menuButton.visibility = visibility
+            toolbarBinding.toolbarTitle.visibility = visibility
         }
     }
 }

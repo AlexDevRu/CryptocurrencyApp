@@ -1,6 +1,7 @@
 package com.example.kulakov_p4_cryptocurrency_app.view_models
 
 import android.util.Log
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import com.example.domain.use_cases.preferences.*
 import com.example.kulakov_p4_cryptocurrency_app.events.SingleLiveEvent
@@ -19,19 +20,20 @@ class SettingsVM @Inject constructor(
     val setLanguage = SingleLiveEvent<String>()
     val setTheme = SingleLiveEvent<String>()
 
-    var initLanguage = false
-
-    val locales = listOf("ru", "en")
-    val selectedLangPosition = ObservableInt(0)
+    val ruSelected = ObservableBoolean()
+    val enSelected = ObservableBoolean()
 
     private val themes = listOf("light", "dark")
     val selectedThemePosition = ObservableInt(0)
 
     init {
-        selectedLangPosition.addOnPropertyChangedCallback(PropertyChangedCallback {
-            val lang = locales[selectedLangPosition.get()]
-            Log.w("asd", "lang $lang")
-            setLanguage.postValue(lang)
+        setCurrentLanguage()
+
+        ruSelected.addOnPropertyChangedCallback(PropertyChangedCallback {
+            if(ruSelected.get()) setLanguage.postValue("ru")
+        })
+        enSelected.addOnPropertyChangedCallback(PropertyChangedCallback {
+            if(enSelected.get()) setLanguage.postValue("en")
         })
 
         selectedThemePosition.addOnPropertyChangedCallback(PropertyChangedCallback {
@@ -41,10 +43,16 @@ class SettingsVM @Inject constructor(
         })
     }
 
-    fun setCurrentLanguage() {
-        val savedLang = getLanguageUseCase.invoke()
-        Log.w("asd", "init $savedLang")
-        selectedLangPosition.set(if(savedLang == "en") 1 else 0)
+    private fun setCurrentLanguage() {
+        if(getLanguageUseCase.invoke() == "en")
+            enSelected.set(true)
+        else
+            ruSelected.set(true)
+    }
+
+    fun setCurrentTheme() {
+        if(getThemeUseCase.invoke() == "dark")
+            selectedThemePosition.set(1)
     }
 
     fun saveLanguage(lang: String) {
@@ -54,8 +62,4 @@ class SettingsVM @Inject constructor(
     fun saveTheme(theme: String) {
         saveThemeUseCase.invoke(theme)
     }
-
-    fun getLanguage() = getLanguageUseCase.invoke()
-
-    fun getTheme() = getThemeUseCase.invoke()
 }

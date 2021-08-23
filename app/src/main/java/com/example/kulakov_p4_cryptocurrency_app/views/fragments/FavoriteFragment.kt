@@ -29,7 +29,7 @@ class FavoriteFragment: BaseFragment<FragmentFavoriteBinding>
 
         binding.favoriteList.prepareToSharedTransition(this)
 
-        initToolbar(binding.toolbar)
+        initToolbar(binding.toolbar, R.string.favorite)
 
         observe()
     }
